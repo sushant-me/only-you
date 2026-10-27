@@ -34,7 +34,7 @@ def main() -> int:
         capture_output=True,
         text=True,
     )
-    check("test suite passes", proc.returncode == 0, "84/89 tests" if proc.returncode == 0 else "failed")
+    check("test suite passes", proc.returncode == 0, "suite green" if proc.returncode == 0 else "failed")
 
     # benchmark numbers
     bench = ROOT / "results" / "benchmark.json"

@@ -85,7 +85,12 @@ item below was built on top of it.
 - `docs/open-weights.md`: deploy, wire, measure, fallbacks, honesty rules for the $10K category.
 - `docs/outreach.md`: 12 contacts, three message variants, follow-up cadence, tracker.
 
-**Tests:** 89 pass (`make test`).
+**Model-mode integration tests**
+- `tests/test_bench_modes.py`: proves `bench --model meta` and `bench --model open` construct the client,
+  make calls, and write a report with model metadata against a mock OpenAI-compatible endpoint. The
+  plumbing is verified; only the credential is missing.
+
+**Tests:** 91 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
 real-model benchmark. The only missing input is `META_API_BASE` / `META_API_KEY` / `MUSE_MODEL`.
