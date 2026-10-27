@@ -234,3 +234,6 @@ textarea { resize: vertical; min-height: 44px; }
 .task-steps li b { font-weight: 600; }
 .task-steps li .sd { grid-column: 2; color: #8b95a8; font-size: 12px; }
 .task-answer { margin-top: 10px; font-size: 13px; color: #dfe6f3; }
+
+button.mini{margin-top:6px;padding:5px 9px;font-size:11px;border-radius:7px;background:transparent;
+border:1px solid #2a3448;color:#9ecbff;cursor:pointer}button.mini:hover{border-color:#9ecbff}

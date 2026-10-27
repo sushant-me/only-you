@@ -32,7 +32,7 @@ from urllib.parse import urlparse
 from .actions import parse_action
 from .devicekey import DeviceKey
 from .agent import Agent, Arm
-from .mandates import MandateLedger
+from .mandates import MandateLedger, merchant_verify as verify_mandate_offline
 from .ocr import OcrError, ocr_png
 from .tasks import run_task
 from .voice import enroll as voice_enroll
@@ -357,6 +357,27 @@ class DemoService:
                 owner_confirms=bool(payload.get("confirm", True)),
             )
 
+    def merchant_verify(self, payload: dict[str, Any]) -> dict[str, Any]:
+        """What a merchant runs at checkout: offline ED25519 mandate verification."""
+        mandate_id = str(payload.get("id", ""))
+        mandate = next((m for m in self.mandates.mandates if m.id == mandate_id), None)
+        if mandate is None:
+            return {"ok": False, "reason": "mandate not found"}
+        action = payload.get("action") or {
+            "kind": "pay",
+            "params": {"payee": mandate.payees[0] if mandate.payees else "", "amount": min(1000, mandate.max_amount)},
+        }
+        ok, why = verify_mandate_offline(
+            mandate.to_dict(), action, self.mandates.public_key_pem
+        )
+        return {
+            "ok": ok,
+            "reason": why,
+            "mandate_id": mandate.id,
+            "action": action,
+            "algorithm": mandate.signature.split(":", 1)[0] if ":" in mandate.signature else "hmac",
+        }
+
     def revoke_mandate(self, mandate_id: str) -> dict[str, Any]:
         with self.lock:
             ok = self.mandates.revoke(mandate_id)
@@ -468,6 +489,8 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
                 self._json(service.ask(str(payload.get("question", ""))))
             elif path == "/api/mandate":
                 self._json(service.grant_mandate(payload))
+            elif path == "/api/merchant-verify":
+                self._json(service.merchant_verify(payload))
             elif path == "/api/mandate/revoke":
                 self._json(service.revoke_mandate(str(payload.get("id", ""))))
             elif path == "/api/frame":

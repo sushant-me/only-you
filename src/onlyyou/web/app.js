@@ -244,6 +244,7 @@ function renderState(state) {
         <div class="m-top"><span>${m.scope} · ${m.payees.join(", ")} · ≤ ${m.max_amount}</span>
         <span>${m.valid ? "valid" : m.revoked ? "revoked" : "expired"}</span></div>
         <div class="m-meta">${m.id} · ${m.note || ""} · exp ${new Date(m.expires_at * 1000).toLocaleString()}</div>
+        ${m.valid && m.payees.length ? `<button class="mini" data-merchant="${m.id}" data-payee="${m.payees[0]}" data-amount="${Math.min(500, m.remaining)}">verify at merchant</button>` : ""}
       </div>`
     )
     .join("") || `<div class="receipt" style="color:var(--muted)">no mandates yet</div>`;
@@ -588,6 +589,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (taskBtn) taskBtn.addEventListener("click", runTask);
 
   document.addEventListener("click", async (ev) => {
+    const merchant = ev.target.getAttribute && ev.target.getAttribute("data-merchant");
+    if (merchant) {
+      try {
+        const data = await post("/api/merchant-verify", {
+          id: merchant,
+          action: {
+            kind: "pay",
+            params: {
+              payee: ev.target.getAttribute("data-payee"),
+              amount: Number(ev.target.getAttribute("data-amount")),
+            },
+          },
+        });
+        toast(data.ok ? `MERCHANT VERIFIED — ${data.reason}` : `merchant rejected — ${data.reason}`);
+      } catch (err) {
+        toast(`merchant check failed: ${err.message}`);
+      }
+      return;
+    }
     const id = ev.target.getAttribute && ev.target.getAttribute("data-undo");
     if (!id) return;
     const data = await post("/api/undo", { id });
