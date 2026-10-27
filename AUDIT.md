@@ -1,10 +1,6 @@
-# Repo audit — 2026-10-28T06:22:33+00:00
+# Repo audit — 2026-10-28T06:24:20+00:00
 
-**40 passed · 1 failed**
-
-## Failures
-
-- ❌ git tree clean — M tools/audit.py
+**42 passed · 0 failed**
 
 ## Checks
 
@@ -40,6 +36,7 @@
 - ✅ docs/pitch.pdf has 9 pages — 9
 - ✅ artifact docs/demo-task-clip.mp4
 - ✅ artifact docs/demo-fallback.mp4
+- ✅ artifact docs/demo-x-vertical.mp4
 - ✅ artifact docs/video-3min.md
 - ✅ artifact docs/live-finals.md
 - ✅ artifact docs/limitations.md
@@ -48,3 +45,4 @@
 - ✅ artifact LICENSE
 - ✅ docs/demo-task-clip.mp4 duration 20s — 20.000000
 - ✅ docs/demo-fallback.mp4 duration 82s — 82.000000
+- ✅ git tree clean
