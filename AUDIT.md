@@ -1,10 +1,10 @@
-# Repo audit — 2026-10-28T06:27:54+00:00
+# Repo audit — 2026-10-28T06:28:52+00:00
 
 **42 passed · 0 failed**
 
 ## Checks
 
-- ✅ test suite passes — 84/89 tests
+- ✅ test suite passes — suite green
 - ✅ benchmark mode is simulated — simulated
 - ✅ arm A 100%
 - ✅ arm B 47.5%
@@ -15,7 +15,7 @@
 - ✅ adaptive 80/80/20
 - ✅ forged 6/6 -> 0/6
 - ✅ scene detection 94.3%
-- ✅ docs mention 89 tests
+- ✅ docs mention 91 tests
 - ✅ docs mention 81.0%
 - ✅ docs mention 14.3%
 - ✅ docs mention 6/6
