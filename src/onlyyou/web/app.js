@@ -360,6 +360,10 @@ async function runTask() {
       return;
     }
     renderTask(data);
+    try {
+      const st = await (await fetch("/api/state")).json();
+      renderState(st);
+    } catch (_) {}
     if (data.outcome === "executed") toast("task executed — receipt filed");
   } catch (err) {
     panel.innerHTML = `<div class="task-head">agent task failed</div><p class="err">${err.message}</p>`;
@@ -520,6 +524,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     setFakecam("invoice");
   }
   if (params.get("script") === "full") setTimeout(runScript, 400);
+  if (params.get("task") === "1") setTimeout(runTask, 500);
   const beat = params.get("beat");
   if (beat) setTimeout(() => doBeat(beat), 350);
 });

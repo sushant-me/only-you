@@ -76,7 +76,6 @@ def run_task(
     def step(sid: str, title: str, status: str, detail: str = "") -> None:
         steps.append({"id": sid, "title": title, "status": status, "detail": detail})
 
-    step("browse", "Browse the page", "running", page_url)
     try:
         html = fetch_html(page_url)
     except Exception as exc:  # network/file errors are a normal task outcome
