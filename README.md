@@ -7,6 +7,8 @@ through the Meta Model API, built during the Meta Global AI Developer Hackathon 
 
 **Repository:** <https://github.com/sushant-me/only-you> · **Live page:** <https://sushant-me.github.io/only-you/>
 
+[![tests](https://github.com/sushant-me/only-you/actions/workflows/ci.yml/badge.svg)](https://github.com/sushant-me/only-you/actions/workflows/ci.yml)
+
 **In 30 seconds.** Only the enrolled owner's voice is a command; camera text, page text and documents
 are data; irreversible actions need a signed, scoped mandate; every action *and every refusal* leaves a
 verifiable receipt. The demo: the owner delegates one payment, the agent pays an invoice without
