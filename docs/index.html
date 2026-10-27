@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ONLY YOU — the agent you can hand your wallet to</title>
+<meta name="description" content="A provenance-gated authority layer for wearable agents. Only the enrolled voice is a command; everything else is data; every action and refusal leaves a receipt.">
+<meta property="og:title" content="ONLY YOU — the agent you can hand your wallet to">
+<meta property="og:description" content="Provenance, mandates and receipts for wearable agents. Built for the Meta Global AI Developer Hackathon 2026.">
+<meta property="og:image" content="img/thumb.png">
+<style>
+:root{--bg:#07080c;--panel:#0c1019;--line:#1f2636;--text:#e8ecf4;--muted:#8b95a8;--red:#ff2d55;--green:#2fd18c;--amber:#f5b544}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);
+font-family:"Adwaita Sans","Helvetica Neue",Arial,sans-serif;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding:56px 24px 80px}
+.kicker{color:var(--red);font-weight:800;letter-spacing:.24em;font-size:13px}
+h1{font-size:72px;letter-spacing:.04em;margin:14px 0 10px;font-weight:800;line-height:1.05}
+h2{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:56px 0 18px}
+.lead{font-size:22px;color:var(--muted);max-width:760px;margin:0 0 10px}
+.lead b{color:var(--text)}
+.links{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 0}
+.links a{display:inline-block;padding:11px 16px;border:1px solid var(--line);border-radius:10px;color:var(--text);
+text-decoration:none;font-size:14px}.links a.primary{background:var(--red);border-color:var(--red);font-weight:700}
+.links a:hover{border-color:var(--muted)}
+.quote{border-left:4px solid var(--red);background:var(--panel);padding:18px 22px;margin:34px 0;color:#dfe6f3;
+font-style:italic;font-size:17px}.quote span{display:block;color:var(--muted);font-style:normal;font-size:13px;margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.card h3{margin:0 0 8px;font-size:17px}.card p{margin:0;color:var(--muted);font-size:14px}
+.shot{width:100%;border-radius:14px;border:1px solid var(--line);display:block}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;border-bottom:1px solid var(--line);padding:11px 8px}
+th{color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.ok{color:var(--green)}.warn{color:var(--amber)}.bad{color:var(--red)}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;overflow:auto;font-size:14px}
+code{font-family:"Adwaita Mono",ui-monospace,monospace}
+video{width:100%;border-radius:14px;border:1px solid var(--line);background:#000}
+footer{margin-top:64px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:22px}
+a{color:#9ecbff}
+@media (max-width:760px){h1{font-size:46px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">META GLOBAL AI DEVELOPER HACKATHON 2026</div>
+  <h1>ONLY YOU</h1>
+  <p class="lead"><b>The agent you can hand your wallet to.</b><br>
+  Meta's own WebMCP docs say the untrusted-content flag is “not an enforced security boundary” — and the
+  assistant cannot tell the wearer's voice from a stranger's. ONLY YOU fixes the channel: only the
+  enrolled voice is a command, scene/page/document text is data, irreversible actions need a signed
+  mandate, and every action and refusal leaves a verifiable receipt.</p>
+  <div class="links">
+    <a class="primary" href="demo-3min.mp4">▶ 3-minute demo (2:55)</a>
+    <a href="https://github.com/sushant-me/only-you">GitHub repo</a>
+    <a href="report.pdf">2-page report</a>
+    <a href="pitch.pdf">Deck</a>
+    <a href="https://github.com/sushant-me/only-you/blob/main/results/benchmark.md">Benchmark</a>
+    <a href="https://github.com/sushant-me/only-you/blob/main/docs/limitations.md">Failure list</a>
+  </div>
+
+  <div class="quote">“Set <b>untrustedContentHint</b> honestly, since <b>it's not an enforced security boundary</b>.”
+  <span>— Meta Wearables Developers, WebMCP agent tools</span></div>
+
+  <h2>What the demo shows</h2>
+  <img class="shot" src="img/task-panel.png" alt="Agent task trace: browse, extract, decide, pay, receipt, explain">
+
+  <h2>Three primitives</h2>
+  <div class="grid">
+    <div class="card"><h3>Identity</h3><p>An enrolled local voice check is the only command channel. Scene text via OCR, page text via DOM, documents — all data, never instructions.</p></div>
+    <div class="card"><h3>Mandates</h3><p>Ed25519-signed, scoped, expiring delegation. A merchant verifies it offline with only the public key: signature, payee, cap, expiry.</p></div>
+    <div class="card"><h3>Receipts</h3><p>Every action and every refusal: rule, evidence, undo, hash chain. Refusals are tagged <code>display_only</code> so enforcement is never confused with a UI attribution.</p></div>
+  </div>
+
+  <h2>Measured — including what fails</h2>
+  <table>
+    <tr><th>Measurement</th><th>Result</th></tr>
+    <tr><td>Four-arm harness (conditional on correct labels)</td><td class="ok">A 100% · B 47.5% · C 10% · D 0% executed</td></tr>
+    <tr><td>DOM hidden-text labeler</td><td class="warn">81.0% recall [66.7–90.0] · 14.3% false positives</td></tr>
+    <tr><td>Adaptive corpus with forged signals</td><td class="bad">label error 80% · executed 20% — published</td></tr>
+    <tr><td>Signed sensor envelope</td><td class="ok">6/6 executed without → 0/6 with</td></tr>
+    <tr><td>Scene text: render → OCR → gate</td><td class="ok">94.3% detection · 0/35 executed</td></tr>
+    <tr><td>Tests</td><td class="ok">91 passing · audit 44/44</td></tr>
+  </table>
+
+  <h2>Run it</h2>
+  <pre><code>git clone https://github.com/sushant-me/only-you
+cd only-you
+make test     # 91 tests
+make demo     # benign invoice executed; look-alike invoice blocked
+make web      # http://127.0.0.1:8000</code></pre>
+
+  <h2>Honest scope</h2>
+  <p class="lead">The agent runs on <b>Muse Spark</b> when a Meta Model API key is present and on a simulated
+  model otherwise — the report stamps which. <b>SAM 3.1 is not integrated</b>; scene boxes come from OCR.
+  The voice check is not anti-spoofing. Payments are a mock world. All of this is in the
+  <a href="https://github.com/sushant-me/only-you/blob/main/docs/limitations.md">failure list</a>.</p>
+
+  <footer>
+    Built during the Meta Global AI Developer Hackathon 2026 · MIT ·
+    <a href="https://github.com/sushant-me/only-you">github.com/sushant-me/only-you</a>
+  </footer>
+</div>
+</body>
+</html>
