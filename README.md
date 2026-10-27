@@ -2,8 +2,8 @@
 
 **Your glasses can hear the world. Who do they obey?**
 
-A provenance-gated authority layer for wearable agents — built with **Muse Spark** and **SAM 3.1**
-through the Meta Model API during the Meta Global AI Developer Hackathon 2026.
+A provenance-gated authority layer for wearable agents — designed for **Muse Spark** and **SAM 3.1**
+through the Meta Model API, built during the Meta Global AI Developer Hackathon 2026.
 
 > "Set `untrustedContentHint` honestly, since **it's not an enforced security boundary**."
 > "Your tool's result text goes into the assistant's context, so returning unmarked untrusted content
@@ -23,7 +23,7 @@ may issue them, what they may authorise, and what can be proven afterwards.
 ## What it does
 
 1. **Provenance before the model.** Every input is labelled before a token reaches the model:
-   - on-device speaker verification — only the enrolled owner's voice is a command channel;
+   - a local voice check — only the enrolled owner's voice is a command channel (browser capture, MFCC on the same machine; not anti-spoofing);
    - scene-text masks + OCR — physical text is data, never a command;
    - DOM origin — page text is data;
    - document trust — invoices are arguments, not instructions.
@@ -61,6 +61,20 @@ instruction on the page is labelled data and ignored while the visible invoice i
 /api/frame` runs scene OCR (tesseract) on a camera frame and returns the labelled text plus mask boxes.
 
 The model is never trusted with authority. It proposes; the gate decides.
+
+## What is real today
+
+| Component | Status |
+|---|---|
+| Provenance routing, constitution, action gate | implemented, tested |
+| Signed mandates + offline merchant verification | implemented (Ed25519), tested |
+| Receipts + hash chain + undo | implemented, tested |
+| Local voice check (MFCC, distance threshold) | implemented; **not anti-spoofing** — a cloned voice passes |
+| Scene text → OCR → gate | implemented with **tesseract**; mask boxes come from OCR lines |
+| Page extraction (visible + hidden) | implemented (regex DOM classifier) |
+| Agent model | **Muse Spark** when `META_API_BASE`/`META_API_KEY` are set; **simulated** otherwise, and the report stamps which mode |
+| SAM 3.1 segmentation | **not integrated** — OCR boxes are the segmenter in the demo |
+| Payments / doors / email | mock world, no real accounts |
 
 ## Demo
 
