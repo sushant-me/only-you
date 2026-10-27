@@ -146,6 +146,20 @@ class MetaModelClient:
     def available(cls) -> bool:
         return bool(os.environ.get("META_API_BASE") and os.environ.get("META_API_KEY"))
 
+    @classmethod
+    def open_weights(cls) -> "MetaModelClient":
+        """Open-weights endpoint (Baseten / Modal / Fireworks), same wire format."""
+        base = os.environ.get("OPEN_WEIGHTS_BASE", "")
+        key = os.environ.get("OPEN_WEIGHTS_KEY", "")
+        model = os.environ.get("OPEN_WEIGHTS_MODEL", "muse-glimmer")
+        if not (base and key):
+            raise RuntimeError("OPEN_WEIGHTS_BASE / OPEN_WEIGHTS_KEY not set")
+        return cls(base_url=base, api_key=key, model=model)
+
+    @classmethod
+    def open_weights_available(cls) -> bool:
+        return bool(os.environ.get("OPEN_WEIGHTS_BASE") and os.environ.get("OPEN_WEIGHTS_KEY"))
+
     def chat(self, messages: list[dict[str, str]], temperature: float = 0.0) -> str:
         if not (self.base_url and self.api_key):
             raise RuntimeError("META_API_BASE / META_API_KEY not set")

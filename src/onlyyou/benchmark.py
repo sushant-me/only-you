@@ -294,6 +294,10 @@ def run_benchmark(
         if not MetaModelClient.available():
             raise SystemExit("META_API_BASE / META_API_KEY not set; use --model simulated")
         model: Any = MetaModelClient()
+    elif model_name == "open":
+        if not MetaModelClient.open_weights_available():
+            raise SystemExit("OPEN_WEIGHTS_BASE / OPEN_WEIGHTS_KEY not set; use --model simulated")
+        model = MetaModelClient.open_weights()
     else:
         model = SimulatedModel()
 

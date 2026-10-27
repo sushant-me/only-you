@@ -105,6 +105,9 @@ the adaptive corpus. Known failures are listed in [`docs/limitations.md`](docs/l
 
 ## Submission
 
+- [`docs/open-weights.md`](docs/open-weights.md) — the optional Muse Glimmer entry and how to wire it
+- [`docs/outreach.md`](docs/outreach.md) — 12 contacts, message templates, follow-up rules
+
 - [`docs/submission-checklist.md`](docs/submission-checklist.md) — publish, record, submit, bonuses
 - [`docs/x-post.md`](docs/x-post.md) — the 45-second vertical clip and post variants for the viral prize
 - [`docs/live-finals.md`](docs/live-finals.md) — 5-minute run of show and 15 judge questions

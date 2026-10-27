@@ -79,6 +79,12 @@ item below was built on top of it.
 - Report footer placeholders removed; stale pre-event `pitch.md` removed (the deck source is
   `pitch-event.md`); `report.pdf` and `pitch.pdf` rebuilt.
 
+**Open-weights + outreach**
+- `--model open` + `make bench-open LIMIT=10`: the evaluator can run on a Muse Glimmer / Muse Spark
+  Open OpenAI-compatible endpoint (`OPEN_WEIGHTS_*`); the trust layer stays local.
+- `docs/open-weights.md`: deploy, wire, measure, fallbacks, honesty rules for the $10K category.
+- `docs/outreach.md`: 12 contacts, three message variants, follow-up cadence, tracker.
+
 **Tests:** 89 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

@@ -74,7 +74,7 @@ def main(argv: list[str] | None = None) -> int:
     gen.add_argument("--out", default="data/scenarios.jsonl")
 
     bench = sub.add_parser("bench", help="run the four-arm benchmark")
-    bench.add_argument("--model", choices=["simulated", "meta"], default="simulated")
+    bench.add_argument("--model", choices=["simulated", "meta", "open"], default="simulated")
     bench.add_argument("--arms", default="A,B,C,D")
     bench.add_argument("--out", default="results")
     bench.add_argument("--scenarios", default=None)

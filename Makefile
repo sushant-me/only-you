@@ -1,4 +1,4 @@
-.PHONY: gen demo demo-text scenes report pitch audit web bench bench-meta smoke test verify all
+.PHONY: gen demo demo-text scenes report pitch audit web bench bench-meta bench-open smoke test verify all
 
 PYTHONPATH := src
 
@@ -16,6 +16,9 @@ bench:
 
 bench-meta:
 	PYTHONPATH=$(PYTHONPATH) python3 -m onlyyou.cli bench --model meta --out results-real
+
+bench-open:
+	PYTHONPATH=$(PYTHONPATH) python3 -m onlyyou.cli bench --model open --limit $(or $(LIMIT),10) --out results-open
 
 report:
 	python3 tools/md_to_pdf.py docs/report.md docs/report.pdf
