@@ -95,6 +95,7 @@ def main() -> int:
         "docs/pitch.pdf": 9,
         "docs/demo-task-clip.mp4": None,
         "docs/demo-fallback.mp4": None,
+        "docs/demo-x-vertical.mp4": None,
         "docs/video-3min.md": None,
         "docs/live-finals.md": None,
         "docs/limitations.md": None,

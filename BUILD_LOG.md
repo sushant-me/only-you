@@ -68,6 +68,11 @@ item below was built on top of it.
 - `tools/audit.py` (`make audit`): tests, benchmark numbers vs the docs, relative links, secret scan,
   required artifacts, PDF page counts and video durations. Run it before submitting.
 
+**Vertical X clip**
+- `docs/demo-x-vertical.mp4`: 45 s, 1080×1920, captioned vertical cut for the $20K Most Viral
+  Project prize — title → invoice → look-alike refusal → poster → TV → task → evidence → close.
+  Post it on X; likes/reposts/comments close 8 Nov, 11:59 PM ET.
+
 **Tests:** 89 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

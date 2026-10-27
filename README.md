@@ -67,6 +67,7 @@ The model is never trusted with authority. It proposes; the gate decides.
 - **Pitch deck:** [`docs/pitch.pdf`](docs/pitch.pdf) — 9 slides, event-built features
 - **Task clip:** [`docs/demo-task-clip.mp4`](docs/demo-task-clip.mp4) — 20 s captioned walkthrough
 - **Fallback video:** [`docs/demo-fallback.mp4`](docs/demo-fallback.mp4) — 82 s silent, captioned, screen-only
+- **Vertical X clip:** [`docs/demo-x-vertical.mp4`](docs/demo-x-vertical.mp4) — 45 s, 1080×1920, captioned (viral prize)
 
 The 3-minute demo: the owner grants one mandate; the agent pays an invoice without interrupting; a
 look-alike invoice with the **same spoken command** is refused because its payee came from a document;
