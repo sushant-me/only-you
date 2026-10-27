@@ -16,7 +16,9 @@ which is exactly what the plan says to do for a stable 10-day demo.
 
 from __future__ import annotations
 
+import functools
 import json
+import os
 import mimetypes
 from dataclasses import asdict
 import threading
@@ -28,7 +30,7 @@ from urllib.parse import urlparse
 from .actions import parse_action
 from .agent import Agent, Arm
 from .mandates import MandateLedger
-from .model import SimulatedModel
+from .model import MetaModelClient, SimulatedModel
 from .policy import Constitution
 from .provenance import Channel, Input, Origin, ProvenanceRouter, origin_label
 from .receipts import DEMO_SECRET, ReceiptLedger
@@ -66,6 +68,19 @@ def _action_past(action: dict[str, Any]) -> str:
     return str(kind or "did nothing")
 
 
+@functools.lru_cache(maxsize=1)
+def _default_model():
+    """Real Muse Spark when the API env is set; simulated fallback otherwise."""
+    if os.environ.get("ONLYYOU_MODEL", "").lower() == "simulated":
+        return SimulatedModel()
+    if MetaModelClient.available():
+        client = MetaModelClient()
+        print(f"[only-you] using Meta Model API model={client.model} base={client.base_url}")
+        return client
+    print("[only-you] META_API_BASE/META_API_KEY not set — using simulated model")
+    return SimulatedModel()
+
+
 class DemoService:
     def __init__(self) -> None:
         self.lock = threading.Lock()
@@ -77,7 +92,7 @@ class DemoService:
             self.ledger = ReceiptLedger(DEMO_SECRET)
             self.mandates = MandateLedger(DEMO_SECRET)
             self.agent = Agent(
-                SimulatedModel(),
+                _default_model(),
                 ProvenanceRouter(),
                 self.world,
                 Constitution(),

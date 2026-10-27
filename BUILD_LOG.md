@@ -20,8 +20,11 @@ show what was built during the event.
   The provenance/action-gate skeleton, tests and demo existed before kickoff; they are the starting
   point, not the submission. Everything below is event work.
 - Added the event repo: README, `.env.example`, `tools/smoke_meta.py`, `make smoke`.
-- Verified the test suite runs from a clean checkout.
-- **Next:** first real Muse Spark call, then replace `SimulatedModel` in the loop.
+- Verified the test suite runs from a clean checkout (69 tests).
+- Added `make smoke` (`tools/smoke_meta.py`): dry-run, `--call`, `--list-models`.
+- Wired model selection in the web demo: `MetaModelClient` when `META_API_BASE` +
+  `META_API_KEY` are set, otherwise the simulated model (with a log line saying which).
+- **Next:** first real Muse Spark call, then run the corpus against the real model.
 
 ## Template for the remaining days
 
