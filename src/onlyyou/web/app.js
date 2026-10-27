@@ -439,6 +439,105 @@ function drawOcr(data) {
   ctx.fillText("SCENE TEXT — DATA, NOT COMMAND", 12, 18);
 }
 
+/* ------------------------------------------------------------ voice */
+
+function writeAscii(view, offset, text) {
+  for (let i = 0; i < text.length; i++) view.setUint8(offset + i, text.charCodeAt(i));
+}
+
+function encodeWav(samples, rate) {
+  const buffer = new ArrayBuffer(44 + samples.length * 2);
+  const view = new DataView(buffer);
+  writeAscii(view, 0, "RIFF");
+  view.setUint32(4, 36 + samples.length * 2, true);
+  writeAscii(view, 8, "WAVE");
+  writeAscii(view, 12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true);
+  view.setUint32(24, rate, true);
+  view.setUint32(28, rate * 2, true);
+  view.setUint16(32, 2, true);
+  view.setUint16(34, 16, true);
+  writeAscii(view, 36, "data");
+  view.setUint32(40, samples.length * 2, true);
+  let offset = 44;
+  for (const sample of samples) {
+    const v = Math.max(-1, Math.min(1, sample));
+    view.setInt16(offset, v < 0 ? v * 0x8000 : v * 0x7fff, true);
+    offset += 2;
+  }
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  return btoa(binary);
+}
+
+async function recordWav(ms = 1600) {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  const ctx = new AudioCtx();
+  const source = ctx.createMediaStreamSource(stream);
+  const processor = ctx.createScriptProcessor(4096, 1, 1);
+  const chunks = [];
+  processor.onaudioprocess = (event) => {
+    chunks.push(new Float32Array(event.inputBuffer.getChannelData(0)));
+  };
+  source.connect(processor);
+  processor.connect(ctx.destination);
+  await new Promise((resolve) => setTimeout(resolve, ms));
+  processor.disconnect();
+  source.disconnect();
+  stream.getTracks().forEach((track) => track.stop());
+  const rate = ctx.sampleRate;
+  await ctx.close();
+  const total = chunks.reduce((n, c) => n + c.length, 0);
+  const pcm = new Float32Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    pcm.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return encodeWav(pcm, rate);
+}
+
+async function refreshState() {
+  try {
+    renderState(await (await fetch("/api/state")).json());
+  } catch (_) {}
+}
+
+async function enrollVoice() {
+  const clips = [];
+  for (let i = 0; i < 3; i++) {
+    toast(`say "only you" — clip ${i + 1}/3`);
+    try {
+      clips.push(await recordWav(1600));
+    } catch (err) {
+      toast("microphone unavailable");
+      return;
+    }
+  }
+  const data = await post("/api/voice/enroll", { clips });
+  if (data.error) return toast(data.error);
+  toast(`voice enrolled · threshold ${data.voice.threshold}`);
+  refreshState();
+}
+
+async function testVoice() {
+  let clip;
+  try {
+    toast("say any sentence");
+    clip = await recordWav(1600);
+  } catch (err) {
+    return toast("microphone unavailable");
+  }
+  const data = await post("/api/voice/verify", { clip });
+  if (data.error) return toast(data.error);
+  const v = data.verification;
+  toast(`${v.accept ? "accepted" : "rejected"} · distance ${v.distance} (limit ${v.threshold})`);
+}
+
 /* ---------------------------------------------------------------- camera */
 
 async function enableCamera() {
@@ -481,6 +580,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (ev.key === "Enter") askLedger();
   });
   $("#btn-scan").addEventListener("click", scanFrame);
+  const enrollBtn = $("#btn-enroll-voice");
+  if (enrollBtn) enrollBtn.addEventListener("click", enrollVoice);
+  const testBtn = $("#btn-test-voice");
+  if (testBtn) testBtn.addEventListener("click", testVoice);
   const taskBtn = $("#btn-task");
   if (taskBtn) taskBtn.addEventListener("click", runTask);
 

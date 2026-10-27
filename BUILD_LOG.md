@@ -63,6 +63,18 @@ show what was built during the event.
   answers, closing line.
 - **Next:** first real Muse Spark call (still waiting on `META_API_*`), then the real benchmark.
 
+## 2026-11-01 — voice channel
+
+- `src/onlyyou/voice.py`: stdlib WAV reader, energy gate, radix-2 FFT, mel filterbank, MFCC,
+  mean/std embedding, distance threshold learned from three enrolment clips.
+- Browser recording: "Enroll voice" (3 clips) and "Test voice" (accept/reject + distance) buttons;
+  WAV is encoded client-side and posted to `/api/voice/enroll` / `/api/voice/verify`.
+- Synthetic validation in tests and `docs/voice.md`: same voice 0.004 vs 0.06 limit accepted,
+  different voice 0.339 rejected, silence and short clips rejected.
+- Honest scope: not anti-spoofing; a cloned voice passes. Human-speaker accuracy remains unmeasured.
+- Tests: 89 pass.
+- **Next:** first real Muse Spark call (waiting on `META_API_*`), then real-model benchmark.
+
 ## Template for the remaining days
 
 ```

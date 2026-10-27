@@ -35,6 +35,8 @@ from .agent import Agent, Arm
 from .mandates import MandateLedger
 from .ocr import OcrError, ocr_png
 from .tasks import run_task
+from .voice import enroll as voice_enroll
+from .voice import verify as voice_verify
 from .model import MetaModelClient, SimulatedModel
 from .policy import Constitution
 from .provenance import Channel, Input, Origin, ProvenanceRouter, origin_label
@@ -89,6 +91,7 @@ def _default_model():
 class DemoService:
     def __init__(self) -> None:
         self.lock = threading.Lock()
+        self.voiceprint = None
         try:
             self.device_key = DeviceKey.create(Path(tempfile.gettempdir()) / "only-you-device-keys")
         except Exception:
@@ -277,6 +280,7 @@ class DemoService:
             "rules": rules,
             "mandates": self.mandates.to_dicts(),
             "device_public_key": self.mandates.public_key_pem,
+            "voice": self.voiceprint.to_dict() if self.voiceprint else {"enrolled": False},
         }
 
     # -- mandates ----------------------------------------------------------
@@ -291,6 +295,24 @@ class DemoService:
                 note=str(payload.get("note", "owner-delegated authority")),
             )
             return {"ok": True, "mandate": mandate.to_dict(), "state": self.state()}
+
+    def voice_enroll(self, payload: dict[str, Any]) -> dict[str, Any]:
+        clips = [base64.b64decode(str(c)) for c in payload.get("clips", [])]
+        try:
+            self.voiceprint = voice_enroll(clips)
+        except ValueError as exc:
+            return {"error": str(exc)}
+        return {"ok": True, "voice": self.voiceprint.to_dict()}
+
+    def voice_verify(self, payload: dict[str, Any]) -> dict[str, Any]:
+        if self.voiceprint is None:
+            return {"error": "voice not enrolled"}
+        clip = base64.b64decode(str(payload.get("clip", "")))
+        return {"ok": True, "verification": voice_verify(self.voiceprint, clip)}
+
+    def voice_reset(self) -> dict[str, Any]:
+        self.voiceprint = None
+        return {"ok": True, "voice": {"enrolled": False}}
 
     def frame(self, payload: dict[str, Any]) -> dict[str, Any]:
         """OCR a camera frame and label the text as scene data."""
@@ -452,6 +474,12 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
                 self._json(service.frame(payload))
             elif path == "/api/task":
                 self._json(service.task(payload))
+            elif path == "/api/voice/enroll":
+                self._json(service.voice_enroll(payload))
+            elif path == "/api/voice/verify":
+                self._json(service.voice_verify(payload))
+            elif path == "/api/voice/reset":
+                self._json(service.voice_reset())
             else:
                 self._json({"error": "not found"}, 404)
 
