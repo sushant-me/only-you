@@ -1,4 +1,4 @@
-.PHONY: gen demo demo-text scenes report pitch web bench bench-meta smoke test verify all
+.PHONY: gen demo demo-text scenes report pitch audit web bench bench-meta smoke test verify all
 
 PYTHONPATH := src
 
@@ -31,6 +31,9 @@ demo-text:
 
 smoke:
 	python3 tools/smoke_meta.py
+
+audit:
+	PYTHONPATH=$(PYTHONPATH) python3 tools/audit.py
 
 test:
 	PYTHONPATH=$(PYTHONPATH) python3 -m unittest discover -s tests -v
