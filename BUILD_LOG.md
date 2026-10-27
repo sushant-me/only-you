@@ -64,6 +64,10 @@ item below was built on top of it.
   Recorded from the real UI with `?script=full&fakecam=1` and `?task=1&reset=1`; assembled with ffmpeg
   (letterboxed caption bar). Use if screen recording fails; add the voice-over later.
 
+**Self-audit**
+- `tools/audit.py` (`make audit`): tests, benchmark numbers vs the docs, relative links, secret scan,
+  required artifacts, PDF page counts and video durations. Run it before submitting.
+
 **Tests:** 89 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
