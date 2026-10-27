@@ -24,6 +24,7 @@ video are what judges see. Record at **1920×1080, 30 fps**, H.264 MP4, under 30
 | 0:42 | "ONLY YOU fixes the channel, not the model. Only your enrolled voice is a command. Everything else is data: read, summarized, never obeyed." | Voice enrollment meter; `scene text detected` mask |
 | 0:55 | "You write a constitution — never pay strangers, ask me over five thousand." | Constitution list |
 | 1:02 | "And you hand out mandates: signed, scoped, expiring. Pay the electrician up to five thousand, until tomorrow." | Grant-mandate card appears, `valid` |
+| 1:07 | "A merchant can verify that mandate offline, with only the public key." | Click *verify at merchant* → MERCHANT VERIFIED |
 | 1:12 | "Now the agent can act without interrupting you." | Click *owner pays invoice* |
 | 1:18 | "Paid. Receipt cites the mandate — no prompt, no interruption." | DONE card + receipt hash |
 | 1:25 | "Now the same spoken command, with a different invoice." | Click *attacker invoice* |

@@ -22,7 +22,8 @@ the final is decided by the demo and the answers.
 | 0:15 | Meta's own quote: "not an enforced security boundary" | Quote card / report page |
 | 0:35 | "Three primitives: identity, mandates, receipts." | Point at the constitution panel |
 | 0:50 | "Grant a mandate: electrician, up to 5,000, until tomorrow." | Click **8 · grant a mandate** |
-| 1:05 | "Now it can pay without asking me twice." | Click **1 · owner pays invoice** → DONE/R6 card |
+| 1:00 | "A merchant can verify that delegation offline, with only the public key." | Click **verify at merchant** → `MERCHANT VERIFIED` toast |
+| 1:10 | "Now it can pay without asking me twice." | Click **1 · owner pays invoice** → DONE/R6 card |
 | 1:25 | "Same spoken command, different invoice." | Click **5 · attacker invoice** → BLOCKED/R1 |
 | 1:40 | "Poster." | Click **3 · poster** → mask + BLOCKED/R0 |
 | 1:50 | "TV, hidden page text — same result." | Click **2 · TV ad**, **4 · hidden page text** |

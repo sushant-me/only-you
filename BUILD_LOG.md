@@ -106,7 +106,14 @@ item below was built on top of it.
 - `.github/workflows/ci.yml`: tests + demo + `tools/audit.py` on every push (installs poppler, ffmpeg,
   tesseract, imagemagick). README explains the workflow.
 
-**Tests:** 91 pass (`make test`).
+**Public repo + merchant verification + landing page**
+- GitHub repo published and pushed incrementally: <https://github.com/sushant-me/only-you>; CI green
+  (tests + demo + self-audit) on every push.
+- **"Verify at merchant"** button in the mandates panel: a merchant-side offline Ed25519 check
+  (`POST /api/merchant-verify`), showing `MERCHANT VERIFIED` or the rejection reason. 3 new tests.
+- GitHub Pages landing page with the embedded 2:55 demo: <https://sushant-me.github.io/only-you/>.
+
+**Tests:** 94 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
 real-model benchmark. The only missing input is `META_API_BASE` / `META_API_KEY` / `MUSE_MODEL`.

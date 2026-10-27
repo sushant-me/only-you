@@ -54,7 +54,8 @@ may issue them, what they may authorise, and what can be proven afterwards.
 
 4. **Merchant-verifiable mandates.** Mandates are signed with an **Ed25519 device key**, so a merchant
    can verify the owner's delegation offline with only the public key — no shared secret, no call to
-   the platform. `python3 tools/mandate_demo.py` issues one and verifies it both ways.
+   the platform. In the demo, each mandate has a **verify at merchant** button; the CLI
+   `python3 tools/mandate_demo.py` does the same check offline.
 
 ### Voice channel
 
@@ -172,7 +173,7 @@ make audit    # 40 checks: tests, benchmark numbers, links, secrets, artifacts, 
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 91 tests
+make gen test          # corpus + 94 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -185,7 +186,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           91 tests
+tests/           94 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script
