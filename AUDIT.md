@@ -1,6 +1,6 @@
-# Repo audit — 2026-10-28T06:29:53+00:00
+# Repo audit — 2026-10-28T06:32:04+00:00
 
-**42 passed · 0 failed**
+**44 passed · 0 failed**
 
 ## Checks
 
@@ -37,6 +37,7 @@
 - ✅ artifact docs/demo-task-clip.mp4
 - ✅ artifact docs/demo-fallback.mp4
 - ✅ artifact docs/demo-x-vertical.mp4
+- ✅ artifact docs/demo-3min.mp4
 - ✅ artifact docs/video-3min.md
 - ✅ artifact docs/live-finals.md
 - ✅ artifact docs/limitations.md
@@ -45,4 +46,5 @@
 - ✅ artifact LICENSE
 - ✅ docs/demo-task-clip.mp4 duration 20s — 20.000000
 - ✅ docs/demo-fallback.mp4 duration 82s — 82.000000
+- ✅ docs/demo-3min.mp4 duration 175s — 175.000000
 - ✅ git tree clean
