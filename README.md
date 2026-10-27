@@ -69,6 +69,7 @@ voice 0.004 vs limit 0.06 accepted; different voice 0.339 rejected; silence reje
 
 ![Agent task step trace](docs/img/task-panel.png)
 
+
 `POST /api/task` runs a multi-step task against a real page: browse → extract visible and hidden text
 → decide under the mandate → execute or refuse → file a receipt → explain the result. A hidden
 instruction on the page is labelled data and ignored while the visible invoice is paid. `POST
