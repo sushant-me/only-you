@@ -1,11 +1,6 @@
-# Repo audit — 2026-10-28T06:26:22+00:00
+# Repo audit — 2026-10-28T06:26:32+00:00
 
-**40 passed · 2 failed**
-
-## Failures
-
-- ❌ no secrets committed — AUDIT.md: - ❌ no secrets committed — docs/open-weights.md: export OPEN_WEIGHTS_KEY=...
-- ❌ git tree clean — M docs/open-weights.md
+**42 passed · 0 failed**
 
 ## Checks
 
@@ -32,6 +27,7 @@
 - ✅ no stale claim '40/40'
 - ✅ no stale claim '0 false refusals'
 - ✅ no stale claim '100% secure'
+- ✅ no secrets committed
 - ✅ .env not tracked
 - ✅ relative links resolve
 - ✅ artifact docs/report.pdf
@@ -49,3 +45,4 @@
 - ✅ artifact LICENSE
 - ✅ docs/demo-task-clip.mp4 duration 20s — 20.000000
 - ✅ docs/demo-fallback.mp4 duration 82s — 82.000000
+- ✅ git tree clean
