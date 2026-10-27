@@ -21,8 +21,8 @@ ambiguity evaluator — moves to **open weights**. That makes the strongest vers
 3. **Wire it** — the adapter is already generic (OpenAI-compatible); only env changes:
 
 ```bash
-export OPEN_WEIGHTS_BASE=https://.../v1
-export OPEN_WEIGHTS_KEY=...
+export OPEN_WEIGHTS_BASE=https://.../v1        # from the deployment
+read -rs OPEN_WEIGHTS_KEY && export OPEN_WEIGHTS_KEY   # paste at the prompt, not in the shell history
 export OPEN_WEIGHTS_MODEL=muse-glimmer
 make bench-open LIMIT=10     # cheap sanity run first
 ```

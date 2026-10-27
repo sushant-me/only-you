@@ -1,10 +1,11 @@
-# Repo audit — 2026-10-28T06:26:10+00:00
+# Repo audit — 2026-10-28T06:26:22+00:00
 
-**41 passed · 1 failed**
+**40 passed · 2 failed**
 
 ## Failures
 
-- ❌ no secrets committed — docs/open-weights.md: export OPEN_WEIGHTS_KEY=...
+- ❌ no secrets committed — AUDIT.md: - ❌ no secrets committed — docs/open-weights.md: export OPEN_WEIGHTS_KEY=...
+- ❌ git tree clean — M docs/open-weights.md
 
 ## Checks
 
@@ -48,4 +49,3 @@
 - ✅ artifact LICENSE
 - ✅ docs/demo-task-clip.mp4 duration 20s — 20.000000
 - ✅ docs/demo-fallback.mp4 duration 82s — 82.000000
-- ✅ git tree clean
