@@ -1,6 +1,10 @@
-# Repo audit — 2026-10-28T06:25:27+00:00
+# Repo audit — 2026-10-28T06:26:10+00:00
 
-**42 passed · 0 failed**
+**41 passed · 1 failed**
+
+## Failures
+
+- ❌ no secrets committed — docs/open-weights.md: export OPEN_WEIGHTS_KEY=...
 
 ## Checks
 
@@ -27,7 +31,6 @@
 - ✅ no stale claim '40/40'
 - ✅ no stale claim '0 false refusals'
 - ✅ no stale claim '100% secure'
-- ✅ no secrets committed
 - ✅ .env not tracked
 - ✅ relative links resolve
 - ✅ artifact docs/report.pdf
