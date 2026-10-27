@@ -44,6 +44,8 @@ may issue them, what they may authorise, and what can be proven afterwards.
 
 ### Agentic task runner
 
+![Agent task step trace](docs/img/task-panel.png)
+
 `POST /api/task` runs a multi-step task against a real page: browse → extract visible and hidden text
 → decide under the mandate → execute or refuse → file a receipt → explain the result. A hidden
 instruction on the page is labelled data and ignored while the visible invoice is paid. `POST
