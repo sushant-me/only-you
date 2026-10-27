@@ -55,7 +55,9 @@ def main() -> int:
         check("results/benchmark.json exists", False)
 
     # docs mention the key numbers
-    text = "\n".join(p.read_text(errors="ignore") for p in ROOT.rglob("*.md"))
+    text = "\n".join(
+        p.read_text(errors="ignore") for p in ROOT.rglob("*.md") if p.name != "AUDIT.md"
+    )
     for needle in ["89 tests", "81.0%", "14.3%", "6/6", "0/6", "94.3%", "conditional"]:
         check(f"docs mention {needle}", needle in text)
 
@@ -78,7 +80,7 @@ def main() -> int:
 
     # relative links
     missing = []
-    for p in ROOT.rglob("*.md"):
+    for p in (q for q in ROOT.rglob("*.md") if q.name != "AUDIT.md"):
         for m in re.finditer(r"\[([^\]]+)\]\(([^)]+)\)", p.read_text(errors="ignore")):
             target = m.group(2).split("#")[0]
             if not target or target.startswith(("http://", "https://", "mailto:", "image:")):
