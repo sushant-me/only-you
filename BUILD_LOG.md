@@ -96,6 +96,12 @@ item below was built on top of it.
   agentic task trace → evidence → what breaks it → why Meta → close. Assembled from the real UI and
   cards; a voice-over can be laid over it or the 3-minute script used to re-record.
 
+**Reproducibility + upload kit**
+- Fresh clone reproduces the benchmark in **9.8 s** with identical key numbers (latencies vary, as wall
+  clocks do); `results/` regenerated so the committed JSON includes latency and model metadata.
+- `docs/youtube-upload.md`: title, description, chapter markers, tags, settings for the 3-minute video;
+  `docs/img/thumb.png` (1280×720) is the thumbnail.
+
 **Tests:** 91 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

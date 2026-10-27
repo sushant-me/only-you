@@ -11,7 +11,7 @@ verifiable receipt. The demo: the owner delegates one payment, the agent pays an
 interrupting, and a look-alike invoice with the same spoken command is refused because its payee came
 from a document.
 
-- **3-minute demo (2:55, captioned):** [`docs/demo-3min.mp4`](docs/demo-3min.mp4)
+- **3-minute demo (2:55, captioned):** [`docs/demo-3min.mp4`](docs/demo-3min.mp4) — upload kit in [`docs/youtube-upload.md`](docs/youtube-upload.md)
 - 20-second agentic task clip: [`docs/demo-task-clip.mp4`](docs/demo-task-clip.mp4)
 - 82-second silent walkthrough (fallback): [`docs/demo-fallback.mp4`](docs/demo-fallback.mp4)
 - 2-page report: [`docs/report.pdf`](docs/report.pdf) · benchmark: [`results/benchmark.md`](results/benchmark.md)
