@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ONLY YOU — provenance-gated authority</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="dot"></span>
+      <div>
+        <h1>ONLY YOU</h1>
+        <p>a wearable agent that knows who is allowed to command it</p>
+      </div>
+    </div>
+    <div class="metrics">
+      <button id="btn-reset" class="ghost">reset</button>
+      <button id="btn-sound" class="ghost">sound: on</button>
+      <div class="metric"><b id="m-blocked">0</b><span>blocked</span></div>
+      <div class="metric"><b id="m-allowed">0</b><span>allowed</span></div>
+      <div class="metric"><b id="m-receipts">0</b><span>receipts</span></div>
+      <div class="metric"><b id="m-chain">—</b><span>chain</span></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel camera">
+      <h2>Wearer view <small id="cam-status">camera off</small></h2>
+      <div class="video-wrap">
+        <video id="video" autoplay muted playsinline></video>
+        <img id="fakecam" alt="scene feed" hidden />
+        <canvas id="overlay" width="640" height="360"></canvas>
+        <div id="scan-badge" class="scan-badge" hidden>scene text detected</div>
+      </div>
+      <div class="row">
+        <button id="btn-camera">Enable camera</button>
+        <button id="btn-scan" class="ghost">Scan scene</button>
+      </div>
+      <p class="hint">
+        Text seen through the camera is <b>data</b>. The mask marks what the model may read —
+        never what it may obey.
+      </p>
+    </section>
+
+    <section class="panel stage">
+      <h2>Demo beats</h2>
+      <div class="beats">
+        <button data-beat="invoice">1 · owner pays invoice</button>
+        <button data-beat="tv">2 · TV ad tries to pay</button>
+        <button data-beat="poster">3 · poster tries to unlock</button>
+        <button data-beat="web">4 · hidden page text</button>
+        <button data-beat="invoice-attack">5 · attacker invoice</button>
+        <button data-beat="stranger">6 · stranger voice</button>
+        <button data-beat="grant" class="wide">8 · grant a mandate (electrician ≤ 5,000)</button>
+        <button data-beat="ask" class="wide">9 · "what did you do today?"</button>
+        <button data-script="full" class="wide primary">▶ run full demo (auto, hands-free)</button>
+      </div>
+
+      <h2>Composer</h2>
+      <div class="composer">
+        <div class="row">
+          <select id="speaker" title="speaker">
+            <option value="owner">owner voice</option>
+            <option value="stranger">stranger voice</option>
+          </select>
+          <select id="channel" title="channel">
+            <option value="voice">voice</option>
+            <option value="ambient">ambient audio</option>
+            <option value="scene">scene text</option>
+            <option value="web">web page</option>
+            <option value="document">document</option>
+          </select>
+          <label class="check"><input type="checkbox" id="confirms" /> owner confirms</label>
+        </div>
+        <input id="command" placeholder="what the owner says…" value="pay the electrician 200" />
+        <textarea id="payload" rows="2" placeholder="attacker-controlled content (optional)"></textarea>
+        <button id="btn-send" class="primary">Send to agent</button>
+      </div>
+
+      <div id="feed" class="feed"></div>
+    </section>
+
+    <section class="panel receipts">
+      <h2>Receipts <small id="chain"></small></h2>
+      <div id="receipt-list" class="receipt-list"></div>
+      <h2>Ask your agent</h2>
+      <div class="ask">
+        <input id="ask-input" placeholder="what did you do today?" />
+        <button id="btn-ask">Ask</button>
+      </div>
+      <div id="answer" class="answer" hidden></div>
+      <h2>Mandates <small>delegated, scoped, expiring</small></h2>
+      <div id="mandate-list" class="receipt-list"></div>
+      <h2>Constitution</h2>
+      <ul id="rules" class="rules"></ul>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>

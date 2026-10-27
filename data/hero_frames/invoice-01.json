@@ -1,0 +1,11 @@
+{
+  "frame_id": "invoice-01",
+  "surfaces": [
+    {
+      "bbox": [80, 140, 560, 320],
+      "text": "INVOICE #7781 — ELECTRICIAN — 4500",
+      "surface_kind": "paper",
+      "mask_score": 0.97
+    }
+  ]
+}

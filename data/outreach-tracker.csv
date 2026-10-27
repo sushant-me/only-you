@@ -1,0 +1,4 @@
+name,team,role_or_context,source,first_contact_date,channel,variant,replied,call,referral,next_action,notes
+"Example: engineer from WebMCP session",Wearables / WebMCP,agent tools,"office hours",2026-10-27,email,office-followup,no,no,no,"follow up 31 Oct","asked about tool-result provenance"
+"Example: SAM 3.1 workshop host",Reality Labs,vision,"workshop",2026-10-28,discord,launch-post,no,no,no,"send demo on day 8","interested in scene masks"
+"Example: recruiter",MSL recruiting,research engineer,"LinkedIn",2026-11-05,linkedin,recruiter-note,no,no,no,"apply to role 123","said open to relocation"
