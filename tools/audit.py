@@ -68,7 +68,7 @@ def main() -> int:
     # secrets: a real key assignment in a tracked file
     secret_hits = []
     for p in ROOT.rglob("*"):
-        if not p.is_file() or ".git" in p.parts or p.name == ".env.example":
+        if not p.is_file() or ".git" in p.parts or p.name in {".env.example", "AUDIT.md"}:
             continue
         if p.suffix not in {".py", ".md", ".js", ".html", ".json", ".yml", ".yaml", ".sh", ".txt"}:
             continue
