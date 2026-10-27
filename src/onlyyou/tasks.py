@@ -146,7 +146,7 @@ def run_task(
         + f"{allowed} action(s) and {blocked} refusal(s) are in the ledger"
         + (", chain verified." if agent.ledger is not None and agent.ledger.verify_chain() else ".")
     )
-    step("report", "Explain what happened", "ok", answer)
+    step("report", "Explain what happened", "ok", "")
     return {
         "goal": goal,
         "steps": steps,

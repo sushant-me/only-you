@@ -53,6 +53,16 @@ show what was built during the event.
 - **Next:** first real Muse Spark run (`make smoke --call`), then `make bench-meta --limit 5` as a
   cheap sanity check before the full run.
 
+## 2026-10-31 — task B-roll, live-final runbook
+
+- `?task=1&reset=1` drives the agentic task automatically for recording; fixed the duplicated answer
+  line in the step trace.
+- Recorded `docs/demo-task-clip.mp4`: 20 s, 1600×900, letterboxed captions, one full task
+  (browse → extract → decide → pay → receipt → explain).
+- Wrote `docs/live-finals.md`: 5-minute run of show, failure fallbacks, 15 judge questions with short
+  answers, closing line.
+- **Next:** first real Muse Spark call (still waiting on `META_API_*`), then the real benchmark.
+
 ## Template for the remaining days
 
 ```

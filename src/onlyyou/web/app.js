@@ -524,7 +524,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     setFakecam("invoice");
   }
   if (params.get("script") === "full") setTimeout(runScript, 400);
-  if (params.get("task") === "1") setTimeout(runTask, 500);
+  if (params.get("task") === "1") {
+    const delay = params.get("reset") === "1" ? 600 : 500;
+    setTimeout(async () => {
+      if (params.get("reset") === "1") {
+        try {
+          const fresh = await post("/api/reset", {});
+          renderState(fresh);
+          $("#feed").innerHTML = "";
+        } catch (_) {}
+      }
+      runTask();
+    }, delay);
+  }
   const beat = params.get("beat");
   if (beat) setTimeout(() => doBeat(beat), 350);
 });

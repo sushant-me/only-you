@@ -44,6 +44,8 @@ may issue them, what they may authorise, and what can be proven afterwards.
 
 ### Agentic task runner
 
+`docs/demo-task-clip.mp4` — a 20-second captioned walkthrough of the task trace.
+
 ![Agent task step trace](docs/img/task-panel.png)
 
 `POST /api/task` runs a multi-step task against a real page: browse → extract visible and hidden text
