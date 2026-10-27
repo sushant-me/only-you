@@ -5,6 +5,17 @@
 A provenance-gated authority layer for wearable agents — designed for **Muse Spark** and **SAM 3.1**
 through the Meta Model API, built during the Meta Global AI Developer Hackathon 2026.
 
+**In 30 seconds.** Only the enrolled owner's voice is a command; camera text, page text and documents
+are data; irreversible actions need a signed, scoped mandate; every action *and every refusal* leaves a
+verifiable receipt. The demo: the owner delegates one payment, the agent pays an invoice without
+interrupting, and a look-alike invoice with the same spoken command is refused because its payee came
+from a document.
+
+- 20-second agentic task clip: [`docs/demo-task-clip.mp4`](docs/demo-task-clip.mp4)
+- 82-second silent walkthrough (fallback): [`docs/demo-fallback.mp4`](docs/demo-fallback.mp4)
+- 2-page report: [`docs/report.pdf`](docs/report.pdf) · benchmark: [`results/benchmark.md`](results/benchmark.md)
+- Honest failure list: [`docs/limitations.md`](docs/limitations.md)
+
 > "Set `untrustedContentHint` honestly, since **it's not an enforced security boundary**."
 > "Your tool's result text goes into the assistant's context, so returning unmarked untrusted content
 > is how a prompt injection reaches the model."
@@ -61,6 +72,21 @@ instruction on the page is labelled data and ignored while the visible invoice i
 /api/frame` runs scene OCR (tesseract) on a camera frame and returns the labelled text plus mask boxes.
 
 The model is never trusted with authority. It proposes; the gate decides.
+
+## Built during the hackathon
+
+One commit is labelled `scaffold: pre-event ONLY YOU prototype` (provenance routing, gate, mandates,
+receipts, benchmark harness). Everything below was built on top of it during the event:
+
+- **Ed25519 device-key mandates** + an **offline merchant verifier** (`tools/mandate_demo.py`)
+- **Agentic multi-step task runner** (`/api/task`): browse → extract visible and hidden text → decide →
+  act → receipt → explain, with a live step trace in the UI
+- **Scene OCR** (`/api/frame`, tesseract) with mask boxes; **local voice check** (MFCC enrolment)
+- **Meta Model API client** (retries, token stats, JSON repair) and a **real-model benchmark mode**
+- **Integration tests** for `bench --model meta` and `--model open` against a mock endpoint
+- The **videos, report, deck, submission kit and live-final runbook**
+
+`BUILD_LOG.md` has the dated record.
 
 ## What is real today
 
