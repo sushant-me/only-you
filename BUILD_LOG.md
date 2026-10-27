@@ -102,6 +102,10 @@ item below was built on top of it.
 - `docs/youtube-upload.md`: title, description, chapter markers, tags, settings for the 3-minute video;
   `docs/img/thumb.png` (1280×720) is the thumbnail.
 
+**CI**
+- `.github/workflows/ci.yml`: tests + demo + `tools/audit.py` on every push (installs poppler, ffmpeg,
+  tesseract, imagemagick). README explains the workflow.
+
 **Tests:** 91 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

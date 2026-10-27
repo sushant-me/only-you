@@ -153,6 +153,11 @@ the adaptive corpus. Known failures are listed in [`docs/limitations.md`](docs/l
 - [`docs/x-post.md`](docs/x-post.md) — the 45-second vertical clip and post variants for the viral prize
 - [`docs/live-finals.md`](docs/live-finals.md) — 5-minute run of show and 15 judge questions
 
+## CI
+
+Every push runs the full suite, the demo and the self-audit on GitHub Actions
+(`.github/workflows/ci.yml`). The badge appears once the repo is published.
+
 ## Self-audit
 
 ```bash
