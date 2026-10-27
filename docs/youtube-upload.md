@@ -42,9 +42,9 @@ Chapters
 2:31 Why Meta / with ten engineers
 2:47 Close
 
-Repo: <add after publishing>
-Benchmark: <add after publishing>
-Report: <add after publishing>
+Repo: https://github.com/sushant-me/only-you
+Benchmark: https://github.com/sushant-me/only-you/blob/main/results/benchmark.md
+Report: https://github.com/sushant-me/only-you/blob/main/docs/report.pdf
 ```
 
 ## Tags

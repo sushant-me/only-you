@@ -5,6 +5,8 @@
 A provenance-gated authority layer for wearable agents — designed for **Muse Spark** and **SAM 3.1**
 through the Meta Model API, built during the Meta Global AI Developer Hackathon 2026.
 
+**Repository:** <https://github.com/sushant-me/only-you>
+
 **In 30 seconds.** Only the enrolled owner's voice is a command; camera text, page text and documents
 are data; irreversible actions need a signed, scoped mandate; every action *and every refusal* leaves a
 verifiable receipt. The demo: the owner delegates one payment, the agent pays an invoice without
