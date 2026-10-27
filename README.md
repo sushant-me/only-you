@@ -103,6 +103,12 @@ proposal re-validated by the action gate. The gate is the product; the model is 
 The zero is a harness property, not a security claim. The falsifiable numbers are the label layer and
 the adaptive corpus. Known failures are listed in [`docs/limitations.md`](docs/limitations.md).
 
+## Submission
+
+- [`docs/submission-checklist.md`](docs/submission-checklist.md) — publish, record, submit, bonuses
+- [`docs/x-post.md`](docs/x-post.md) — the 45-second vertical clip and post variants for the viral prize
+- [`docs/live-finals.md`](docs/live-finals.md) — 5-minute run of show and 15 judge questions
+
 ## Self-audit
 
 ```bash

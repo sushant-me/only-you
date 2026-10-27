@@ -117,4 +117,4 @@ instrumented and receipted.
 
 ---
 
-Repo: `<link>` · demo: `<link>` · benchmark: `results/benchmark.md` · limitations: `docs/limitations.md`
+Repo · demo · benchmark: `results/benchmark.md` · limitations: `docs/limitations.md` · 89 tests

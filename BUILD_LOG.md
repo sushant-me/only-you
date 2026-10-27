@@ -73,6 +73,12 @@ item below was built on top of it.
   Project prize — title → invoice → look-alike refusal → poster → TV → task → evidence → close.
   Post it on X; likes/reposts/comments close 8 Nov, 11:59 PM ET.
 
+**Submission kit**
+- `docs/submission-checklist.md`: publish → record → submit → bonuses, with the pre-flight `make audit`.
+- `docs/x-post.md`: three post variants, thread structure, posting checklist for the viral prize.
+- Report footer placeholders removed; stale pre-event `pitch.md` removed (the deck source is
+  `pitch-event.md`); `report.pdf` and `pitch.pdf` rebuilt.
+
 **Tests:** 89 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
