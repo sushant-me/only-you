@@ -90,6 +90,12 @@ item below was built on top of it.
   make calls, and write a report with model metadata against a mock OpenAI-compatible endpoint. The
   plumbing is verified; only the credential is missing.
 
+**3-minute demo video**
+- `docs/demo-3min.mp4`: **2:55**, 1600×900, silent + captioned — the full submission video: title → problem
+  (Meta quote) → the gap → mandate → invoice → look-alike refusal → poster → TV → hidden page → ledger →
+  agentic task trace → evidence → what breaks it → why Meta → close. Assembled from the real UI and
+  cards; a voice-over can be laid over it or the 3-minute script used to re-record.
+
 **Tests:** 91 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
