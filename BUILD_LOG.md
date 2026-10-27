@@ -58,6 +58,12 @@ item below was built on top of it.
 - `docs/pitch-event.md` refreshed with the event-built features (voice channel, Ed25519 mandates, agentic
   task, updated evidence) and rendered to `docs/pitch.pdf` (9 slides, 16:9).
 
+**Fallback video**
+- `docs/demo-fallback.mp4`: 82 s, 1600×900, silent, captioned — title card → mandate → invoice →
+  look-alike refusal → poster → TV → hidden page → ledger → agentic task trace → evidence → end card.
+  Recorded from the real UI with `?script=full&fakecam=1` and `?task=1&reset=1`; assembled with ffmpeg
+  (letterboxed caption bar). Use if screen recording fails; add the voice-over later.
+
 **Tests:** 89 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
