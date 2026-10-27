@@ -42,6 +42,17 @@ show what was built during the event.
 - Tests: 80 pass (added device-key, merchant, OCR, task-runner suites).
 - **Next:** first real Muse Spark call (waiting on `META_API_*`), real-model benchmark.
 
+## 2026-10-30 — Meta client hardening, benchmark plumbing, submission draft
+
+- `MetaModelClient`: retries on 429/5xx and network errors, bearer-token auth, token-usage stats, and a
+  one-shot JSON repair when the model answers in prose. Tested against a local OpenAI-compatible mock
+  (`tests/test_meta_model.py`): parsing, retry, auth header, repair.
+- Benchmark: `--limit` for quick runs, per-scenario latency (arm D p50/p95), model metadata
+  (base URL, call count, token usage) stamped into `benchmark.json`/`.md`.
+- Submission draft written (name, short/long description, Meta products, bonus categories, checklist).
+- **Next:** first real Muse Spark run (`make smoke --call`), then `make bench-meta --limit 5` as a
+  cheap sanity check before the full run.
+
 ## Template for the remaining days
 
 ```

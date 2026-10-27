@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
@@ -126,12 +127,20 @@ class MetaModelClient:
         base_url: str | None = None,
         api_key: str | None = None,
         model: str | None = None,
-        timeout: int = 60,
+        timeout: int | None = None,
+        retries: int | None = None,
     ) -> None:
         self.base_url = (base_url or os.environ.get("META_API_BASE", "")).rstrip("/")
         self.api_key = api_key or os.environ.get("META_API_KEY", "")
         self.model = model or os.environ.get("MUSE_MODEL", "muse-spark-1.3")
-        self.timeout = timeout
+        self.timeout = timeout or int(os.environ.get("META_API_TIMEOUT", "60"))
+        self.retries = retries if retries is not None else int(os.environ.get("META_API_RETRIES", "2"))
+        self.stats: dict[str, int] = {
+            "calls": 0,
+            "retries": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+        }
 
     @classmethod
     def available(cls) -> bool:
@@ -152,12 +161,31 @@ class MetaModelClient:
             },
             method="POST",
         )
-        try:
-            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
-                payload = json.loads(resp.read().decode())
-        except urllib.error.HTTPError as exc:  # pragma: no cover - network
-            raise RuntimeError(f"model call failed: HTTP {exc.code}") from exc
-        return payload["choices"][0]["message"]["content"]
+        last_error: Exception | None = None
+        for attempt in range(self.retries + 1):
+            try:
+                with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+                    payload = json.loads(resp.read().decode())
+                self.stats["calls"] += 1
+                usage = payload.get("usage") or {}
+                self.stats["prompt_tokens"] += int(usage.get("prompt_tokens", 0) or 0)
+                self.stats["completion_tokens"] += int(usage.get("completion_tokens", 0) or 0)
+                return payload["choices"][0]["message"]["content"]
+            except urllib.error.HTTPError as exc:
+                last_error = RuntimeError(f"model call failed: HTTP {exc.code}")
+                if exc.code in (429, 500, 502, 503, 504) and attempt < self.retries:
+                    self.stats["retries"] += 1
+                    time.sleep(0.5 * (attempt + 1))
+                    continue
+                raise last_error from exc
+            except (urllib.error.URLError, TimeoutError, OSError) as exc:
+                last_error = RuntimeError(f"model call failed: {exc}")
+                if attempt < self.retries:
+                    self.stats["retries"] += 1
+                    time.sleep(0.5 * (attempt + 1))
+                    continue
+                raise last_error from exc
+        raise last_error or RuntimeError("model call failed")
 
     def propose(self, obs: Observation, arm: str) -> Action | None:
         system = (
@@ -177,7 +205,17 @@ class MetaModelClient:
         raw = self.chat(
             [{"role": "system", "content": system}, {"role": "user", "content": user}]
         )
-        return _parse_json_action(raw)
+        action = _parse_json_action(raw)
+        if action is None and raw.strip() and not raw.strip().startswith("{"):
+            # One repair attempt: the model answered in prose instead of JSON.
+            raw = self.chat(
+                [
+                    {"role": "system", "content": "Return ONLY a JSON object, no prose."},
+                    {"role": "user", "content": raw},
+                ]
+            )
+            action = _parse_json_action(raw)
+        return action
 
 
 def _parse_json_action(raw: str) -> Action | None:

@@ -78,6 +78,7 @@ def main(argv: list[str] | None = None) -> int:
     bench.add_argument("--arms", default="A,B,C,D")
     bench.add_argument("--out", default="results")
     bench.add_argument("--scenarios", default=None)
+    bench.add_argument("--limit", type=int, default=None, help="cap attacks and benign scenarios (quick runs)")
 
     sub.add_parser("demo", help="narrate one benign and one attack scenario")
 
@@ -105,7 +106,7 @@ def main(argv: list[str] | None = None) -> int:
 
         arms = [Arm(a.strip().upper()) for a in args.arms.split(",") if a.strip()]
         scenarios = read_jsonl(args.scenarios) if args.scenarios else None
-        report = run_benchmark(args.model, arms, args.out, scenarios)
+        report = run_benchmark(args.model, arms, args.out, scenarios, limit=args.limit)
         print_summary(report)
         print(f"\nreport: {Path(args.out) / 'benchmark.md'}")
         return 0

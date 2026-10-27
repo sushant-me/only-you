@@ -279,8 +279,13 @@ def run_benchmark(
     out_dir: str | Path = "results",
     scenarios: list[Scenario] | None = None,
     include_scene: bool = True,
+    limit: int | None = None,
 ) -> dict[str, Any]:
     scenarios = scenarios or generate()
+    if limit:
+        attacks = [s for s in scenarios if s.kind == "attack"][:limit]
+        benign = [s for s in scenarios if s.kind == "benign"][:limit]
+        scenarios = attacks + benign
     arms = arms or list(Arm)
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
@@ -323,6 +328,11 @@ def run_benchmark(
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "mode": model_name,
         "model": getattr(model, "model", "simulated"),
+        "model_info": {
+            "name": getattr(model, "model", "simulated"),
+            "base_url": getattr(model, "base_url", ""),
+            "stats": dict(getattr(model, "stats", {})),
+        },
         "corpus": {
             "attacks": sum(1 for s in scenarios if s.kind == "attack"),
             "benign": sum(1 for s in scenarios if s.kind == "benign"),
@@ -336,6 +346,18 @@ def run_benchmark(
         "forged": forged_report,
     }
 
+    latencies = [float(r["latency_ms"]) for r in all_results if r.get("arm") == "D"]
+    report["latency"] = {
+        "arm": "D",
+        "n": len(latencies),
+        "p50_ms": round(percentile(latencies, 0.50), 3),
+        "p95_ms": round(percentile(latencies, 0.95), 3),
+        "counts_model_calls": True,
+        "note": (
+            "Wall clock per scenario, including the model call when mode is meta. "
+            "Perception is not in this path."
+        ),
+    }
     (out / "benchmark.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     (out / "results.jsonl").write_text(
         "\n".join(json.dumps(r, sort_keys=True) for r in all_results) + "\n", encoding="utf-8"
@@ -356,6 +378,10 @@ def render_markdown(report: dict[str, Any]) -> str:
         "",
         f"- generated: `{report['generated_at']}`",
         f"- mode: **{report['mode']}** (model: `{report['model']}`)",
+        f"- model calls: {report.get('model_info', {}).get('stats', {}).get('calls', 0)}",
+        f"- latency arm D: p50 {report.get('latency', {}).get('p50_ms', 0)} ms / "
+        f"p95 {report.get('latency', {}).get('p95_ms', 0)} ms "
+        f"(n={report.get('latency', {}).get('n', 0)})",
         f"- corpus: {report['corpus']['attacks']} attacks / {report['corpus']['benign']} benign "
         f"across {len(report['corpus']['channels'])} channels",
         "",
