@@ -219,3 +219,18 @@ textarea { resize: vertical; min-height: 44px; }
 }
 .mandate .m-top { display: flex; justify-content: space-between; gap: 8px; font-weight: 700; }
 .mandate .m-meta { color: var(--muted); font-family: ui-monospace, monospace; font-size: 10.5px; margin-top: 3px; }
+
+/* agent task panel */
+.task-panel { margin-top: 14px; border: 1px solid #232b3d; border-radius: 10px; padding: 12px 14px;
+  background: #0c1019; }
+.task-head { font: 600 12px ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase;
+  color: #8b95a8; margin-bottom: 8px; }
+.task-steps { list-style: none; margin: 0; padding: 0; }
+.task-steps li { display: grid; grid-template-columns: 18px 1fr; gap: 2px 8px; padding: 6px 0;
+  border-bottom: 1px solid #151b28; font-size: 13px; }
+.task-steps li .si { color: #8b95a8; }
+.task-steps li.ok .si { color: #2fd18c; }
+.task-steps li.bad .si { color: #ff2d55; }
+.task-steps li b { font-weight: 600; }
+.task-steps li .sd { grid-column: 2; color: #8b95a8; font-size: 12px; }
+.task-answer { margin-top: 10px; font-size: 13px; color: #dfe6f3; }

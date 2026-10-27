@@ -38,6 +38,17 @@ may issue them, what they may authorise, and what can be proven afterwards.
    the rule applied, and an undo. Refusals are tagged `proposed_by: model | display_only`, so an
    enforcement event is never confused with a UI attribution.
 
+4. **Merchant-verifiable mandates.** Mandates are signed with an **Ed25519 device key**, so a merchant
+   can verify the owner's delegation offline with only the public key — no shared secret, no call to
+   the platform. `python3 tools/mandate_demo.py` issues one and verifies it both ways.
+
+### Agentic task runner
+
+`POST /api/task` runs a multi-step task against a real page: browse → extract visible and hidden text
+→ decide under the mandate → execute or refuse → file a receipt → explain the result. A hidden
+instruction on the page is labelled data and ignored while the visible invoice is paid. `POST
+/api/frame` runs scene OCR (tesseract) on a camera frame and returns the labelled text plus mask boxes.
+
 The model is never trusted with authority. It proposes; the gate decides.
 
 ## Demo
@@ -71,6 +82,7 @@ proposal re-validated by the action gate. The gate is the product; the model is 
 | Adaptive corpus (forged signals) | label error 80%, executed 20% (3/15) |
 | Scene text (render → OCR) | detection 94.3%, mean CER 9.4%; 0/35 executed |
 | Signed sensor envelope | 6/6 executed without → 0/6 with |
+| Ed25519 merchant verifier | valid mandate VERIFIED offline; tampered / over-cap / expired REJECTED |
 
 The zero is a harness property, not a security claim. The falsifiable numbers are the label layer and
 the adaptive corpus. Known failures are listed in [`docs/limitations.md`](docs/limitations.md).
@@ -80,7 +92,7 @@ the adaptive corpus. Known failures are listed in [`docs/limitations.md`](docs/l
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 69 tests
+make gen test          # corpus + 80 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -93,7 +105,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           69 tests
+tests/           80 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

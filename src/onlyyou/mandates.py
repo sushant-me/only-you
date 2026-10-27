@@ -29,6 +29,8 @@ import time
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
+from .devicekey import DeviceKey
+
 
 @dataclass
 class Mandate:
@@ -82,12 +84,22 @@ class Mandate:
 class MandateLedger:
     """Issue, verify, revoke and match mandates."""
 
-    def __init__(self, secret: bytes, max_ttl_seconds: int = 7 * 24 * 3600) -> None:
+    def __init__(
+        self,
+        secret: bytes,
+        max_ttl_seconds: int = 7 * 24 * 3600,
+        device_key: DeviceKey | None = None,
+    ) -> None:
         self.secret = secret
         self.max_ttl_seconds = max_ttl_seconds
+        self.device_key = device_key
         self.mandates: list[Mandate] = []
         self.revoked: set[str] = set()
         self.spent: dict[str, int] = {}
+
+    @property
+    def public_key_pem(self) -> str:
+        return self.device_key.public_pem if self.device_key else ""
 
     # -- signing -----------------------------------------------------------
     def _sign(self, payload: dict[str, Any]) -> str:
@@ -118,7 +130,10 @@ class MandateLedger:
             nonce=secrets.token_hex(8),
             note=note,
         )
-        m.signature = self._sign(m.payload())
+        if self.device_key is not None:
+            m.signature = self.device_key.sign(m.canonical().encode())
+        else:
+            m.signature = self._sign(m.payload())
         self.mandates.append(m)
         return m
 
@@ -128,6 +143,12 @@ class MandateLedger:
             return False
         if now > mandate.expires_at:
             return False
+        if mandate.signature.startswith("ed25519:"):
+            if self.device_key is None:
+                return False
+            return DeviceKey.verify(
+                mandate.canonical().encode(), mandate.signature, self.device_key.public_pem
+            )
         return hmac.compare_digest(mandate.signature, self._sign(mandate.payload()))
 
     def revoke(self, mandate_id: str) -> bool:
@@ -177,3 +198,32 @@ class MandateLedger:
             }
             for m in self.mandates
         ]
+
+
+def merchant_verify(
+    mandate: dict[str, Any],
+    action: dict[str, Any],
+    public_pem: str,
+    now: float | None = None,
+) -> tuple[bool, str]:
+    """Offline check a merchant runs before accepting an agent-initiated payment.
+
+    Inputs are plain JSON (what the agent presents at checkout) and the device
+    public key. No shared secret, no call to the agent or platform.
+    """
+    m = Mandate(
+        id=str(mandate.get("id", "")),
+        principal=str(mandate.get("principal", "")),
+        scope=str(mandate.get("scope", "")),
+        payees=[str(p).lower() for p in mandate.get("payees", [])],
+        max_amount=int(mandate.get("max_amount", 0)),
+        issued_at=float(mandate.get("issued_at", 0)),
+        expires_at=float(mandate.get("expires_at", 0)),
+        nonce=str(mandate.get("nonce", "")),
+        note=str(mandate.get("note", "")),
+        signature=str(mandate.get("signature", "")),
+    )
+    if not DeviceKey.verify(m.canonical().encode(), m.signature, public_pem):
+        return False, "signature invalid"
+    ok, why = m.covers(action, now)
+    return ok, why

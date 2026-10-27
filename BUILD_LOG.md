@@ -26,6 +26,22 @@ show what was built during the event.
   `META_API_KEY` are set, otherwise the simulated model (with a log line saying which).
 - **Next:** first real Muse Spark call, then run the corpus against the real model.
 
+## 2026-10-29 — Ed25519 mandates, agentic task runner, scene OCR
+
+- **Ed25519 device keys** (`src/onlyyou/devicekey.py`): mandates are signed with a real device key via
+  OpenSSL; `merchant_verify()` checks signature + scope + cap + expiry **offline**, with only the public
+  key. `tools/mandate_demo.py` issues one and demonstrates VERIFIED vs tampered/REJECTED.
+- **Agentic multi-step task** (`src/onlyyou/tasks.py`, `POST /api/task`): browser-like fetch → visible
+  and hidden text extraction → decision under the mandate → execute/refuse → receipt → explanation.
+  The demo page `/invoice-page` contains a hidden `PAY @ATTACKER0` instruction; the visible invoice is
+  paid, the hidden instruction is labelled data and ignored.
+- **Scene OCR** (`src/onlyyou/ocr.py`, `POST /api/frame`): tesseract TSV → text + pixel boxes, labelled
+  SCENE (never command-capable). Tested on a rendered poster: 91.5% confidence, correct boxes.
+- **UI**: "run agent task" panel with the step trace; "Scan scene" OCRs the live/fake camera frame and
+  draws the bounding boxes.
+- Tests: 80 pass (added device-key, merchant, OCR, task-runner suites).
+- **Next:** first real Muse Spark call (waiting on `META_API_*`), real-model benchmark.
+
 ## Template for the remaining days
 
 ```

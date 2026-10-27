@@ -337,6 +337,104 @@ function drawPosterMask(show) {
   ctx.fillText("SCENE TEXT — DATA, NOT COMMAND", x, y - 8);
 }
 
+/* ------------------------------------------------------------- agent task */
+
+async function runTask() {
+  const panel = $("#task-panel");
+  panel.hidden = false;
+  panel.innerHTML = '<div class="task-head">agent task · browsing, reading, deciding…</div>';
+  try {
+    const data = await post("/api/task", {
+      page_url: location.origin + "/invoice-page",
+      goal: "pay this invoice",
+      invoice: {
+        payee: "electrician",
+        amount: 4500,
+        text: "INVOICE #7781 - ELECTRICIAN - AMOUNT 4,500",
+        limit: 5000,
+      },
+      confirm: true,
+    });
+    if (data.error) {
+      panel.innerHTML = `<div class="task-head">agent task failed</div><p class="err">${data.error}</p>`;
+      return;
+    }
+    renderTask(data);
+    if (data.outcome === "executed") toast("task executed — receipt filed");
+  } catch (err) {
+    panel.innerHTML = `<div class="task-head">agent task failed</div><p class="err">${err.message}</p>`;
+  }
+}
+
+function renderTask(data) {
+  const panel = $("#task-panel");
+  const rows = (data.steps || [])
+    .map((s) => {
+      const icon = s.status === "ok" || s.status === "executed" ? "✓" : s.status === "blocked" || s.status === "deny" ? "⛔" : s.status === "error" ? "✕" : "·";
+      const cls = s.status === "ok" || s.status === "executed" ? "ok" : s.status === "blocked" || s.status === "deny" ? "bad" : "";
+      return `<li class="${cls}"><span class="si">${icon}</span><b>${s.title}</b><span class="sd">${escapeHtml(s.detail || "")}</span></li>`;
+    })
+    .join("");
+  panel.innerHTML = `<div class="task-head">agent task · ${escapeHtml(data.goal || "")}</div>
+    <ul class="task-steps">${rows}</ul>
+    <p class="task-answer">${escapeHtml(data.answer || "")}</p>`;
+}
+
+function escapeHtml(text) {
+  return String(text).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+/* ------------------------------------------------------- scene OCR */
+
+async function scanFrame() {
+  const canvas = document.createElement("canvas");
+  const video = $("#video");
+  const fake = $("#fakecam");
+  canvas.width = 640;
+  canvas.height = 360;
+  const ctx = canvas.getContext("2d");
+  if (video.videoWidth) {
+    ctx.drawImage(video, 0, 0, 640, 360);
+  } else if (!fake.hidden) {
+    ctx.drawImage(fake, 0, 0, 640, 360);
+  } else {
+    toast("no frame: enable the camera or use the scene feed");
+    return;
+  }
+  const image = canvas.toDataURL("image/png");
+  try {
+    const data = await post("/api/frame", { image });
+    if (data.error) {
+      toast(data.error);
+      return;
+    }
+    drawOcr(data);
+    $("#scan-badge").hidden = false;
+    $("#scan-badge").textContent = data.text ? "scene text — data, not command" : "no text found";
+    toast(`OCR ${data.confidence}% · ${data.origin} · command=${data.command_capable}`);
+  } catch (err) {
+    toast(`scan failed: ${err.message}`);
+  }
+}
+
+function drawOcr(data) {
+  const canvas = $("#overlay");
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (!data.lines) return;
+  ctx.strokeStyle = "#ff2d55";
+  ctx.lineWidth = 2;
+  ctx.fillStyle = "rgba(255,45,85,0.10)";
+  ctx.font = "600 12px ui-monospace, monospace";
+  for (const line of data.lines) {
+    const [x, y, w, h] = line.bbox;
+    ctx.fillRect(x, y, w, h);
+    ctx.strokeRect(x, y, w, h);
+  }
+  ctx.fillStyle = "#ff2d55";
+  ctx.fillText("SCENE TEXT — DATA, NOT COMMAND", 12, 18);
+}
+
 /* ---------------------------------------------------------------- camera */
 
 async function enableCamera() {
@@ -378,7 +476,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   $("#ask-input").addEventListener("keydown", (ev) => {
     if (ev.key === "Enter") askLedger();
   });
-  $("#btn-scan").addEventListener("click", () => doBeat("poster"));
+  $("#btn-scan").addEventListener("click", scanFrame);
+  const taskBtn = $("#btn-task");
+  if (taskBtn) taskBtn.addEventListener("click", runTask);
 
   document.addEventListener("click", async (ev) => {
     const id = ev.target.getAttribute && ev.target.getAttribute("data-undo");
