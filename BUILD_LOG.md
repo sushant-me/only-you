@@ -54,6 +54,10 @@ item below was built on top of it.
 - `SUBMISSION-DRAFT.md` (repo parent): CV-platform fields and checklist.
 - `docs/voice.md`, README, limitations updated.
 
+**Pitch deck**
+- `docs/pitch-event.md` refreshed with the event-built features (voice channel, Ed25519 mandates, agentic
+  task, updated evidence) and rendered to `docs/pitch.pdf` (9 slides, 16:9).
+
 **Tests:** 89 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
