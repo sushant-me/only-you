@@ -48,7 +48,7 @@ PAGE_KEY = {
     "Verify it": ("VERIFIED", "CROSS-MODEL: both chains and both mandates, in the browser"),
     "How to change the numbers": ("67/67", "audit checks that catch documentation drift"),
     "How to change the documents and media": ("regenerates", "every asset here has a source and a build command"),
-    "How this handbook is built": ("17 pages", "fixed A4 pages, overflow-checked before printing"),
+    "How this handbook is built": ("18 pages", "fixed A4 pages, overflow-checked before printing"),
     "Submission runbook": ("4 Nov", "9:00 PM ET / 5 Nov, 7:45 AM NPT"),
     "Limitations and roadmap": ("17 rows", "of published failure modes, each with a status and a next step"),
     "Judge Q&A": ("10 answers", "the questions a sceptical judge will actually ask"),

@@ -65,7 +65,7 @@ docker build -t only-you-demo . && docker run --rm -p 8000:8000 only-you-demo
 - 82-second silent walkthrough (fallback): [`docs/demo-fallback.mp4`](docs/demo-fallback.mp4)
 - **1-page executive brief:** [`docs/brief.pdf`](docs/brief.pdf) (problem → evidence → ask)
 - 2-page report: [`docs/report.pdf`](docs/report.pdf) · benchmark: [`results/benchmark.md`](results/benchmark.md)
-- **17-page handbook** (pitch · evidence · runbook · how to change every asset): [`docs/handbook.pdf`](docs/handbook.pdf)
+- **18-page handbook** (pitch · evidence · runbook · how to change every asset): [`docs/handbook.pdf`](docs/handbook.pdf)
 - Honest failure list: [`docs/limitations.md`](docs/limitations.md)
 - Post-build reproduction on the final code (live Muse Spark, 8 attacks / 8 benign): all arms 0%, **16/16 receipts, chain ok**, 99 calls — [`results-real-verify/`](results-real-verify/)
 
