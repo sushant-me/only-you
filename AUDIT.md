@@ -1,4 +1,4 @@
-# Repo audit — 2026-10-28T09:12:38+00:00
+# Repo audit — 2026-10-28T09:18:51+00:00
 
 **59 passed · 0 failed**
 
@@ -27,7 +27,7 @@
 - ✅ real doc run: undefended > 0%
 - ✅ real doc run: full gate 0%
 - ✅ real doc run: full gate 0% false refusals
-- ✅ docs mention 104 tests
+- ✅ docs mention 105 tests
 - ✅ docs mention 81.0%
 - ✅ docs mention 14.3%
 - ✅ docs mention 100.0%
