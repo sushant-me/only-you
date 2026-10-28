@@ -1,6 +1,10 @@
-# Repo audit — 2026-10-28T13:46:16+00:00
+# Repo audit — 2026-10-28T13:49:28+00:00
 
-**67 passed · 0 failed**
+**66 passed · 1 failed**
+
+## Failures
+
+- ❌ docs/pitch.pdf has 9 pages — 10
 
 ## Checks
 
@@ -54,7 +58,6 @@
 - ✅ artifact docs/report.pdf
 - ✅ docs/report.pdf has 2 pages — 2
 - ✅ artifact docs/pitch.pdf
-- ✅ docs/pitch.pdf has 9 pages — 9
 - ✅ artifact docs/demo-task-clip.mp4
 - ✅ artifact docs/demo-fallback.mp4
 - ✅ artifact docs/demo-x-vertical.mp4
