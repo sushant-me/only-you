@@ -60,6 +60,11 @@ Yes — every receipt has a `/verify/<id>` page (and `/api/receipt/<id>` JSON): 
 reason, signature validity, chain position, mandate spend. Fields are escaped because receipt text is
 attacker-influenced. For bulk evidence, the signed audit export below verifies offline.
 
+**Can I try it without installing anything?**
+Yes — https://sushant-me.github.io/only-you/playground.html runs the same deterministic gate, provenance
+labels and hash-chained receipts in the browser with simulated proposals; the server demo is what uses
+Meta Muse Spark. No backend or account needed.
+
 **Is there an API spec?**
 Yes — OpenAPI 3.1 at `GET /api/openapi.json`, plus a rendered reference at `GET /docs` that lists every
 endpoint with a copy-paste `curl` example. It is hand-written and checked in, so reviewers can read the
@@ -136,7 +141,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (171 tests + live-server smoke + audit) then `make web` →
+`make judge` (172 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 

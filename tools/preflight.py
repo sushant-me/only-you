@@ -33,6 +33,8 @@ LOCAL = [
     "docs/narration-script.md",
     "docs/demo-3min.mp4",
     "docs/demo-3min.srt",
+    "docs/playground.html",
+    "docs/img/invoice-scene.jpg",
     "docs/report.pdf",
     "docs/pitch.pdf",
     "docs/threat-model.md",

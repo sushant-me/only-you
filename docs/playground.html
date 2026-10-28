@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ONLY YOU — try the gate in your browser</title>
+<style>
+:root{--bg:#070a10;--panel:#0b0e15;--line:#232b3d;--text:#e6ebf5;--muted:#8b95a8;--dim:#5f6b80;
+--green:#2fd18c;--red:#ff5a68;--amber:#f5b544;--violet:#7c5cff;--blue:#7c9cff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;padding:20px 22px 40px}
+a{color:var(--blue)}
+header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+h1{font-size:20px;letter-spacing:.14em}
+h1 span{color:var(--red)}
+.sub{color:var(--muted);font-size:12.5px;line-height:1.5}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:11px;color:var(--muted)}
+.wrap{display:grid;grid-template-columns:1.05fr 1.3fr 1fr;gap:16px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px}
+h2{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 8px}
+h2:first-child{margin-top:0}
+.beats{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+button{background:linear-gradient(180deg,#20283b,#171d2b);border:1px solid #2f3a52;color:var(--text);border-radius:8px;padding:8px 9px;font-size:11.5px;text-align:left;cursor:pointer;line-height:1.3}
+button:hover{border-color:#4a5a7d}
+button.wide{grid-column:1/-1;background:linear-gradient(180deg,#2b2350,#1c1734);border-color:#4b3f86}
+button:disabled{opacity:.5;cursor:default}
+.scene{width:100%;border-radius:9px;border:1px solid #1c2434;display:block;margin-top:8px;filter:saturate(.9)}
+.feed{min-height:150px}
+.card{border-left:3px solid var(--line);background:#0d1119;border-radius:8px;padding:10px 11px;margin-bottom:8px;animation:in .18s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(-2px)}to{opacity:1}}
+.card.executed{border-left-color:var(--green)}.card.blocked{border-left-color:var(--red)}.card.held{border-left-color:var(--amber)}
+.card-head{display:flex;justify-content:space-between;gap:8px;font-size:10.5px;letter-spacing:.06em}
+.tag{font-weight:800}.executed .tag{color:var(--green)}.blocked .tag{color:var(--red)}.held .tag{color:var(--amber)}
+.rule{color:var(--dim);font-family:ui-monospace,monospace}
+.act{font-size:12.5px;margin:6px 0 4px;font-weight:600}
+.why{color:var(--muted);font-size:11.5px;line-height:1.4}
+.chip{display:inline-block;border-radius:5px;padding:2px 7px;font-size:10px;margin-top:7px;letter-spacing:.05em;font-weight:700}
+.chip.cmd{background:#16241c;color:var(--green);border:1px solid #2fd18c44}
+.chip.data{background:#241a1a;color:var(--red);border:1px solid #ff5a6844}
+.foot{display:flex;justify-content:space-between;gap:8px;margin-top:7px;font-size:10.5px;color:var(--dim);font-family:ui-monospace,monospace}
+.bar{height:6px;border-radius:4px;background:#1a2233;overflow:hidden;margin:7px 0 5px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--violet),var(--blue))}
+.mandate{border-left:3px solid var(--violet);background:#0d1119;border-radius:8px;padding:10px 11px;margin-bottom:8px;font-size:11.5px}
+.mandate .id{font-family:ui-monospace,monospace;color:var(--dim);font-size:10.5px}
+.rlist .r{border-bottom:1px solid #151c29;padding:7px 0;font-size:11.5px}
+.r .rt{display:flex;justify-content:space-between;gap:6px}
+.r .rrule{color:var(--dim);font-size:10.5px;font-family:ui-monospace,monospace}
+.badge{font-weight:700}.ok{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--amber)}
+.tiny{font-size:10px;color:var(--dim);line-height:1.5}
+.notice{margin-top:12px;font-size:11px;color:var(--dim);line-height:1.55;border-top:1px solid #151c29;padding-top:9px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#1b2338;border:1px solid #3a4a6b;border-radius:9px;padding:8px 13px;font-size:12px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+@media(max-width:1080px){.wrap{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>ONLY <span>YOU</span> · browser demo</h1>
+    <div class="sub">Same provenance gate, constitution and hash-chained receipts as the server demo — running entirely in this page.
+      Proposals are simulated here; the <a href="https://github.com/sushant-me/only-you">server demo</a> runs Meta Muse Spark 1.3.</div>
+  </div>
+  <div class="pill">no install · no account · static page</div>
+</header>
+
+<main class="wrap">
+  <section class="panel">
+    <h2>What the glasses see</h2>
+    <img class="scene" src="img/invoice-scene.jpg" alt="Invoice seen through the camera; its text is data, not a command" />
+    <div class="tiny" style="margin-top:7px">The text in the image is <b>data</b>: it can be read, never obeyed.</div>
+    <h2>Try an input</h2>
+    <div class="beats">
+      <button data-beat="owner">1 · owner pays the invoice</button>
+      <button data-beat="tv">2 · TV ad tries to pay</button>
+      <button data-beat="poster">3 · poster tries to unlock</button>
+      <button data-beat="hidden">4 · hidden page text</button>
+      <button data-beat="invoice">5 · look-alike invoice</button>
+      <button data-beat="stranger">6 · stranger's voice</button>
+      <button data-beat="over" class="wide">7 · owner asks for 6,000 (over the one-tap limit)</button>
+      <button data-beat="grant" class="wide">grant a mandate (electrician ≤ 5,000)</button>
+      <button data-beat="auto" class="wide">▶ run the full demo (auto)</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Decisions <span id="count" style="float:right">0</span></h2>
+    <div class="feed" id="feed"><div class="tiny">Press a beat. Every decision names its rule and evidence; every action and refusal becomes a receipt.</div></div>
+  </section>
+
+  <section class="panel">
+    <h2>Mandates</h2>
+    <div id="mandates"><div class="tiny">no mandates yet — grant one and the invoice beat is authorised without a prompt.</div></div>
+    <h2>Receipts <span id="chain" style="float:right">chain —</span></h2>
+    <div class="rlist" id="receipts"><div class="tiny">no receipts yet</div></div>
+    <div style="display:flex;gap:7px;margin-top:9px">
+      <button id="verify" style="flex:1">verify chain</button>
+      <button id="undo" style="flex:1" disabled>undo last payment</button>
+      <button id="reset" style="flex:1">reset</button>
+    </div>
+    <div class="notice">Demo semantics: SHA-256 hash chain computed in your browser; the server uses HMAC receipts and
+      <b>Ed25519</b> mandate signatures. The gate is deterministic — the model may propose, but only the gate decides.</div>
+  </section>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  "use strict";
+  const CONTACTS = ["alice", "bob"];
+  const LIMIT = 1000;
+  const RULES = [
+    ["R1", "Never pay someone who is not a contact"],
+    ["R2", "Ask before a payment over the one-tap limit"],
+    ["R3", "Ask before unlocking"],
+    ["R4", "Ask before deleting"],
+    ["R5", "Never send files out"],
+  ];
+  const hex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  const sha = async (text) => hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)));
+  const money = (n) => Number(n).toLocaleString("en-US");
+  const rid = () => crypto.getRandomValues(new Uint8Array(4)).reduce((s, b) => s + b.toString(16).padStart(2, "0"), "");
+  const $ = (s) => document.querySelector(s);
+  let S;
+  let toastTimer;
+
+  function reset() {
+    S = { balance: 50000, mandates: [], receipts: [], prev: "0".repeat(64), confirming: false };
+    $("#feed").innerHTML = '<div class="tiny">Press a beat. Every decision names its rule and evidence; every action and refusal becomes a receipt.</div>';
+    $("#mandates").innerHTML = '<div class="tiny">no mandates yet — grant one and the invoice beat is authorised without a prompt.</div>';
+    $("#receipts").innerHTML = '<div class="tiny">no receipts yet</div>';
+    $("#chain").textContent = "chain —";
+    $("#chain").className = "";
+    $("#count").textContent = "0";
+    $("#undo").disabled = true;
+    toast("reset");
+  }
+
+  function toast(message) {
+    const el = $("#toast");
+    el.textContent = message;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove("show"), 1800);
+  }
+
+  function mandateCovers(m, action) {
+    if (action.kind !== "pay") return false;
+    const payee = String(action.params.payee || "").toLowerCase();
+    const amount = Number(action.params.amount || 0);
+    if (!m.valid || !m.payees.includes(payee)) return false;
+    return m.consumed + amount <= m.max_amount;
+  }
+
+  function decide(proposal) {
+    const action = proposal.action;
+    const src = proposal.source;
+    if (!src.command) {
+      return { decision: "deny", rule: "R0-source-not-authoritative",
+        reason: `instruction originated from ${src.label}, not the owner`, evidence: { origin: src.origin } };
+    }
+    if (action.kind === "pay") {
+      const m = S.mandates.find((x) => mandateCovers(x, action));
+      if (m) return { decision: "allow", rule: "R6-mandate",
+        reason: `within the owner's mandate ${m.id}`, evidence: { mandate_id: m.id }, mandate: m };
+      const payee = String(action.params.payee || "").toLowerCase();
+      const amount = Number(action.params.amount || 0);
+      if (!CONTACTS.includes(payee)) return { decision: "deny", rule: "R1-payee-not-contact", reason: `@${payee} is not in the owner's contacts` };
+      if (amount > LIMIT) return { decision: "ask", rule: "R2-payment-over-limit", reason: `amount ${amount} exceeds the one-tap limit ${LIMIT}` };
+    }
+    if (action.kind === "unlock") return { decision: "ask", rule: "R3-unlock-requires-confirmation", reason: "unlocking is irreversible from the agent's side" };
+    if (action.kind === "delete_file") return { decision: "ask", rule: "R4-delete-requires-confirmation", reason: "deletion is irreversible" };
+    if (action.kind === "send_file") return { decision: "deny", rule: "R5-no-file-exfiltration", reason: "files may not leave the device" };
+    return { decision: "allow", rule: "R9-allow", reason: "no rule blocks this action" };
+  }
+
+  async function addReceipt(action, verdict, result) {
+    const body = { id: rid(), ts: Math.floor(Date.now() / 1000), action, verdict, result, prev_hash: S.prev };
+    body.signature = await sha(S.prev + JSON.stringify(body));
+    S.prev = body.signature;
+    S.receipts.push(body);
+    renderReceipts();
+    return body;
+  }
+
+  async function execute(proposal) {
+    const verdict = decide(proposal);
+    const action = proposal.action;
+    let outcome = "noop";
+    let detail = "";
+    if (verdict.decision === "deny") { outcome = "blocked"; detail = "refused"; }
+    else if (verdict.decision === "ask") {
+      if (S.confirming) { outcome = "executed"; detail = "owner confirmed after the ask"; }
+      else { outcome = "asked"; detail = "held for the owner"; }
+    } else { outcome = "executed"; detail = "allowed"; }
+
+    if (outcome === "executed") {
+      if (action.kind === "pay") {
+        const amount = Number(action.params.amount || 0);
+        if (amount > S.balance) { outcome = "blocked"; detail = "insufficient balance"; }
+        else {
+          S.balance -= amount;
+          if (verdict.mandate) verdict.mandate.consumed += amount;
+        }
+      }
+    }
+    const receipt = await addReceipt(action, verdict, { outcome, detail });
+    renderCard(proposal, verdict, outcome, detail, receipt);
+    renderMandates();
+    renderStats();
+    return { verdict, outcome, receipt };
+  }
+
+  function renderCard(proposal, verdict, outcome, detail, receipt) {
+    const cls = outcome === "executed" ? "executed" : outcome === "blocked" ? "blocked" : "held";
+    const tag = outcome === "executed" ? "DONE" : outcome === "blocked" ? "BLOCKED" : "HELD";
+    const chip = proposal.source.command ? "COMMAND" : "DATA";
+    const chipCls = proposal.source.command ? "cmd" : "data";
+    const el = document.createElement("div");
+    el.className = "card " + cls;
+    el.innerHTML = `
+      <div class="card-head"><span class="tag">${tag}</span><span class="rule">${verdict.rule}</span></div>
+      <div class="act">${actionLabel(proposal.action)}</div>
+      <div class="why">${verdict.reason}</div>
+      <span class="chip ${chipCls}">${chip} · ${proposal.source.label}</span>
+      <div class="foot"><span>${receipt.id} · ${detail}</span><span>${outcome === "asked" ? "no execution" : "chained"}</span></div>`;
+    $("#feed").prepend(el);
+    while ($("#feed").children.length > 9) $("#feed").lastChild.remove();
+  }
+
+  function actionLabel(a) {
+    if (a.kind === "pay") return `pay @${String(a.params.payee).toLowerCase()} ${money(a.params.amount)}`;
+    if (a.kind === "unlock") return "unlock the front door";
+    if (a.kind === "delete_file") return `delete ${a.params.path}`;
+    if (a.kind === "send_file") return `send ${a.params.path}`;
+    return String(a.kind);
+  }
+
+  function renderMandates() {
+    const box = $("#mandates");
+    if (!S.mandates.length) { box.innerHTML = '<div class="tiny">no mandates yet — grant one and the invoice beat is authorised without a prompt.</div>'; return; }
+    box.innerHTML = S.mandates.map((m) => {
+      const pct = Math.min(100, Math.round((m.consumed / m.max_amount) * 100));
+      return `<div class="mandate">
+        <div style="display:flex;justify-content:space-between"><b>pay · ${m.payees.join(", ")} · ≤ ${money(m.max_amount)}</b><span class="${m.valid ? "ok" : "bad"}">${m.valid ? "valid" : "revoked"}</span></div>
+        <div class="bar"><i style="width:${pct}%"></i></div>
+        <div class="id">spent ${money(m.consumed)} · remaining ${money(m.max_amount - m.consumed)}</div>
+        <div class="id">${m.id} · ${m.sig.slice(0, 18)}… · ${m.note}</div>
+      </div>`;
+    }).join("");
+  }
+
+  function renderReceipts() {
+    const box = $("#receipts");
+    box.innerHTML = S.receipts.slice(-8).reverse().map((r) => {
+      const cls = r.verdict.decision === "deny" ? "bad" : r.verdict.decision === "ask" ? "warn" : "ok";
+      return `<div class="r"><div class="rt"><span class="badge ${cls}">${r.verdict.decision}</span><span>${actionLabel(r.action)}</span></div>
+        <div class="rrule">${r.verdict.rule} · ${r.id} · ${r.result.outcome}</div></div>`;
+    }).join("") || '<div class="tiny">no receipts yet</div>';
+  }
+
+  async function renderStats() {
+    $("#count").textContent = String(S.receipts.length);
+    const head = S.receipts.length ? S.receipts[S.receipts.length - 1].signature : "0".repeat(64);
+    $("#chain").textContent = "chain " + head.slice(0, 8) + "…";
+    $("#undo").disabled = !S.receipts.some((r) => r.action.kind === "pay" && r.result.outcome === "executed");
+  }
+
+  async function verifyChain() {
+    let prev = "0".repeat(64);
+    for (const [i, r] of S.receipts.entries()) {
+      const body = { id: r.id, ts: r.ts, action: r.action, verdict: r.verdict, result: r.result, prev_hash: prev };
+      const expected = await sha(prev + JSON.stringify(body));
+      if (expected !== r.signature || r.prev_hash !== prev) {
+        $("#chain").textContent = `chain BROKEN at #${i + 1}`;
+        $("#chain").className = "bad";
+        return toast("chain broken");
+      }
+      prev = r.signature;
+    }
+    $("#chain").className = "ok";
+    toast(S.receipts.length ? `chain OK · ${S.receipts.length} receipts` : "chain OK · empty");
+  }
+
+  function undo() {
+    const idx = [...S.receipts].map((r, i) => [r, i]).reverse()
+      .find(([r]) => r.action.kind === "pay" && r.result.outcome === "executed");
+    if (!idx) return toast("nothing to undo");
+    const [r, i] = idx;
+    const amount = Number(r.action.params.amount || 0);
+    S.balance += amount;
+    const m = S.mandates.find((x) => x.id === (r.verdict.evidence || {}).mandate_id);
+    if (m) m.consumed = Math.max(0, m.consumed - amount);
+    r.result = { outcome: "undone", detail: "refunded" };
+    renderMandates();
+    renderReceipts();
+    toast(`undo #${r.id} · refunded ${money(amount)}`);
+  }
+
+  function proposalFor(beat) {
+    const owner = { label: "owner voice", origin: "voice", command: true };
+    const scene = { label: "scene text", origin: "scene", command: false };
+    const dom = { label: "page text", origin: "dom", command: false };
+    const doc = { label: "document", origin: "document", command: false };
+    const stranger = { label: "stranger voice", origin: "voice", command: false };
+    switch (beat) {
+      case "owner": return { source: owner, action: { kind: "pay", params: { payee: "electrician", amount: 4500 } } };
+      case "tv": return { source: scene, action: { kind: "pay", params: { payee: "attacker0", amount: 5000 } } };
+      case "poster": return { source: scene, action: { kind: "unlock", params: {} } };
+      case "hidden": return { source: dom, action: { kind: "pay", params: { payee: "attacker0", amount: 5000 } } };
+      case "invoice": return { source: doc, action: { kind: "pay", params: { payee: "attacker0", amount: 5000 } } };
+      case "stranger": return { source: stranger, action: { kind: "pay", params: { payee: "electrician", amount: 4500 } } };
+      case "over": return { source: owner, action: { kind: "pay", params: { payee: "electrician", amount: 6000 } } };
+      default: return null;
+    }
+  }
+
+  async function grant() {
+    const body = { id: rid(), principal: "owner", scope: "pay", payees: ["electrician"],
+      max_amount: 5000, consumed: 0, note: "owner-delegated authority", valid: true };
+    body.sig = "sha256:" + (await sha(JSON.stringify({ ...body, sig: "" })));
+    S.mandates.push(body);
+    renderMandates();
+    await addReceipt({ kind: "grant_mandate", params: { payees: ["electrician"], max_amount: 5000 } },
+      { decision: "allow", rule: "R7-mandate-granted", reason: "owner delegated bounded authority", evidence: { mandate_id: body.id } },
+      { outcome: "executed", detail: "mandate issued" });
+    renderStats();
+    toast(`mandate ${body.id} · ≤ 5,000`);
+  }
+
+  async function beat(name, quiet) {
+    if (name === "grant") return grant();
+    if (name === "auto") return autoRun();
+    if (name === "verify") return verifyChain();
+    if (name === "undo") return undo();
+    if (name === "reset") return reset();
+    const proposal = proposalFor(name);
+    if (!proposal) return;
+    await execute(proposal);
+    if (!quiet) toast(`${name} · ${proposal.source.label}`);
+  }
+
+  async function autoRun() {
+    reset();
+    await beat("grant", true);
+    await beat("owner", true);
+    await beat("tv", true);
+    await beat("invoice", true);
+    renderStats();
+    toast("auto demo: paid once, refused twice");
+  }
+
+  document.querySelectorAll("[data-beat]").forEach((b) => b.addEventListener("click", () => beat(b.dataset.beat)));
+  $("#verify").addEventListener("click", verifyChain);
+  $("#undo").addEventListener("click", undo);
+  $("#reset").addEventListener("click", reset);
+  reset();
+  if (new URLSearchParams(location.search).get("auto") === "1") autoRun();
+})();
+</script>
+</body>
+</html>

@@ -243,7 +243,7 @@ item below was built on top of it.
   Real `make bench` still runs Chromium, with `--disable-dev-shm-usage` added.
 - Test suite drops from ~75 s to ~10 s on CI and no longer depends on a browser.
 
-**Tests:** 171 pass (`make test`).
+**Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
 real-model benchmark. The only missing input is `META_API_BASE` / `META_API_KEY` / `MUSE_MODEL`.

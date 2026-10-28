@@ -7,6 +7,7 @@ through the Meta Model API (SAM 3.1 masks are on the roadmap, not integrated); b
 Global AI Developer Hackathon 2026.
 
 **Repository:** <https://github.com/sushant-me/only-you> · **Live page:** <https://sushant-me.github.io/only-you/>
+- **Try it in the browser:** https://sushant-me.github.io/only-you/playground.html — same gate, no install (static page)
 
 ![ONLY YOU](docs/img/hero.jpg)
 
@@ -28,7 +29,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 171 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 172 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -153,6 +154,15 @@ ONLYYOU_WEBHOOK_RETRIES=3 ONLYYOU_WEBHOOK_DELAY=0.25 make web
 ```
 
 ![Webhook delivery](docs/img/webhook-delivery.png)
+
+### Try it in the browser
+
+![Browser playground](docs/img/playground.png)
+
+[`playground.html`](https://sushant-me.github.io/only-you/playground.html) is a static page with the same
+provenance gate, constitution and hash-chained receipts, running entirely client-side — no install, no
+backend, no account. It simulates proposals (the server demo runs Meta Muse Spark) and recomputes the
+receipt chain with SHA-256 in your browser; mandate signatures are demo-only there.
 
 ### API docs
 
@@ -355,7 +365,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 171 tests
+make gen test          # corpus + 172 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -368,7 +378,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           171 tests
+tests/           172 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script
