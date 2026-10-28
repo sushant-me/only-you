@@ -73,11 +73,12 @@ The zero is conditional on correct labels. Cloned voice passes; human speaker ac
 - **Mandate replay** — bounded by cap/expiry/nonce; replay protection is next
 - **Biometric consent** — voiceprints are special-category data; consent flow not built
 - **Voice study** — synthetic TTS impostors rejected 6/6; human speakers unmeasured (harness shipped)
-- **SAM 3.1 masks** — Responses API accepts the image but returns no mask payload; OCR boxes remain
+- **SAM 3.1 masks** — object boxes are drawn on the frame; text-region masks are not decoded (roadmap)
 
 ## Why Meta
 
 - **Glasses** need a trust story: the wearer vs the world is the product question.
+- **Three Meta models**: Muse Spark reasons, Muse Wonder reads the scene, **SAM 3.1** grounds the object
 - **Agentic commerce** needs merchants to verify an agent's authority — Amazon blocks Muse today.
 - Amazon blocks Muse because merchants cannot verify an agent's authority; a signed mandate turns that from a trust problem into a verification problem.
 - **With ten engineers:** WebMCP provenance envelope · voice + DOM provenance in the Muse client · device-key mandates + offline merchant verifier · scene provenance behind a flag.

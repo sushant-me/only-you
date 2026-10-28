@@ -564,7 +564,9 @@ async function scanFrame() {
     $("#scan-badge").hidden = false;
     $("#scan-badge").textContent = data.text ? "scene text — data, not command" : "no text found";
     const detail = data.reader === "muse-wonder" ? "muse-wonder" : `${data.confidence}%`;
-    toast(`${detail} · ${data.origin} · command=${data.command_capable}`);
+    const sam = data.sam && data.sam.boxes && data.sam.boxes.length
+      ? ` · SAM 3.1 ${data.sam.boxes.length} region(s)` : " · SAM 3.1 no region";
+    toast(`${detail}${sam} · ${data.origin} · command=${data.command_capable}`);
   } catch (err) {
     toast(`scan failed: ${err.message}`);
   }
@@ -586,6 +588,16 @@ function drawOcr(data) {
   }
   ctx.fillStyle = "#ff2d55";
   ctx.fillText("SCENE TEXT — DATA, NOT COMMAND", 12, 18);
+  if (data.sam && data.sam.boxes) {
+    ctx.strokeStyle = "#2fd18c";
+    ctx.fillStyle = "rgba(47,209,140,0.08)";
+    for (const box of data.sam.boxes) {
+      ctx.fillRect(box.x1, box.y1, box.x2 - box.x1, box.y2 - box.y1);
+      ctx.strokeRect(box.x1, box.y1, box.x2 - box.x1, box.y2 - box.y1);
+    }
+    ctx.fillStyle = "#2fd18c";
+    ctx.fillText(`SAM 3.1 · ${data.sam.prompt}`, 12, 34);
+  }
 }
 
 /* ------------------------------------------------------------ voice */

@@ -380,6 +380,14 @@ item below was built on top of it.
 - Updated SRT/VTT (-+4 s), narration script, YouTube chapters, mux duration, audit duration check, README/brief/
   deck/"2:59" references; rebuilt the 26 s README GIF from the new timeline.
 
+**SAM 3.1 object grounding, integrated (Meta stack: Spark + Wonder + SAM)**
+- Read the public SAM docs, found the correct `/v1/responses` contract (short noun phrase + `input_image`);
+  `sam-3.1` returns special-token boxes/masks. Added `src/onlyyou/sam.py` (box parser + adapter with cache),
+  `make sam-check`, and wired `/api/frame` + the overlay to draw the green SAM region.
+- Measured on the committed demo frame: `paper`/`document` → **1 region**; `invoice`/`receipt`/`text` → 0.
+  Text-region masks are **not** claimed: mask payloads are not decoded (needs `@meta-sam/parser`); docs/sam.md
+  states this and the failure-list row is updated. Tests stay 172 (parser assertions folded into the API test).
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

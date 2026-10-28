@@ -45,6 +45,7 @@ from urllib.parse import parse_qs, urlparse
 from .actions import Action, parse_action
 from .devicekey import DeviceKey
 from .env import load_env
+from . import sam as sam_mod
 from .agent import Agent, Arm
 from .mandates import MandateLedger, merchant_verify as verify_mandate_offline
 from .ocr import OcrError, ocr_png
@@ -456,6 +457,20 @@ class DemoService:
                 return {"error": "could not read image"}
             text, lines, confidence = ocr["text"], ocr["lines"], ocr["confidence"]
 
+        sam_info = None
+        if sam_mod.available() and payload.get("sam", True) is not False:
+            prompt = str(payload.get("sam_prompt") or os.environ.get("SAM_PROMPT", "paper"))
+            try:
+                result = sam_mod.segment(png, prompt=prompt)
+                if result["boxes"]:
+                    sam_info = {
+                        "model": result["model"],
+                        "prompt": prompt,
+                        "boxes": result["boxes"],
+                    }
+            except sam_mod.SamError:
+                pass
+
         router = ProvenanceRouter()
         label = router.label(
             Input(Channel.SCENE, text or " ", "scene:frame", {"scene_reader": reader})
@@ -468,6 +483,7 @@ class DemoService:
             "model": model,
             "origin": label.origin.value,
             "command_capable": label.command_capable,
+            "sam": sam_info,
             "reason": label.reason,
         }
 

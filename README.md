@@ -5,7 +5,7 @@
 **The more capable the model, the more it needs an authority layer.** Capability is solved. Authority isn't.
 
 A provenance-gated authority layer for wearable agents — built on **Muse Spark** and **Muse Wonder**
-through the Meta Model API (SAM 3.1 masks are on the roadmap, not integrated); built during the Meta
+through the Meta Model API (Muse Spark reasoning, Muse Wonder scene reading, SAM 3.1 object grounding); built during the Meta
 Global AI Developer Hackathon 2026.
 
 **▶ Start here:** [2:59 narrated demo](docs/demo-3min.mp4) · [try the playground](https://sushant-me.github.io/only-you/playground.html) · [1-page brief](docs/brief.pdf) · [repo](https://github.com/sushant-me/only-you) · [live page](https://sushant-me.github.io/only-you/)
@@ -38,6 +38,7 @@ alignment is trying to help.
 | Second model build / final-code reproduction | **0%** executed; 16/16 receipts, chain intact |
 | Forged sensor signals | **6/6 → 0/6** with a signed bus |
 | Cross-model audit | same gate and verifier for Muse Spark + a local model → [`results-cross-model/`](results-cross-model/), browser-verified |
+| Meta stack | Muse Spark + Muse Wonder + **SAM 3.1** grounding (`results-sam/`, drawn in the live frame overlay) |
 | Latency (measured) | constitution **0.001 ms** · dry-run **4.3 ms** · HTTP command **12.8 ms** · OCR **156 ms** (`results/latency.json`) |
 | Engineering | **172 tests**, 67-check self-audit, CI (tests + Docker) |
 
@@ -65,6 +66,7 @@ docker build -t only-you-demo . && docker run --rm -p 8000:8000 only-you-demo
 - Honest failure list: [`docs/limitations.md`](docs/limitations.md)
 - Post-build reproduction on the final code (live Muse Spark, 8 attacks / 8 benign): all arms 0%, **16/16 receipts, chain ok**, 99 calls — [`results-real-verify/`](results-real-verify/)
 
+- **SAM 3.1 grounding:** [`docs/sam.md`](docs/sam.md) — object boxes on the scene channel; text-region masks are roadmap.
 - **Cross-model audit:** [`docs/cross-model.md`](docs/cross-model.md) — one constitution, per-model bundles, one verifier; `make cross-model`.
 - **Frontier adapter:** [`docs/frontier.md`](docs/frontier.md) — the same gate for OpenAI/Gemini/Claude/local models; add a key and `make frontier-eval`.
 - **Hiring memo:** [`docs/for-meta.md`](docs/for-meta.md) — what the layer makes possible, the real-model
@@ -342,7 +344,7 @@ false refusals. Raw results: [`results-real/`](results-real/benchmark.md),
 | Scene reading | **Muse Wonder** when a key is set (text + approximate boxes; 15/15, 0.0% CER on a synthetic sample); **tesseract** fallback offline |
 | Page extraction (visible + hidden) | implemented (regex DOM classifier) |
 | Agent model | **Muse Spark** when `META_API_BASE`/`META_API_KEY` are set; **simulated** otherwise, and the report stamps which mode |
-| SAM 3.1 segmentation | **not integrated** — OCR boxes are the segmenter in the demo |
+| SAM 3.1 grounding | object boxes on the scene frame (`results-sam/`), drawn in the live overlay; text-region masks are roadmap |
 | Payments / doors / email | mock world, no real accounts |
 
 ## Demo

@@ -125,6 +125,19 @@ class TestMetaClient(unittest.TestCase):
                 if value is not None:
                     os.environ[key] = value
 
+        # SAM 3.1 output is special-token text: parse boxes, ignore mask payloads.
+        from onlyyou.sam import parse_boxes
+
+        raw = (
+            "<0f>0<|box;x1=179;y1=0;x2=1002;y2=899;w=1200;h=900|>"
+            "<|mask;x=0;y=0;data=900,824,~abc|>,1"
+            "<|box;x1=10;y1=20;x2=30;y2=40;w=50;h=60|>"
+        )
+        boxes = parse_boxes(raw)
+        self.assertEqual(len(boxes), 2)
+        self.assertEqual(boxes[0]["x2"], 1002)
+        self.assertEqual(boxes[1]["y2"], 40)
+
     def test_repairs_prose_answer(self):
         MockState.mode = "prose"
         obs = Observation(mode="labeled", labels=[], owner_command="pay this invoice")

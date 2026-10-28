@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-10-28T16:41:39Z",
+  "model": "sam-3.1",
+  "prompt": "paper",
+  "note": "SAM returns object boxes over /v1/responses as special-token text; masks are not decoded here. Boxes are scene grounding (data), never authority.",
+  "runs": [
+    {
+      "image": "src/onlyyou/web/fakecam-invoice.jpg",
+      "boxes": [
+        {
+          "x1": 179,
+          "y1": 0,
+          "x2": 1002,
+          "y2": 899,
+          "w": 1200,
+          "h": 900
+        }
+      ],
+      "regions": 1,
+      "raw_length": 143161,
+      "annotated": "results-sam/fakecam-invoice-sam.png"
+    },
+    {
+      "image": "docs/img/youtube-thumb.jpg",
+      "boxes": [],
+      "regions": 0,
+      "raw_length": 0,
+      "annotated": "results-sam/youtube-thumb-sam.png"
+    }
+  ]
+}

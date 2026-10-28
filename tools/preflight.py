@@ -47,6 +47,8 @@ LOCAL = [
     "docs/frontier.md",
     "docs/voice-study.md",
     "docs/cross-model.md",
+    "docs/sam.md",
+    "results-sam/sam.json",
     "docs/cross-model-audit.json",
     "results-cross-model/cross-model-audit.json",
     "docs/press.md",
