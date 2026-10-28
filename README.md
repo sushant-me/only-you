@@ -38,6 +38,7 @@ make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 - **Submission sheet:** [`docs/submission-final.md`](docs/submission-final.md) — verified links and fields.
 - **Judge Q&A:** [`docs/judge-qa.md`](docs/judge-qa.md) — honest answers to the obvious questions.
 - **Threat model:** [`docs/threat-model.md`](docs/threat-model.md) — assets, adversaries, and the residual risks we publish.
+- **Novelty, honestly:** [`docs/novelty.md`](docs/novelty.md) — what is new, what is prior art, and what we do not claim.
 
 > "Set `untrustedContentHint` honestly, since **it's not an enforced security boundary**."
 > "Your tool's result text goes into the assistant's context, so returning unmarked untrusted content
