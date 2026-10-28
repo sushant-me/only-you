@@ -25,7 +25,7 @@ playground (sushant-me.github.io/only-you/playground.html) and the browser verif
 > A TV ad, a poster, a look-alike invoice — all of them reach your agent's context. I built the
 > provenance layer that makes only *your* voice a command, and receipts every refusal.
 >
-> Built during the Meta hackathon on Muse Spark, Muse Wonder and Muse Image. 45s demo 👇
+> Built during the Meta hackathon on Muse Spark, Muse Wonder, Muse Voice Transcribe, SAM 3.1 and Muse Image. 45s demo 👇
 
 (Playable now, no install: sushant-me.github.io/only-you/playground.html)
 

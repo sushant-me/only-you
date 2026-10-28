@@ -128,9 +128,10 @@ in the demo are transcribed by Muse Voice Transcribe (`/api/voice/transcribe`, M
 the transcript still goes through the same voice check and gate.
 
 **What about SAM 3.1?**
-The API exposes `sam-3.1` on `/v1/responses` but my text-prompt requests returned an empty output with
-`images_processed: 1`; I could not find a usable mask format. It is on the roadmap, not claimed as
-integrated. Scene reading uses Muse Wonder with tesseract fallback.
+`sam-3.1` is integrated for object grounding through `/v1/responses`: a short noun phrase (`paper`,
+`document`) returns a box, which `/api/frame` returns and the overlay draws (`results-sam/sam.json`).
+Text prompts (`text`, `invoice`) return zero regions, and mask payloads are not decoded, so text-region
+segmentation is **not** claimed — that is roadmap. Scene reading still uses Muse Wonder with tesseract fallback.
 
 **What fails?**
 Published in `docs/limitations.md`: cloned voice + owner confirmation (20% execution in the adaptive

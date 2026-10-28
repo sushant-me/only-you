@@ -50,13 +50,14 @@ holds), the confused-deputy corpus where the undefended model pays 25% of the ti
 | Product | Use | Evidence |
 |---|---|---|
 | **Muse Spark 1.3** | proposes every action; the gate re-validates; real runs at temperature 0 | `results-real/`, `results-real-doc/` |
-| **Muse Wonder 1.0** | reads the camera frame into text + boxes (`/api/frame`); transcribes spoken commands (`/api/voice/transcribe`) | `results/scene-muse.json` (15/15, 0.0% CER) |
+| **Muse Wonder 1.0** | reads the camera frame into text + approximate boxes (`/api/frame`) | `results/scene-muse.json` (15/15, 0.0% CER) |
+| **Muse Voice Transcribe 1.0** | transcribes spoken commands (`/api/voice/transcribe`, `/v1/asr/transcribe`) | `results/voice-asr.json` |
+| **SAM 3.1** | object grounding on the scene frame (`/api/frame` returns boxes; overlay draws them) | `results-sam/sam.json` (paper → 1 box) |
 | **Muse Image 1.0** | generates the demo's poster, TV frame, invoice, article and hero | `src/onlyyou/web/fakecam-*.jpg`, `docs/img/hero.jpg` |
 | Muse Spark contributor build | third real run on the same corpus (A 50% → D 0%) | `results-real-doc-contributor/` |
 
-Not integrated (stated honestly): SAM 3.1 masks (the API exposes the model but not a usable mask output
-format). Muse Voice Transcribe is integrated (`results/voice-asr.json`); SAM 3.1 boxes are integrated, masks are roadmap.
-Both are in the roadmap in `for-meta.md`, not claimed as shipped.
+Not integrated (stated honestly): SAM 3.1 **mask decoding** and a text-region crop before OCR. Object boxes
+ship (`results-sam/`); text-region masks are roadmap in `for-meta.md`, not claimed as shipped.
 
 ## Links
 

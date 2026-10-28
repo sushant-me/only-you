@@ -395,6 +395,11 @@ item below was built on top of it.
   "Pay the electrician electrician 4,500 rupees." — ASR is imperfect, and the transcript still has to pass the
   voice check and gate. Docs/submission/novelty updated; tests stay 172.
 
+**Four-model story synced through report, submission sheet, Q&A and form**
+- Report (still 2 pages) now names SAM 3.1 grounding and Muse Voice Transcribe with their measured artifacts;
+  submission table has rows for all four Meta models; Q&A, for-meta roadmap, X post, README and FORM-ANSWERS
+  corrected (no "not integrated" or `model_not_found` claims left).
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

@@ -94,6 +94,11 @@ channel; OCR quality changes the evidence surface.
 **detection 100% (15/15), mean CER 0.0%**, with approximate pixel boxes for the UI mask. Tesseract
 stays as the offline fallback. n is small by design; boxes are approximate, not segmentation masks.
 
+**SAM 3.1 + Muse Voice Transcribe.** SAM 3.1 returns one object box for `paper` (drawn in the overlay);
+`text` prompts return zero and mask decoding is roadmap, so the label-layer numbers are unchanged. Muse Voice
+Transcribe transcribes the sample command with one ASR error; the transcript is still only text that must
+pass the voice check and the gate.
+
 **Latency (measured, `results/latency.json`).** Constitution rules **0.001 ms p50**; full dry-run path
 (routing + labels + gate) **4.3 ms p50**; local HTTP command with a simulated proposal and a written
 receipt **12.8 ms p50**; scene OCR **156 ms p50**. Model inference dominates real end-to-end time

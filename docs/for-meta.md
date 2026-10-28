@@ -56,8 +56,8 @@ Receipts and raw results are committed: `results-real/`, `results-real-doc/`.
 
 1. **WebMCP authority propagation** — extend `untrustedContentHint` from a hint into a signed provenance
    label on every tool result, so the gate can enforce where a tool call's arguments came from.
-2. **Scene understanding with SAM 3.1** — replace approximate OCR boxes with masks, so "authority
-   regions" in the visual field are precise (text vs face vs screen).
+2. **Scene understanding with SAM 3.1** — decode the masks (already returned) and crop text regions before
+   OCR, so "authority regions" in the visual field are precise (text vs face vs screen). Object boxes ship today.
 3. **Device-rooted mandates** — device key in the secure element, attestation bound to the mandate, so a
    merchant can verify not just the owner's signature but the device state that produced it.
 4. **An authority-failure eval across Muse models** — the confused-deputy corpus, the adaptive corpus and
