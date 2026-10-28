@@ -15,8 +15,8 @@ Build for Your World
 SHORT DESCRIPTION (~60 words)
 ONLY YOU is a provenance-gated authority layer for wearable agents. Before a token reaches the model,
 every input is labelled: only the enrolled owner's voice is a command; scene text, page text and documents
-are data. A user-written constitution and signed, expiring mandates gate irreversible actions, and every
-action and every refusal emits a signed receipt.
+are data. A user-written constitution and signed, expiring mandates gate irreversible actions — with caps,
+sub-limits, recurring allowances and sub-agents — and every action and every refusal emits a signed receipt.
 
 LONG DESCRIPTION (~230 words)
 Meta's WebMCP documentation for Ray-Ban Display tells developers that untrustedContentHint is "not an
@@ -27,7 +27,8 @@ issue commands.
 ONLY YOU fixes the channel instead of asking the model to be robust. Before the model sees a token, every
 input is labelled by provenance: on-device speaker verification, scene reading with Muse Wonder, DOM
 origin, document trust. A deterministic constitution and signed, scoped, expiring mandates gate
-irreversible actions; every action and every refusal emits an HMAC hash-chained receipt with the rule, the
+irreversible actions (caps, per-merchant/daily sub-limits, recurring allowances, sub-agents that can only
+narrow authority); every action and every refusal emits an HMAC hash-chained receipt with the rule, the
 evidence and an undo. Mandates are signed with an Ed25519 device key, so a merchant can verify the owner's
 delegation offline with only the public key.
 

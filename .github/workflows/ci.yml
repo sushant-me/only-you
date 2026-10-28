@@ -27,3 +27,21 @@ jobs:
         run: make smoke-web
       - name: self-audit
         run: python3 tools/audit.py
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: build image
+        run: docker build -t only-you-demo .
+      - name: run the container and probe it
+        run: |
+          docker run -d --rm --name only-you -p 8000:8000 only-you-demo
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/api/state > /dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8000/api/state | head -c 240
+          echo
+          curl -fsS -o /dev/null -w 'docs %{http_code}\n' http://127.0.0.1:8000/docs
+          docker rm -f only-you
