@@ -41,9 +41,13 @@ Chapters (match the rebuilt 175 s captioned cut)
 2:16 Real-model numbers
 2:36 Close
 
+Play it yourself (no install): https://sushant-me.github.io/only-you/playground.html
 Repo: https://github.com/sushant-me/only-you
 Benchmark: https://github.com/sushant-me/only-you/blob/main/results/benchmark.md
 Report: https://github.com/sushant-me/only-you/blob/main/docs/report.pdf
+Run it: make judge  ·  docker run --rm -p 8000:8000 only-you-demo
+
+Narration is a neural-TTS draft over the captioned cut; captions included (SRT in the repo).
 ```
 
 ## Tags
@@ -51,10 +55,12 @@ Report: https://github.com/sushant-me/only-you/blob/main/docs/report.pdf
 `AI agents, wearable AI, Meta, Muse, WebMCP, prompt injection, provenance, agent security,
 hackathon, trust, receipts, mandates`
 
-## If you add a voice-over
+## Replacing the narration (optional)
 
-- Record over the same timeline (the chapters above match the captions).
-- Re-upload as a new version; keep the same title.
+The uploaded cut already has an aligned neural-TTS narration draft. If you prefer your own voice:
+
+- Record over the same timeline (the chapters above match the captions), then `make voice VOICE=...`.
+- Re-export and upload as a new version; keep the same title.
 - Update the submission link only after the new version plays logged out.
 
 ## Upload the SRT

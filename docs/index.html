@@ -44,6 +44,7 @@ th{color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:upperca
 pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;overflow:auto;font-size:14px}
 code{font-family:"Adwaita Mono",ui-monospace,monospace}
 video{width:100%;border-radius:14px;border:1px solid var(--line);background:#000}
+figure{margin:0}figure img{width:100%;display:block;border-radius:10px;border:1px solid var(--line)}figcaption{color:var(--muted);font-size:12.5px;margin-top:7px;line-height:1.4}
 footer{margin-top:64px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:22px}
 a{color:#9ecbff}
 @media (max-width:760px){h1{font-size:46px}.grid{grid-template-columns:1fr}}
@@ -87,6 +88,17 @@ a{color:#9ecbff}
     <div class="card"><h3>2 · Labels</h3><p>Only the enrolled voice is a command channel. Everything else is data.</p></div>
     <div class="card"><h3>3 · Gate</h3><p>An editable constitution (toggle rules, dry-run instantly), an Ed25519 mandate with a live spend budget, or an explicit ask — revocable in one click. A merchant terminal verifies the mandate offline before charging, and agents can delegate narrower sub-mandates. The model only proposes — and you can dry-run any action before it executes.</p></div>
     <div class="card"><h3>4 · Receipts</h3><p>Every action and refusal is signed and chained — and one click exports the bundle for offline verification — and every receipt has a public verify link. Policy changes and refusals emit SIEM alerts. Evidence, never instructions.</p></div>
+  </div>
+
+
+  <h2>What's inside</h2>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+    <figure><img src="img/merchant-checkout.png" alt="Merchant terminal verifying a mandate"><figcaption>Merchant verifies the delegation offline before charging</figcaption></figure>
+    <figure><img src="img/verify-qr.png" alt="Receipt verification page with QR"><figcaption>Every receipt has a public verify page and a QR code</figcaption></figure>
+    <figure><img src="img/policy-editor.png" alt="Editable constitution and dry run"><figcaption>Edit the policy, dry-run an action, see the verdict</figcaption></figure>
+    <figure><img src="img/recursive-delegation.png" alt="Sub-mandate of a mandate"><figcaption>Sub-agents get narrower mandates, never wider</figcaption></figure>
+    <figure><img src="img/scheduled.png" alt="Scheduled standing instruction"><figcaption>Scheduled payments re-check a live mandate at run time</figcaption></figure>
+    <figure><img src="img/ledger-filters.png" alt="Receipt filters"><figcaption>Filter the signed ledger and export it as CSV</figcaption></figure>
   </div>
 
   <h2>Three primitives</h2>
