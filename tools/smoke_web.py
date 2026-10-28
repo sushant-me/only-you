@@ -71,7 +71,7 @@ def main() -> int:
         asked = post("/api/ask", {"question": "what did you do today?"})
         assert "carried out" in asked["answer"]
 
-        mandate_state = next(m for m in state["state"]["mandates"] if m["id"] == state["mandate"]["id"])
+        mandate_state = next(m for m in paid["state"]["mandates"] if m["id"] == state["mandate"]["id"])
         assert mandate_state["consumed"] == 4500, mandate_state
         assert mandate_state["remaining"] == 500, mandate_state
 
