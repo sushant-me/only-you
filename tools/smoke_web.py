@@ -92,6 +92,7 @@ def main() -> int:
         rule = next(r for r in toggled["state"]["rules"] if r["id"] == "R3-unlock-requires-confirmation")
         assert rule["enabled"] is False, rule
         assert toggled["receipt_ok"] and toggled["receipt"]["action"]["kind"] == "policy_change", toggled
+        assert any(a["kind"] == "policy_change" for a in toggled["state"]["alerts"]), toggled
         post("/api/policy", {"rule_id": "R3-unlock-requires-confirmation", "enabled": True})
 
         revoked = post("/api/mandate/revoke-all", {})

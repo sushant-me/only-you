@@ -82,6 +82,6 @@ model benchmarks, Muse Image assets, the demo UI, captioned video package, CI, a
 - [ ] Repo opens logged out: https://github.com/sushant-me/only-you
 - [ ] Live page returns 200 and plays the video
 - [ ] YouTube link pasted above; video unlisted, ≤ 3:00, plays logged out
-- [ ] `make judge` green in a fresh clone (138 tests, audit green)
+- [ ] `make judge` green in a fresh clone (141 tests, audit green)
 - [ ] No secret in the repo (`git ls-files | grep -c env` → only `.env.example`)
 - [ ] Screenshot the confirmation page and save the submission URL

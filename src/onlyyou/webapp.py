@@ -24,8 +24,10 @@ import json
 import os
 import tempfile
 import mimetypes
+import urllib.request
 from dataclasses import asdict
 import threading
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
@@ -109,6 +111,7 @@ class DemoService:
     def __init__(self) -> None:
         self.lock = threading.Lock()
         self.voiceprint = None
+        self.alerts: list[dict[str, Any]] = []
         try:
             self.device_key = DeviceKey.create(Path(tempfile.gettempdir()) / "only-you-device-keys")
         except Exception:
@@ -129,6 +132,7 @@ class DemoService:
                 self.mandates,
             )
             self.counter = 0
+            self.alerts = []
         return self.state()
 
     # -- commands ----------------------------------------------------------
@@ -300,6 +304,7 @@ class DemoService:
             "model": getattr(self.agent.model, "model", "simulated"),
             "model_mode": "meta" if isinstance(self.agent.model, MetaModelClient) else "simulated",
             "voice": self.voiceprint.to_dict() if self.voiceprint else {"enrolled": False},
+            "alerts": self.alerts[-20:],
         }
 
     # -- mandates ----------------------------------------------------------
@@ -489,6 +494,30 @@ class DemoService:
             },
         }
 
+    def _alert(self, kind: str, message: str, data: dict[str, Any] | None = None) -> None:
+        """Append an operational alert and best-effort POST it to a webhook/SIEM."""
+        alert = {
+            "ts": time.time(),
+            "kind": kind,
+            "message": message,
+            "data": data or {},
+        }
+        self.alerts.append(alert)
+        self.alerts = self.alerts[-50:]
+        url = os.environ.get("ONLYYOU_WEBHOOK_URL", "").strip()
+        if url:
+            try:
+                payload = json.dumps(alert).encode()
+                req = urllib.request.Request(
+                    url, data=payload, headers={"Content-Type": "application/json"}, method="POST"
+                )
+                threading.Thread(
+                    target=lambda: urllib.request.urlopen(req, timeout=2),
+                    daemon=True,
+                ).start()
+            except Exception:
+                pass
+
     def _mandate_view(self, mandate: Any) -> dict[str, Any]:
         return {
             "id": mandate.id,
@@ -518,10 +547,12 @@ class DemoService:
         valid = self.mandates.verify(mandate)
         covered, why = mandate.covers(action, None, self.mandates.spent.get(mandate.id, 0))
         if not (valid and covered):
+            reason = "mandate invalid (revoked or expired)" if not valid else why
+            self._alert("checkout_rejected", reason, {"mandate_id": mandate.id, "payee": payee, "amount": amount})
             return {
                 "ok": False,
                 "stage": "merchant",
-                "reason": "mandate invalid (revoked or expired)" if not valid else why,
+                "reason": reason,
                 "mandate": self._mandate_view(mandate),
             }
         payment = self.command({
@@ -608,6 +639,11 @@ class DemoService:
                 evidence={"changed_by": "owner", "source": "/api/policy"},
                 result={"outcome": "executed", "detail": "policy updated"},
             )
+            self._alert(
+                "policy_change",
+                f"owner {'enabled' if enabled else 'disabled'} {rule_id}",
+                {"rule_id": rule_id, "enabled": enabled},
+            )
             return {
                 "ok": True,
                 "rule_id": rule_id,
@@ -623,6 +659,8 @@ class DemoService:
             ids = [m.id for m in self.mandates.mandates if m.id not in self.mandates.revoked]
             for mandate_id in ids:
                 self.mandates.revoke(mandate_id)
+            if ids:
+                self._alert("mandates_revoked", f"revoked {len(ids)} mandate(s)", {"ids": ids})
             return {"ok": True, "revoked": ids, "state": self.state()}
 
     def undo(self, receipt_id: str) -> dict[str, Any]:

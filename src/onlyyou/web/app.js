@@ -272,6 +272,16 @@ function renderState(state) {
   const exportBtn = $("#btn-export");
   if (exportBtn) exportBtn.addEventListener("click", () => { window.location.href = "/api/export"; });
 
+  const alertList = $("#alert-list");
+  if (alertList) {
+    const alerts = (state.alerts || []).slice(-5).reverse();
+    alertList.innerHTML = alerts.length
+      ? alerts.map((a) => `<div class="receipt allow">
+          <div class="r-top"><span class="r-act">${a.kind}</span><span>${new Date(a.ts * 1000).toLocaleTimeString()}</span></div>
+          <div class="r-meta">${a.message}</div></div>`).join("")
+      : `<div class="receipt" style="color:var(--muted)">no alerts</div>`;
+  }
+
   const revokeAll = $("#btn-revoke-all");
   if (revokeAll) {
     const active = (state.mandates || []).filter((m) => m.valid).length;

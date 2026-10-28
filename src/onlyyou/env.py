@@ -10,7 +10,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-KEYS = ("META_API_BASE", "META_API_KEY", "MUSE_MODEL", "OPEN_WEIGHTS_BASE", "OPEN_WEIGHTS_KEY", "OPEN_WEIGHTS_MODEL")
+KEYS = ("META_API_BASE", "META_API_KEY", "MUSE_MODEL", "OPEN_WEIGHTS_BASE", "OPEN_WEIGHTS_KEY", "OPEN_WEIGHTS_MODEL", "ONLYYOU_WEBHOOK_URL")
 
 
 def load_env(path: str | Path | None = None) -> dict[str, str]:
