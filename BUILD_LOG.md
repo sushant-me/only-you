@@ -304,6 +304,11 @@ item below was built on top of it.
 - `tools/check_links.py` + `make links` + a CI step fail the build if a local href/src in the static pages
   points at a missing file (25 references checked).
 
+**Live-final runbook refreshed**
+- `docs/live-finals.md` now matches the current product: merchant verification, QR/verify page, browser
+  audit verifier, delegation/recurring/scheduled answers, a 3-minute condensed cut, static-asset failure
+  fallbacks and 15 current Q&A answers.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
