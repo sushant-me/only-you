@@ -78,7 +78,7 @@ The zero is conditional on correct labels. Cloned voice passes; human speaker ac
 ## Why Meta
 
 - **Glasses** need a trust story: the wearer vs the world is the product question.
-- **Three Meta models**: Muse Spark reasons, Muse Wonder reads the scene, **SAM 3.1** grounds the object
+- **Four Meta models**: Muse Spark reasons, Muse Wonder reads the scene, **Muse Voice Transcribe** hears commands, **SAM 3.1** grounds the object
 - **Agentic commerce** needs merchants to verify an agent's authority — Amazon blocks Muse today.
 - Amazon blocks Muse because merchants cannot verify an agent's authority; a signed mandate turns that from a trust problem into a verification problem.
 - **With ten engineers:** WebMCP provenance envelope · voice + DOM provenance in the Muse client · device-key mandates + offline merchant verifier · scene provenance behind a flag.

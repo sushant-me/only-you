@@ -35,7 +35,8 @@ receipts for refusals — and the fact that it runs on Meta's own models today.
 
 - Not the first provenance system; not the first policy gate; not a trained anti-spoofing model.
 - Not a production TEE or secure-element implementation — the demo's HMAC secret is explicitly demo-only.
-- SAM 3.1 masks and Muse voice transcription are not integrated (documented in `limitations.md`).
+- SAM 3.1 object boxes are integrated (`docs/sam.md`); mask decoding is roadmap. Muse Voice Transcribe is
+  integrated (`results/voice-asr.json`); transcription is still not verification.
 
 The honest positioning: **this is the enforcement and proof surface a wearable agent needs, built and
 measured on Meta's stack, with the failures published alongside the wins.**

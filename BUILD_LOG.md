@@ -388,6 +388,13 @@ item below was built on top of it.
   Text-region masks are **not** claimed: mask payloads are not decoded (needs `@meta-sam/parser`); docs/sam.md
   states this and the failure-list row is updated. Tests stay 172 (parser assertions folded into the API test).
 
+**Muse Voice Transcribe, integrated (fourth Meta model in the stack)**
+- Read the public speech-to-text docs; found the real endpoint `POST /v1/asr/transcribe` (multipart WAV,
+  `muse-voice-transcribe-1.0`). `voice_muse.transcribe_wav` now calls it first (Muse Wonder remains fallback).
+- `make asr-check` produces `results/voice-asr.json`; measured transcript on the committed sample is
+  "Pay the electrician electrician 4,500 rupees." — ASR is imperfect, and the transcript still has to pass the
+  voice check and gate. Docs/submission/novelty updated; tests stay 172.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

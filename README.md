@@ -5,7 +5,7 @@
 **The more capable the model, the more it needs an authority layer.** Capability is solved. Authority isn't.
 
 A provenance-gated authority layer for wearable agents — built on **Muse Spark** and **Muse Wonder**
-through the Meta Model API (Muse Spark reasoning, Muse Wonder scene reading, SAM 3.1 object grounding); built during the Meta
+through the Meta Model API (Muse Spark reasoning, Muse Wonder scene reading, Muse Voice Transcribe commands, SAM 3.1 grounding); built during the Meta
 Global AI Developer Hackathon 2026.
 
 **▶ Start here:** [2:59 narrated demo](docs/demo-3min.mp4) · [try the playground](https://sushant-me.github.io/only-you/playground.html) · [1-page brief](docs/brief.pdf) · [repo](https://github.com/sushant-me/only-you) · [live page](https://sushant-me.github.io/only-you/)
@@ -281,7 +281,8 @@ receipt, no side effect.
 
 ### Voice channel
 
-Spoken commands in the demo are transcribed by **Muse Wonder** (`/api/voice/transcribe`): record 4 s,
+Spoken commands in the demo are transcribed by **Muse Voice Transcribe** (`/api/voice/transcribe`, falling
+back to Muse Wonder): record 4 s,
 the transcript fills the composer, and it still has to pass the voice check and the gate. MFCC remains
 the speaker check; this is transcription, not anti-spoofing.
 
@@ -341,6 +342,7 @@ false refusals. Raw results: [`results-real/`](results-real/benchmark.md),
 | Signed mandates + offline merchant verification | implemented (Ed25519), tested |
 | Receipts + hash chain + undo | implemented, tested |
 | Local voice check (MFCC, distance threshold) | implemented; **not anti-spoofing** — a cloned voice passes |
+| Voice transcription | **Muse Voice Transcribe** when a key is set (`results/voice-asr.json`); Muse Wonder fallback |
 | Scene reading | **Muse Wonder** when a key is set (text + approximate boxes; 15/15, 0.0% CER on a synthetic sample); **tesseract** fallback offline |
 | Page extraction (visible + hidden) | implemented (regex DOM classifier) |
 | Agent model | **Muse Spark** when `META_API_BASE`/`META_API_KEY` are set; **simulated** otherwise, and the report stamps which mode |

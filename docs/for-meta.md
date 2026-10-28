@@ -34,7 +34,7 @@ Result: you can give an agent real credentials, a real door, a real wallet — b
 bounded by the owner's authority, not by the model's judgement. That is what turns a demo agent into a
 product people will let act for them.
 
-**Also shipped:** Muse Wonder transcribes spoken commands in the demo (`/api/voice/transcribe`), so the
+**Also shipped:** Muse Voice Transcribe transcribes spoken commands in the demo (`/api/voice/transcribe`), so the
 voice path is a Meta model end-to-end instead of typed text. It is transcription, not speaker
 verification — the MFCC check still decides whose voice it is. Merchant checkout, the browser playground,
 the audit verifier and a Docker image make the whole thing tryable in 30 seconds.

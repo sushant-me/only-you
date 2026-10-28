@@ -45,3 +45,17 @@ are separable at this threshold; it does not say a human stranger is rejected.
 - The honest claim becomes: **the channel is real, its human accuracy is being measured**, and the
   signed sensor envelope already closes the cheap forgery path (**6/6 → 0/6**).
 - Anti-spoofing (liveness/proximity) is the named next layer, not a hidden gap.
+
+
+## Muse Voice Transcribe (real Meta ASR)
+
+The demo transcribes spoken commands with **Muse Voice Transcribe** (`POST /v1/asr/transcribe`), not a
+local guess; Muse Wonder is the fallback. Reproduce:
+
+```bash
+make asr-check          # data/voice-study/asr-sample.wav -> results/voice-asr.json
+```
+
+Measured transcript for the committed sample: **"Pay the electrician electrician 4,500 rupees."** —
+model `muse-voice-transcribe-1.0`. Note the duplicated word: ASR is imperfect, and the transcript is still
+only *text* — it must pass the voice check and the gate like typed input.

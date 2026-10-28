@@ -55,7 +55,7 @@ holds), the confused-deputy corpus where the undefended model pays 25% of the ti
 | Muse Spark contributor build | third real run on the same corpus (A 50% → D 0%) | `results-real-doc-contributor/` |
 
 Not integrated (stated honestly): SAM 3.1 masks (the API exposes the model but not a usable mask output
-format); Muse voice transcription (model listed, endpoint returns `model_not_found` for this key).
+format). Muse Voice Transcribe is integrated (`results/voice-asr.json`); SAM 3.1 boxes are integrated, masks are roadmap.
 Both are in the roadmap in `for-meta.md`, not claimed as shipped.
 
 ## Links

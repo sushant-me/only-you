@@ -124,7 +124,7 @@ key in the device secure element. The merchant path already uses real Ed25519 pu
 **Is the voice check real?**
 It is local MFCC speaker matching in the browser, not anti-spoofing. We publish a sensitivity table and
 say a cloned voice passes; the gate then relies on confirmation for irreversible actions. Spoken commands
-in the demo are transcribed by Muse Wonder (`/api/voice/transcribe`); transcription is not verification —
+in the demo are transcribed by Muse Voice Transcribe (`/api/voice/transcribe`, Muse Wonder fallback); transcription is not verification —
 the transcript still goes through the same voice check and gate.
 
 **What about SAM 3.1?**

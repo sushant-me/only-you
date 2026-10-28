@@ -1,0 +1,7 @@
+{
+  "generated_at": "2026-10-28T16:45:27Z",
+  "wav": "data/voice-study/asr-sample.wav",
+  "model": "muse-voice-transcribe-1.0",
+  "transcript": "Pay the electrician electrician 4,500 rupees.",
+  "note": "Muse Voice Transcribe over /v1/asr/transcribe; transcript is text and still passes the voice check + gate."
+}
