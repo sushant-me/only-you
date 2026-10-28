@@ -254,3 +254,5 @@ letter-spacing:.06em;padding:3px 7px;border-radius:6px;border:1px solid #2a3448;
 .sim-head.ok{color:#2fd18c}.sim-head.warn{color:#f5b544}.sim-head.bad{color:#ff5a68}
 .sim-reason{color:#c7cedb;margin-top:4px}
 .sim-meta{color:var(--muted);margin-top:3px;font-family:ui-monospace,monospace;font-size:10.5px}
+
+#btn-export{float:right;margin-top:-2px}

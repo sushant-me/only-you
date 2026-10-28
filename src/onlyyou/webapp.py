@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import base64
 import functools
+from datetime import datetime, timezone
 import json
 import os
 import tempfile
@@ -442,6 +443,48 @@ class DemoService:
             ok = self.mandates.revoke(mandate_id)
             return {"ok": ok, "state": self.state()}
 
+    def export_audit(self) -> dict[str, Any]:
+        """A self-contained evidence bundle a compliance team can verify offline."""
+        receipts = []
+        undone_ids = []
+        for raw in self.ledger.to_dicts():
+            row = dict(raw)
+            if row.pop("undone", False):
+                undone_ids.append(row["id"])
+            receipts.append(row)
+        return {
+            "format": "only-you-audit/1",
+            "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "product": "ONLY YOU — provenance-gated authority layer (demo)",
+            "chain": {
+                "algorithm": "hmac-sha256-demo",
+                "length": len(receipts),
+                "head": receipts[-1]["signature"] if receipts else "0" * 64,
+                "ok": self.ledger.verify_chain(),
+            },
+            "summary": self.ledger.summary(),
+            "receipts": receipts,
+            "undone_receipts": undone_ids,
+            "mandates": self.mandates.to_dicts(),
+            "device_public_key": self.mandates.public_key_pem,
+            "verify": {
+                "receipt": (
+                    "HMAC-SHA256 over json.dumps(receipt minus signature, sort_keys=True, "
+                    "separators=(',',':')); prev_hash must equal the previous signature; "
+                    "genesis is 64 zeros"
+                ),
+                "mandate": (
+                    "Ed25519 over json.dumps(mandate minus signature, sort_keys=True, "
+                    "separators=(',',':')) with device_public_key"
+                ),
+                "note": (
+                    "The HMAC secret is demo-only and lives in the repo; production roots it in the "
+                    "device secure element. Mandate signatures are real Ed25519 and verifiable with "
+                    "the embedded public key."
+                ),
+            },
+        }
+
     def simulate(self, payload: dict[str, Any]) -> dict[str, Any]:
         """Policy dry run: resolve a proposed action to a verdict without executing it."""
         action_dict = payload.get("action") or {}
@@ -546,13 +589,15 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
             return
 
         # -- helpers -------------------------------------------------------
-        def _json(self, obj: Any, code: int = 200) -> None:
+        def _json(self, obj: Any, code: int = 200, filename: str | None = None) -> None:
             body = json.dumps(obj).encode()
             self.send_response(code)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
             self.send_header("Cache-Control", "no-store")
             self.send_header("X-Content-Type-Options", "nosniff")
+            if filename:
+                self.send_header("Content-Disposition", f'attachment; filename="{filename}"')
             self.end_headers()
             self.wfile.write(body)
 
@@ -587,6 +632,9 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
             path = urlparse(self.path).path
             if path in ("/api/state", "/api/reset"):
                 self._json(service.reset() if path == "/api/reset" else service.state())
+                return
+            if path == "/api/export":
+                self._json(service.export_audit(), filename="only-you-audit.json")
                 return
             if path == "/invoice-page":
                 self._html(INVOICE_PAGE)

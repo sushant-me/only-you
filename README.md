@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 124 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 127 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -88,6 +88,19 @@ may issue them, what they may authorise, and what can be proven afterwards.
 The mandate card is a live budget: `spent / remaining of cap`, a progress bar, and one click to
 **revoke every delegation** while keeping the receipts. Undo refunds the budget, so an accidental
 payment does not silently consume authority. Merchant verification returns the remaining budget too.
+
+### Signed audit export
+
+One click downloads `only-you-audit.json`: every receipt with its HMAC chain, every mandate with its
+Ed25519 signature, the device public key, chain head, spend totals and verification instructions. The
+standalone verifier re-checks it offline — no server, no trust:
+
+```bash
+curl -s localhost:8000/api/export -o audit.json
+python3 tools/verify_audit.py audit.json   # VERIFIED / FAILED
+```
+
+Tamper with one receipt amount or one mandate cap and the verifier fails.
 
 ### Policy dry run
 
@@ -231,7 +244,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 124 tests
+make gen test          # corpus + 127 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -244,7 +257,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           124 tests
+tests/           127 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

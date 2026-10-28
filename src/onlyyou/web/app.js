@@ -266,6 +266,9 @@ function renderState(state) {
       : "simulated model (no META_API_* set). The gate is unchanged; the proposer is not Muse.";
   }
 
+  const exportBtn = $("#btn-export");
+  if (exportBtn) exportBtn.addEventListener("click", () => { window.location.href = "/api/export"; });
+
   const revokeAll = $("#btn-revoke-all");
   if (revokeAll) {
     const active = (state.mandates || []).filter((m) => m.valid).length;

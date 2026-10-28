@@ -66,4 +66,5 @@ document ► invoice parse┘        (labels)                              (auth
 | Merchant verification | `tests/test_merchant_api.py`, `tests/test_devicekey.py` |
 | Ledger tamper + second-order injection | `tests/test_ledger_safety.py`, `docs/ledger-safety.md` |
 | Demo server input bounds | `tests/test_web_hardening.py` |
+| Audit export verifies offline / detects tamper | `tools/verify_audit.py`, `tests/test_audit_export.py` |
 | Known failures | `docs/limitations.md` |

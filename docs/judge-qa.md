@@ -24,6 +24,11 @@ bar, the receipt records `remaining_after`, undo refunds the budget, and one cli
 delegation while keeping the receipts. A payment beyond the remaining budget is no longer covered by the
 mandate — it falls back to the constitution's ask/confirm path.
 
+**Can I take the evidence away and verify it myself?**
+Yes — `GET /api/export` (or **export audit** in the UI) returns a single JSON bundle: receipts with their
+HMAC chain, mandates with Ed25519 signatures, the device public key, chain head and instructions.
+`python3 tools/verify_audit.py audit.json` re-checks everything offline and fails if one byte is changed.
+
 **Can I test a policy change before it ships?**
 Yes — the demo has a **Policy dry run** panel (and `/api/simulate`): it resolves a proposed action through
 provenance, constitution and mandates and returns the decision, rule, reason and remaining budget without
@@ -59,7 +64,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (124 tests + live-server smoke + audit) then `make web` →
+`make judge` (127 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 
