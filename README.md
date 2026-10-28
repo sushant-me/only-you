@@ -25,6 +25,7 @@ from a document.
 - 82-second silent walkthrough (fallback): [`docs/demo-fallback.mp4`](docs/demo-fallback.mp4)
 - 2-page report: [`docs/report.pdf`](docs/report.pdf) · benchmark: [`results/benchmark.md`](results/benchmark.md)
 - Honest failure list: [`docs/limitations.md`](docs/limitations.md)
+- Post-build reproduction on the final code (live Muse Spark, 8 attacks / 8 benign): all arms 0%, **16/16 receipts, chain ok**, 99 calls — [`results-real-verify/`](results-real-verify/)
 
 ## Judge checklist — one command
 

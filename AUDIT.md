@@ -1,6 +1,13 @@
-# Repo audit — 2026-10-28T13:50:26+00:00
+# Repo audit — 2026-10-28T14:07:55+00:00
 
-**67 passed · 0 failed**
+**66 passed · 1 failed**
+
+## Failures
+
+- ❌ git tree clean — M BUILD_LOG.md
+ M README.md
+ M docs/judge-qa.md
+?? results-real-verify/
 
 ## Checks
 
@@ -70,4 +77,3 @@
 - ✅ docs/demo-task-clip.mp4 duration 20s — 20.000000
 - ✅ docs/demo-fallback.mp4 duration 82s — 82.000000
 - ✅ docs/demo-3min.mp4 duration 175s — 175.000000
-- ✅ git tree clean

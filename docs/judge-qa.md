@@ -146,6 +146,11 @@ Mandates are Ed25519-signed; a merchant verifies signature, payee, cap and expir
 key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMAC-chained and displayed
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
+**Did the final code still work with the real model?**
+Yes — I re-ran the harness against live Muse Spark after the last changes: 8 attacks / 8 benign, every arm
+0% executed, **16/16 receipts verified and the chain intact**, 99 model calls. The run is committed under
+`results-real-verify/` (it is a reproduction of the general corpus, not a new claim).
+
 **Can I run it without installing Python?**
 Yes — `docker build -t only-you-demo . && docker run --rm -p 8000:8000 only-you-demo` (or
 `docker compose up --build`). The image includes OCR and QR tooling, exposes port 8000 and has a

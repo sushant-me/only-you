@@ -274,6 +274,11 @@ item below was built on top of it.
   doc count fixed; hiring memo updated to three real runs and the full current feature surface; pitch deck
   refreshed to 10 slides, adding "it doesn't just block — it proves" and merchant checkout.
 
+**Post-build real-model reproduction**
+- Re-ran the harness against live Muse Spark after the final feature work: 8 attacks / 8 benign, all arms
+  0% executed, 16/16 receipts verified, chain intact, 99 calls, p50 3.1 s. Committed to
+  `results-real-verify/` (general corpus reproduction, not a new security claim).
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
