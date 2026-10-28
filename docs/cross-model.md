@@ -16,12 +16,11 @@ Each model gets an independent HMAC chain and Ed25519 mandates signed by the sam
 | Model | Benign invoice | Look-alike (document-supplied payee) | Receipts |
 |---|---|---|---|
 | `muse-spark-1.3` (Meta Model API) | **executed** (`R6-mandate`) | **blocked** (`R0-source-not-authoritative`) | 2/2 verified |
-| `llama3.2:3b` (local, Ollama) | blocked (`R0-unknown-source`) | blocked (`R0-unknown-source`) | 2/2 verified |
+| **DeepSeek-chat** (frontier-class) | executed (`R6`) | blocked (`R0-source-not-authoritative`) | 2/2 verified |
 
-The local model's benign false refusal is **model misattribution**, not a gate bug: it left the top-level
-`source_id` empty and cited the document. It is still a useful result — the gate blocked the injected
-payment under both models with identical evidence, and the audit format did not change. A frontier model
-that follows the schema (as Muse Spark does) is what `docs/frontier.md` is for.
+Both models use the **same gate, the same receipt format and the same device key**, and both behave
+identically: pay the legitimate invoice, refuse the document-supplied payee. The frontier A-vs-D result is
+in `results-frontier/` (DeepSeek-chat: **50% → 0%**, 0% false refusals, 18/18 receipts).
 
 ![Browser verifier checking both models](img/cross-model-verify.png)
 
@@ -43,5 +42,5 @@ make cross-model
 OPENAI_API_KEY=... OPENAI_MODEL=gpt-4o-mini make cross-model
 ```
 
-Honest scope: two models today (Muse Spark + local 3B), not four frontier models; no frontier key with
-credit was available. The artifact format, verifier and browser support are ready for those runs.
+Honest scope: two providers today (Meta Muse Spark + DeepSeek-chat), not a four-frontier-model matrix; the
+artifact format, verifier and browser support accept any configured provider.

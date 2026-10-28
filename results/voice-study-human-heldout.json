@@ -1,0 +1,133 @@
+{
+  "owner_clips": 3,
+  "impostor_clips": 12,
+  "threshold": 0.1,
+  "threshold_override": false,
+  "owner_accept_rate": 1.0,
+  "impostor_false_accept_rate": 0.0,
+  "owner_results": [
+    {
+      "clip": "owner-0.wav",
+      "distance": 0.0318,
+      "threshold": 0.1,
+      "accept": true,
+      "score": 0.9682,
+      "frames": 443
+    },
+    {
+      "clip": "owner-1.wav",
+      "distance": 0.0566,
+      "threshold": 0.1,
+      "accept": true,
+      "score": 0.9434,
+      "frames": 598
+    },
+    {
+      "clip": "owner-2.wav",
+      "distance": 0.065,
+      "threshold": 0.1,
+      "accept": true,
+      "score": 0.935,
+      "frames": 367
+    }
+  ],
+  "impostor_results": [
+    {
+      "clip": "spk-1462.wav",
+      "distance": 0.1705,
+      "threshold": 0.1,
+      "accept": false,
+      "score": 0.8295,
+      "frames": 622
+    },
+    {
+      "clip": "spk-1919.wav",
+      "distance": 0.2497,
+      "threshold": 0.1,
+      "accept": false,
+      "score": 0.7503,
+      "frames": 91
+    },
+    {
+      "clip": "spk-2412.wav",
+      "distance": 0.2981,
+      "threshold": 0.1,
+      "accept": false,
+      "score": 0.7019,
+      "frames": 497
+    },
+    {
+      "clip": "spk-2428.wav",
+      "distance": 0.1808,
+      "threshold": 0.1,
+      "accept": false,
+      "score": 0.8192,
+      "frames": 157
+    },
+    {
+      "clip": "spk-251.wav",
+      "distance": 0.1079,
+      "threshold": 0.1,
+      "accept": false,
+      "score": 0.8921,
+      "frames": 481
+    },
+    {
+      "clip": "spk-3000.wav",
+      "distance": 0.1447,
+      "threshold": 0.1,
+      "accept": false,
+      "score": 0.8553,
+      "frames": 137
+    },
+    {
+      "clip": "spk-3081.wav",
+      "distance": 0.3824,
+      "threshold": 0.1,
+      "accept": false,
+      "score": 0.6176,
+      "frames": 574
+    },
+    {
+      "clip": "spk-3170.wav",
+      "distance": 0.1463,
+      "threshold": 0.1,
+      "accept": false,
+      "score": 0.8537,
+      "frames": 1384
+    },
+    {
+      "clip": "spk-3536.wav",
+      "distance": 0.3552,
+      "threshold": 0.1,
+      "accept": false,
+      "score": 0.6448,
+      "frames": 528
+    },
+    {
+      "clip": "spk-3576.wav",
+      "distance": 0.1257,
+      "threshold": 0.1,
+      "accept": false,
+      "score": 0.8743,
+      "frames": 850
+    },
+    {
+      "clip": "spk-422.wav",
+      "distance": 0.1655,
+      "threshold": 0.1,
+      "accept": false,
+      "score": 0.8345,
+      "frames": 1231
+    },
+    {
+      "clip": "spk-652.wav",
+      "distance": 0.1907,
+      "threshold": 0.1,
+      "accept": false,
+      "score": 0.8093,
+      "frames": 396
+    }
+  ],
+  "note": "MFCC voiceprint threshold from the demo. Measures the channel check, not anti-spoofing; human-subject numbers require real consented recordings."
+}

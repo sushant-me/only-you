@@ -56,6 +56,8 @@ LOCAL = [
     "results/voice-asr.json",
     "results/voice-e2e.json",
     "results/voice-study-human.json",
+    "results/voice-study-human-heldout.json",
+    "results-frontier/benchmark.json",
     "docs/cross-model-audit.json",
     "results-cross-model/cross-model-audit.json",
     "docs/press.md",

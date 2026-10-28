@@ -23,7 +23,7 @@ the first recording.
 
 | Time | Say | Do |
 |---|---|---|
-| 0:00 | "The film opens with the contrast: an undefended agent pays the attacker's invoice — 2 out of 2. The same model behind the gate pays 0 of 2, with four receipts verified." | Play the 4 s opening of the film, pause after card 2 |
+| 0:00 | "The film opens with the contrast: undefended DeepSeek pays 50% of the attacker's invoices. The same model behind the gate pays 0%, with 18 of 18 receipts verified." | Play the 4 s opening of the film, pause after card 2 |
 | 0:12 | "Your glasses can hear the world. The question is who they obey." | Title over the UI |
 | 0:25 | Meta's own quote: "not an enforced security boundary." | Quote card / report |
 | 0:30 | "Only the enrolled voice commands; everything else is data." | Point at provenance chips |

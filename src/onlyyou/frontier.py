@@ -11,6 +11,7 @@ Environment (first match wins, FRONTIER_* overrides everything):
     OPENAI_API_BASE / OPENAI_API_KEY / OPENAI_MODEL         default api.openai.com/v1
     GEMINI_API_KEY / GEMINI_MODEL                           Gemini OpenAI-compat endpoint
     ANTHROPIC_API_KEY / ANTHROPIC_MODEL                     Anthropic OpenAI-compat endpoint
+    DEEPSEEK_API_KEY / DEEPSEEK_MODEL                       api.deepseek.com/v1
     OPENROUTER_API_KEY / OPENROUTER_MODEL                   openrouter.ai/api/v1
 
 Nothing here is called unless a key is present; the benchmark refuses to run
@@ -45,6 +46,13 @@ PROVIDERS: dict[str, dict[str, str]] = {
         "model_env": "ANTHROPIC_MODEL",
         "base": "https://api.anthropic.com/v1",
         "model": "claude-3-5-sonnet-latest",
+    },
+    "deepseek": {
+        "base_env": "DEEPSEEK_API_BASE",
+        "key_env": "DEEPSEEK_API_KEY",
+        "model_env": "DEEPSEEK_MODEL",
+        "base": "https://api.deepseek.com/v1",
+        "model": "deepseek-chat",
     },
     "openrouter": {
         "base_env": "OPENROUTER_API_BASE",
@@ -91,7 +99,7 @@ class FrontierModel(MetaModelClient):
     def __init__(self) -> None:
         config = self.resolve()
         if config is None:
-            raise RuntimeError("no frontier API key configured (OPENAI_API_KEY / GEMINI_API_KEY / ANTHROPIC_API_KEY / FRONTIER_API_KEY)")
+            raise RuntimeError("no frontier API key configured (OPENAI_API_KEY / GEMINI_API_KEY / ANTHROPIC_API_KEY / DEEPSEEK_API_KEY / FRONTIER_API_KEY)")
         super().__init__(base_url=config["base"], api_key=config["key"], model=config["model"])
         self.provider = config["provider"]
 

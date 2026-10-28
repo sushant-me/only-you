@@ -78,16 +78,17 @@ typed input. Artifact: `results/voice-e2e.json`.
 
 ## Human study (public corpus) — real voices, not synthetic
 
-**LibriSpeech dev-clean** (CC BY 4.0), fetched through the Hugging Face dataset server:
-one speaker enrolled from three clips, twelve different human speakers tested one clip each, different
-sentences. Artifact: `results/voice-study-human.json`.
+**LibriSpeech dev-clean** (CC BY 4.0), fetched through the Hugging Face dataset server: one speaker
+enrolled from three clips, **12 different human speakers** tested per set (one clip each, different
+sentences).
 
-| Metric | Demo threshold 0.1825 |
-|---|---|
-| Owner accepted | **3/3** |
-| Impostor false accepts | **2/12 = 16.7%** (distances 0.127, 0.140) |
+| Set | Threshold | Owner | Impostor FAR |
+|---|---|---|---|
+| Pilot | uncapped 0.1825 | 3/3 | 2/12 (16.7%) |
+| Pilot | **capped 0.10** | 3/3 | **0/12** |
+| **Held-out, 12 unseen speakers** | **capped 0.10** | 3/3 | **0/12** |
 
-At a fixed 0.10 threshold the same clips give 3/3 owner and **0/12** impostors, but that threshold was
-chosen after seeing the clips (exploratory, not a held-out claim). Caveats: single owner, cross-content
-(not the same phrase), MFCC channel demonstrator, not anti-spoofing. The honest conclusion is that the
-channel is real and its human FAR needs a trained embedding (ECAPA) plus liveness — see `docs/voice.md`.
+The demo now caps the learned threshold at **0.10** (`VOICE_MAX_THRESHOLD`); the value was fixed after the
+pilot but before the held-out speakers, so it is a **held-out check**, not a fully blind pre-registration.
+Artifacts: `results/voice-study-human.json`, `results/voice-study-human-heldout.json`. Caveats: single
+owner, cross-content, MFCC channel demonstrator, not anti-spoofing; next step ECAPA + liveness.

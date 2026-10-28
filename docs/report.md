@@ -64,15 +64,20 @@ The same confused-deputy corpus on the **contributor build** (`muse-spark-1.3-co
 replicates the finding: **50% undefended, 37.5% prompt-only, 50% provenance-only, 0% with the full gate**,
 0% false refusals, 18/18 receipts verified.
 
-The honest picture: alignment is a strong first line against obvious injections; the authority layer is
-what catches the confused deputy the model is trying to be helpful about. Samples are small and synthetic.
+*Frontier-class — DeepSeek-chat.* Same corpus: undefended **50%** executed → gate **0%**, 0% false
+refusals, 18/18 receipts (`results-frontier/`). The headline: the more capable the model, the more it
+needs the authority layer.
+
+Alignment is a strong first line; the authority layer catches the confused deputy the model is trying to help
+with. Samples are small and synthetic.
 
 **The label layer — the part that can be wrong.** A DOM hidden-text detector on 42 hidden / 35 benign
 snippets: recall **81.0%** (95% CI 66.7–90.0), false positives **14.3%** (6.3–29.4), precision 86.8%;
 eight hiding techniques are missed. A browser labeler using computed styles scores **42/42 with 0/35 false
-positives** on the same cases (an upper bound — it was written after the cases). Speaker verification's human FAR is **2/12 = 16.7%** on LibriSpeech (cross-content, demo threshold;
-`results/voice-study-human.json`); synthetic TTS impostors are rejected 6/6. A fixed 0.10 threshold separates
-these clips but was chosen after seeing them — exploratory, not held out.
+positives** on the same cases (an upper bound — it was written after the cases). Speaker verification's human FAR is **0/12** on the pilot LibriSpeech set and **0/12 on 12 unseen speakers**
+at the capped 0.10 threshold (`results/voice-study-human-heldout.json`); the uncapped pilot was 2/12. The
+threshold was fixed before the held-out set but after the pilot — a held-out check, not fully blind. Synthetic
+TTS impostors are rejected 6/6.
 
 **Adaptive corpus — the attacker controls the signals.** Fifteen scenarios (twelve cloned-voice, three
 pages claiming `user_typed`): **label error 80%, executed 20%** (the cases where the owner confirmed);
@@ -94,11 +99,6 @@ channel; OCR quality changes the evidence surface.
 15 synthetic signs (clean, rotated 8°, low-contrast) read with the same prompt the API uses gave
 **detection 100% (15/15), mean CER 0.0%**, with approximate pixel boxes for the UI mask. Tesseract
 stays as the offline fallback. n is small by design; boxes are approximate, not segmentation masks.
-
-**SAM 3.1 + Muse Voice Transcribe.** SAM 3.1 returns one object box for `paper` (drawn in the overlay);
-`text` prompts return zero and mask decoding is roadmap, so the label-layer numbers are unchanged. Muse Voice
-Transcribe transcribes the sample command with one ASR error; that imperfect transcript still passes the
-voice check and the gate and executes under mandate **R6**, receipt written (`results/voice-e2e.json`).
 
 **Latency (measured, `results/latency.json`).** Constitution rules **0.001 ms p50**; full dry-run path
 (routing + labels + gate) **4.3 ms p50**; local HTTP command with a simulated proposal and a written

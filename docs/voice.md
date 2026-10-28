@@ -56,25 +56,29 @@ These validate the pipeline, not human-speaker accuracy.
 ## Human study — LibriSpeech public speakers (real voices)
 
 A reproducible public-corpus study on **LibriSpeech dev-clean** (CC BY 4.0): one speaker enrolled from
-three clips, then **12 different human speakers** (one clip each, different sentences) tested. Artifact:
-`results/voice-study-human.json`.
+three clips; **12 different human speakers** per set, one clip each, different sentences.
 
-| Metric | Result at the demo's self-calibrated threshold (0.1825) |
-|---|---|
-| Owner accepted | **3/3** (distances 0.032–0.065) |
-| Impostors rejected | **10/12** (FAR **16.7%**, 2 false accepts at 0.127 and 0.140) |
+| Set | Threshold | Owner | Impostor FAR |
+|---|---|---|---|
+| Pilot (12 speakers) | uncapped learned 0.1825 | 3/3 | **2/12 (16.7%)** |
+| Pilot, same clips | **capped 0.10** | 3/3 | **0/12** |
+| **Held-out (12 unseen speakers)** | **capped 0.10** | 3/3 | **0/12** |
 
-Sensitivity (thresholds chosen **after** seeing these clips, so exploratory only):
+The cap is now the demo default: `enroll()` bounds the learned threshold at **0.10** (override with
+`VOICE_MAX_THRESHOLD`), so a wide enrolment spread cannot open the channel to strangers. The 0.10 value
+was fixed **after the pilot but before the held-out speakers** — this is a held-out check, not a fully blind
+pre-registration, and that distinction is stated everywhere the number appears. Artifacts:
+`results/voice-study-human.json`, `results/voice-study-human-heldout.json`.
 
-| Fixed threshold | Owner accept | Impostor FAR |
+Sensitivity from the pilot (thresholds evaluated after seeing the pilot, exploratory):
+
+| Fixed threshold | Owner accept | Pilot FAR |
 |---|---|---|
 | 0.06 | 2/3 | 0/12 |
-| 0.10 | 3/3 | 0/12 |
+| **0.10** | **3/3** | **0/12** |
 | 0.13 | 3/3 | 1/12 |
-| 0.1825 (demo) | 3/3 | 2/12 |
+| 0.1825 (uncapped) | 3/3 | 2/12 |
 
-The channel is real but weak on cross-content human voices: the demo threshold admits 2/12 strangers,
-and a fixed 0.10 would separate these clips only because it was picked after looking. That is why the
-report calls it a channel demonstrator and the next step is a trained embedding (ECAPA) plus a liveness /
-anti-spoofing layer. Different-content clips make this harder than a same-phrase friend study; both are
-worth running with consent.
+The channel is still a **channel demonstrator, not anti-spoofing**: a cloned voice passes, different-content
+clips are harder than a same-phrase friend study, and the next step is a trained embedding (ECAPA) plus
+liveness. But the held-out human result is now **0/12**, not 2/12.

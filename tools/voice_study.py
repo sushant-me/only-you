@@ -58,6 +58,7 @@ def main() -> int:
     parser.add_argument("--owner", required=True, type=Path, help="directory of owner clips")
     parser.add_argument("--impostors", required=True, type=Path, help="directory of impostor clips")
     parser.add_argument("--out", type=Path, default=ROOT / "results" / "voice-study.json")
+    parser.add_argument("--threshold", type=float, default=None, help="override the learned threshold")
     args = parser.parse_args()
 
     owner_files = clips(args.owner)
@@ -80,6 +81,8 @@ def main() -> int:
     except Exception as exc:  # noqa: BLE001
         print(f"could not enroll from owner clips: {exc}")
         return 2
+    if args.threshold is not None:
+        voiceprint.threshold = args.threshold
     self_results = scored(owner_files, "owner")
     impostor_results = scored(impostor_files, "impostor")
     accepted_owner = sum(1 for r in self_results if r["accept"])
@@ -88,6 +91,7 @@ def main() -> int:
         "owner_clips": len(owner_files),
         "impostor_clips": len(impostor_files),
         "threshold": voiceprint.threshold,
+        "threshold_override": args.threshold is not None,
         "owner_accept_rate": round(accepted_owner / len(owner_files), 4),
         "impostor_false_accept_rate": round(accepted_impostors / len(impostor_files), 4),
         "owner_results": self_results,

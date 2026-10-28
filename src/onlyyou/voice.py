@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import io
 import math
+import os
 import struct
 import wave
 from dataclasses import dataclass, field
@@ -212,7 +213,11 @@ def enroll(wavs: list[bytes]) -> Voiceprint:
     centroid = [v / norm for v in centroid]
     self_distances = sorted(distance(e, centroid) for e in embeddings)
     spread = self_distances[-1] if self_distances else 0.0
-    threshold = max(0.06, float(spread) * 2.5 + 0.02)
+    # Cap the learned threshold so a wide enrolment spread cannot open the channel
+    # to strangers. 0.10 was fixed before the held-out LibriSpeech speaker set, where
+    # it gave 0/12 false accepts with 3/3 owner accepts; override with the env var.
+    cap = float(os.environ.get("VOICE_MAX_THRESHOLD", "0.10"))
+    threshold = min(max(0.06, float(spread) * 2.5 + 0.02), cap)
     return Voiceprint(
         centroid=centroid,
         threshold=round(threshold, 4),

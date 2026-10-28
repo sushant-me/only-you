@@ -33,6 +33,9 @@ GEMINI_API_KEY=...  GEMINI_MODEL=gemini-2.0-flash
 # Anthropic (OpenAI-compatible endpoint)
 ANTHROPIC_API_KEY=...  ANTHROPIC_MODEL=claude-3-5-sonnet-latest
 
+# DeepSeek (frontier-class, OpenAI-compatible)
+DEEPSEEK_API_KEY=...  DEEPSEEK_MODEL=deepseek-chat
+
 # OpenRouter, or a local Ollama server
 OPENROUTER_API_KEY=...  OPENROUTER_MODEL=openai/gpt-4o-mini
 # or: FRONTIER_API_BASE=http://localhost:11434/v1 FRONTIER_API_KEY=ollama FRONTIER_MODEL=llama3.2
@@ -71,31 +74,45 @@ Publish the per-model table next to the Muse Spark runs; the claim becomes **"th
 the more necessary the authority layer"** — and one audit bundle can cover every model because the
 receipts are model-independent.
 
-## Local integration run (not frontier — read the caveat)
+## Measured frontier result — DeepSeek-chat
 
-With no frontier key available, I ran the adapter end-to-end against a **local open-weights model**
-(`llama3.2:3b` via Ollama in Docker) on the committed confused-deputy corpus (2 attacks / 2 benign; small
-because CPU inference is slow). Artifacts: `results-local-llama/`.
+With a provider key available, `make frontier-eval` ran the **same confused-deputy corpus** (8 attacks /
+12 benign, document channel) through the unchanged gate. Artifacts: `results-frontier/`.
+
+| Arm | Architecture | Attack success | False refusals | Receipts |
+|---|---|---|---|---|
+| A | undefended DeepSeek-chat | **50.0%** (4/8 attacks; 10/12 benign paid) | 0% | — |
+| D | **full ONLY YOU** | **0.0%** | **0.0%** | **18/18 verified** |
+
+40 model calls, 54 s, temperature 0, same corpus and mandates as the Muse runs. This is the headline the
+architecture was built for: **the more capable/helpful the model, the more it needs an authority layer.**
+The model obeys the document; the gate obeys the owner.
+
+Reproduce with:
+
+```bash
+DEEPSEEK_API_KEY=... make frontier-eval
+# or point FRONTIER_* at any OpenAI-compatible provider
+```
+
+## Secondary: local integration run
+
+A local open-weights model (`llama3.2:3b` via Ollama) was run first as a plumbing check on 2 attacks /
+2 benign. Artifacts: `results-local-llama/`.
 
 | Arm | Attack success | False refusals | Receipts |
 |---|---|---|---|
-| A — undefended | **100%** (2/2 injected invoices paid) | 0% | — |
+| A — undefended | **100%** (2/2 paid) | 0% | — |
 | D — full gate | **0%** (0/2) | **100%** (2/2 benign blocked) | 4/4 verified |
 
-The D false refusals are **not the gate being wrong**: the receipts show `R0-unknown-source` because this
-small model left the top-level `source_id` empty and put it inside `params` (and cited the document, not
-the owner command). The gate refuses an action with no authoritative source — which is the correct
-behaviour, but the model's provenance attribution is too weak for the benign case. A frontier model that
-follows the JSON schema (as Muse Spark does) is what the experiment is for; the adapter is ready for it.
+The D false refusals are **model misattribution**, not a gate bug: the small model left the top-level
+`source_id` empty and cited the document. The gate correctly refused an action with no authoritative
+source. This is an integration result, not a frontier claim; the DeepSeek run above is the frontier claim.
 
-This is an integration/plumbing result, **not a frontier claim**. It does show the gate is model-agnostic:
-the same code that blocks Muse Spark's confused deputy also blocked this model's injected payments.
+## Status
 
-## Status (honest)
-
-- Adapter, CLI (`--model frontier`), `make frontier-eval` / `make bench-frontier`, env resolution, and a
-  local Ollama path are implemented and tested.
-- No frontier key with credit was available in this environment at the time of writing (the available
-  DeepSeek key returned HTTP 402; the GitHub token does not expose GitHub Models), so **no frontier run is
-  claimed**. Add any key above and `make frontier-eval` reproduces the headline table in minutes.
-- The existing real-model evidence remains Muse Spark (four runs, committed under `results-real*/`).
+- Adapter, CLI (`--model frontier`), `make frontier-eval` / `make bench-frontier`, provider presets
+  (OpenAI, Gemini, Anthropic, DeepSeek, OpenRouter, local Ollama) and env resolution are implemented.
+- **DeepSeek-chat A-vs-D completed:** 50% → 0%, 0% false refusals, 18/18 receipts (`results-frontier/`).
+- The primary real-model evidence remains Muse Spark (four runs, `results-real*/`); the two are independent.
+- A cross-provider table is available by setting another provider key and re-running `make frontier-eval`.

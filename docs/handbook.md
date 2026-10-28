@@ -161,12 +161,20 @@ reports **VERIFIED · CROSS-MODEL**.
 | Model | Benign invoice | Look-alike invoice | Receipts |
 |---|---|---|---|
 | Muse Spark 1.3 | executed · `R6` | blocked · `R0-source-not-authoritative` | 2/2 verified |
-| `llama3.2:3b` (local) | blocked · `R0-unknown-source` | blocked · `R0-unknown-source` | 2/2 verified |
+| **DeepSeek-chat** (frontier) | executed · `R6` | blocked · `R0-source-not-authoritative` | 2/2 verified |
 
-The local model’s benign refusal is **model misattribution**, not a gate bug: it left the top-level
-`source_id` empty and cited the document. The gate refused an action with no authoritative source — correct
-behaviour, weak model. The frontier experiment (`make frontier-eval`) is wired for GPT/Gemini/Claude but no
-frontier key with credit was available, so **no frontier claim is made**.
+## Frontier experiment — the headline
+
+`make frontier-eval` ran the full **8 attacks / 12 benign** confused-deputy corpus through the unchanged
+gate with **DeepSeek-chat** (frontier-class, temperature 0; `results-frontier/`):
+
+| Arm | Attack success | False refusals | Receipts |
+|---|---|---|---|
+| A — undefended | **50.0%** (4/8 attacks; 10/12 benign paid) | 0% | — |
+| D — full gate | **0.0%** | **0.0%** | **18/18 verified** |
+
+40 calls, 54 s. The more capable the model, the more it needs an authority layer. A local 3B plumbing run
+is kept in `results-local-llama/` as a secondary check, not the frontier claim.
 
 ## Other measurements
 
@@ -176,8 +184,9 @@ frontier key with credit was available, so **no frontier claim is made**.
 | Adaptive corpus (attacker controls signals) | label error 80%, **executed 20%** (3/15; owner-confirmed cases) |
 | DOM hidden-text detector | recall **81.0%**, FPR **14.3%**, 8 hiding techniques missed |
 | Browser computed-style labeler | 42/42 hidden, 0/35 false positives (upper bound, written after cases) |
-| Human voice study (LibriSpeech) | owner 3/3; impostors **2/12 accepted (16.7% FAR)** at demo threshold |
+| Human voice study (LibriSpeech) | owner 3/3; **0/12 impostors** at capped 0.10 on pilot and 12 unseen speakers; uncapped pilot 2/12 |
 | Synthetic TTS study | **6/6 impostors rejected**, owner 3/3 |
+| **Frontier (DeepSeek-chat)** | undefended **50%** → gate **0%**, 0% false refusals, **18/18 receipts** |
 | Latency | constitution **0.001 ms**, dry-run **4.3 ms**, HTTP command **12.8 ms**, OCR **156 ms** |
 | Latency end-to-end | 6.8–11.9 s p50, dominated by model inference |
 
@@ -190,11 +199,11 @@ The 3-minute film is **179 s** (2:59), narrated and captioned. It is built aroun
 
 Four seconds of cards before the film proper:
 
-1. **Undefended · local open-weights model** — **2/2 injected invoices PAID** (attack success 100%).
-2. **Same model · full ONLY YOU gate** — **0/2 paid · 4/4 receipts verified**.
+1. **Undefended · DeepSeek-chat (frontier-class)** — **50% injected invoices PAID** (4/8 attacks).
+2. **Same model · full ONLY YOU gate** — **0% paid · 18/18 receipts verified**.
 
-This is the feedback’s hook executed honestly: the undefended model is a local open-weights model, not a
-frontier one, because no frontier key was available. The contrast is real and the label is explicit.
+This is the feedback’s hook executed with a frontier-class model: the model obeys the document, the gate
+obeys the owner. The label and the artifact (`results-frontier/`) are explicit.
 
 ## Chapters
 
@@ -281,7 +290,7 @@ docker run --rm -p 8000:8000 only-you-demo
 | `META_API_BASE` / `META_API_KEY` | real Muse models; without them a simulated model runs and the report says so |
 | `MUSE_MODEL` | default `muse-spark-1.3` |
 | `SAM_MODEL` | default `sam-3.1`; `SAM_PROMPT` default `paper` |
-| `FRONTIER_*` / `OPENAI_*` / `GEMINI_*` / `ANTHROPIC_*` / `OPENROUTER_*` | the frontier adapter |
+| `FRONTIER_*` / `OPENAI_*` / `GEMINI_*` / `ANTHROPIC_*` / `DEEPSEEK_*` / `OPENROUTER_*` | the frontier adapter |
 | `ONLYYOU_MODEL=simulated` | force offline mode |
 
 ## Experiments (each writes a committed artifact)
@@ -289,7 +298,7 @@ docker run --rm -p 8000:8000 only-you-demo
 ```bash
 make bench            # full four-arm benchmark (simulated or real)
 make frontier-eval    # A vs D on the confused-deputy corpus (API key or local Ollama)
-make cross-model      # Muse + local model, one audit bundle
+make cross-model      # Muse + DeepSeek, one audit bundle
 make sam-check        # SAM 3.1 object boxes on the demo frame
 make asr-check        # Muse Voice Transcribe on the committed sample
 make voice-e2e        # ASR -> voice check -> gate -> receipt
@@ -355,7 +364,8 @@ then propagate. The self-audit checks several of these and will fail if the docs
 | 25 / 37.5 / 50 / 0% | `results-real-doc/benchmark.json` | README, brief, report, deck | `make bench-meta` (needs key) |
 | 6/6 → 0/6 forged | `results/forged-sensors.json` | README, report, deck | `make scenes` / test suite |
 | 81.0% / 14.3% | `results/dom-labeler.json` | report, limitations | `make scenes` |
-| Human FAR 2/12 | `results/voice-study-human.json` | README, brief, report, deck | study protocol in `docs/voice-study.md` |
+| Human FAR 0/12 | `results/voice-study-human-heldout.json` | README, brief, report, deck | study protocol in `docs/voice-study.md` |
+| Frontier A vs D 50% → 0% | `results-frontier/benchmark.json` | README, report, brief, deck | `make frontier-eval` |
 | Latency table | `results/latency.json` | README, report, handbook | `make latency` |
 | SAM paper box | `results-sam/sam.json` | docs/sam.md, handbook | `make sam-check` |
 | ASR transcript | `results/voice-asr.json` | docs/voice-study.md | `make asr-check` |
@@ -365,7 +375,7 @@ then propagate. The self-audit checks several of these and will fail if the docs
 ## Consistency checklist after changing a number
 
 ```bash
-grep -rn "172 tests\|67/67\|25%\|16.7%\|179" README.md docs/*.md \
+grep -rn "172 tests\|67/67\|50%\|0/12\|179" README.md docs/*.md \
   docs/pitch-event.md SUBMIT-NOW.md ../FORM-ANSWERS.md
 make brief report pitch handbook
 python3 tools/audit.py          # must be 67/67
@@ -488,14 +498,14 @@ The failure list has **17 rows**; the point is that it exists. The top risks:
 
 | Risk | Status | Next step |
 |---|---|---|
-| Cloned voice passes the channel check | **Open**; human FAR **2/12** on LibriSpeech at the demo threshold | ECAPA/TDNN embedding + liveness/anti-spoofing |
+| Cloned voice passes the channel check | **Open**; human FAR **0/12** at capped 0.10 (pilot + held-out); uncapped pilot 2/12 | ECAPA/TDNN embedding + liveness/anti-spoofing |
 | Label layer misses hiding techniques | **Open**; 81% recall, 14.3% FPR | browser computed-style labeler + SAM mask decode |
 | Adaptive attacker controls signals | **20% executed** (owner-confirmed cases) | liveness + proximity attestation + confirmations |
 | Evidence coverage on paraphrases | **1/8 receipted** | trigger-verb classifier + always-receipt policy |
 | SAM text masks not decoded | **Open**; object boxes only | decode masks, crop text before OCR |
 | ASR errors | Real; duplicated word in sample | vocabulary biasing + confidence gate |
 | Demo HMAC secret is public | **By design** | production roots in secure element |
-| No frontier A-vs-D result | **Blocked on a key**; adapter ready | `make frontier-eval` with any key |
+| Frontier result limited to one provider | **DeepSeek-chat: 50% → 0%** shipped | add GPT/Gemini/Claude key and re-run `make frontier-eval` |
 
 ## Roadmap with Meta
 
@@ -525,8 +535,9 @@ command, SAM 3.1 grounds the object. Each has a committed artifact and a measure
 **Does SAM segment text?** No. It grounds objects (`paper` → 1 box); text prompts return zero and masks are
 not decoded. Text-region segmentation is roadmap, not claimed.
 
-**Is the voice check biometric?** No. It is a channel demonstrator: human FAR **2/12** at the demo threshold
-on a public corpus; 0.10 separates these clips but was chosen after seeing them. Next: ECAPA + liveness.
+**Is the voice check biometric?** No. It is a channel demonstrator: **0/12** human FAR at the capped 0.10
+threshold on the pilot and 12 unseen speakers (uncapped pilot 2/12); the cap is a mitigation, not
+anti-spoofing. Next: ECAPA + liveness.
 
 **What about prompt injection?** Not solved. The gate enforces authority even when the model is helpful to
 the attacker; the label layer is the measured weak point.

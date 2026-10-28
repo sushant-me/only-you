@@ -55,6 +55,7 @@ holds), the confused-deputy corpus where the undefended model pays 25% of the ti
 | **SAM 3.1** | object grounding on the scene frame (`/api/frame` returns boxes; overlay draws them) | `results-sam/sam.json` (paper → 1 box) |
 | **Muse Image 1.0** | generates the demo's poster, TV frame, invoice, article and hero | `src/onlyyou/web/fakecam-*.jpg`, `docs/img/hero.jpg` |
 | Muse Spark contributor build | third real run on the same corpus (A 50% → D 0%) | `results-real-doc-contributor/` |
+| **DeepSeek-chat (frontier-class)** | A/D on the same corpus: **50% → 0%**, 0% false refusals, 18/18 receipts | `results-frontier/` |
 
 Not integrated (stated honestly): SAM 3.1 **mask decoding** and a text-region crop before OCR. Object boxes
 ship (`results-sam/`); text-region masks are roadmap in `for-meta.md`, not claimed as shipped.
@@ -70,8 +71,9 @@ ship (`results-sam/`); text-region masks are roadmap in `for-meta.md`, not claim
 - Brief: https://github.com/sushant-me/only-you/blob/main/docs/brief.pdf
 - Report: https://github.com/sushant-me/only-you/blob/main/docs/report.pdf
 - Real runs: `results-real/`, `results-real-doc/`, `results-real-doc-contributor/`, `results-real-verify/`
-- Cross-model audit: `results-cross-model/` (Muse Spark + local model, browser-verified)
-- Human voice study (LibriSpeech, real voices): `results/voice-study-human.json` (2/12 FAR at demo threshold)
+- Cross-model audit: `results-cross-model/` (Muse Spark + DeepSeek, browser-verified)
+- Frontier A-vs-D: `results-frontier/` (DeepSeek-chat **50% → 0%**, 0% false refusals, 18/18 receipts)
+- Human voice study (LibriSpeech): `results/voice-study-human.json` + held-out `results/voice-study-human-heldout.json` (0/12 FAR at capped 0.10; uncapped pilot 2/12)
 - Latency: `results/latency.json`
 - Deck: https://github.com/sushant-me/only-you/blob/main/docs/pitch.pdf
 - Handbook (18 pages, includes edit/build/proof map): https://github.com/sushant-me/only-you/blob/main/docs/handbook.pdf

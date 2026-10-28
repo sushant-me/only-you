@@ -25,11 +25,12 @@ TV ad, poster, webpage or invoice can issue commands. Capability is solved; **au
 |---|---|
 | Confused-deputy corpus, Muse Spark 1.3 | undefended **25%** executed · prompt-only 37.5% · provenance-only 50% · **full gate 0%**, 0% false refusals |
 | Same corpus, contributor build | 50% → 37.5% → 50% → **0%** |
+| Same corpus, **frontier DeepSeek-chat** | undefended **50%** → **0%** with the gate, 0% false refusals, **18/18 receipts** |
 | Post-build reproduction on final code | every arm **0%**, **16/16 receipts**, chain intact, 99 live calls |
 | Label layer (the part that can be wrong) | DOM recall 81.0%, 14.3% false positives — published, with 8 missed techniques |
 | Forged sensor signals | 6/6 executed without a signed bus → **0/6** with it |
-| Cross-model audit | same gate + receipt format under Muse Spark and a local model, verified in the browser |
-| Voice channel (public human study) | owner 3/3 · **2/12 impostors accepted (16.7% FAR)** at the demo threshold; fixed 0.10 is exploratory |
+| Cross-model audit | same gate + receipt format under Muse Spark and **DeepSeek**, verified in the browser |
+| Voice channel (public human study) | owner 3/3 · **0/12 impostors accepted** at capped 0.10 (pilot) and **0/12 on 12 unseen speakers**; uncapped pilot 2/12 |
 | Engineering | **172 tests**, 67-check self-audit, CI (tests + Docker), four committed real-model runs |
 
 ## Why it matters commercially

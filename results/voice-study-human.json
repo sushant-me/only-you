@@ -1,14 +1,15 @@
 {
   "owner_clips": 3,
   "impostor_clips": 12,
-  "threshold": 0.1825,
+  "threshold": 0.1,
+  "threshold_override": false,
   "owner_accept_rate": 1.0,
-  "impostor_false_accept_rate": 0.1667,
+  "impostor_false_accept_rate": 0.0,
   "owner_results": [
     {
       "clip": "owner-0.wav",
       "distance": 0.0318,
-      "threshold": 0.1825,
+      "threshold": 0.1,
       "accept": true,
       "score": 0.9682,
       "frames": 443
@@ -16,7 +17,7 @@
     {
       "clip": "owner-1.wav",
       "distance": 0.0566,
-      "threshold": 0.1825,
+      "threshold": 0.1,
       "accept": true,
       "score": 0.9434,
       "frames": 598
@@ -24,7 +25,7 @@
     {
       "clip": "owner-2.wav",
       "distance": 0.065,
-      "threshold": 0.1825,
+      "threshold": 0.1,
       "accept": true,
       "score": 0.935,
       "frames": 367
@@ -34,15 +35,15 @@
     {
       "clip": "spk-1272.wav",
       "distance": 0.14,
-      "threshold": 0.1825,
-      "accept": true,
+      "threshold": 0.1,
+      "accept": false,
       "score": 0.86,
       "frames": 285
     },
     {
       "clip": "spk-1673.wav",
       "distance": 0.379,
-      "threshold": 0.1825,
+      "threshold": 0.1,
       "accept": false,
       "score": 0.621,
       "frames": 745
@@ -50,7 +51,7 @@
     {
       "clip": "spk-174.wav",
       "distance": 0.3398,
-      "threshold": 0.1825,
+      "threshold": 0.1,
       "accept": false,
       "score": 0.6602,
       "frames": 137
@@ -58,7 +59,7 @@
     {
       "clip": "spk-1988.wav",
       "distance": 0.261,
-      "threshold": 0.1825,
+      "threshold": 0.1,
       "accept": false,
       "score": 0.739,
       "frames": 933
@@ -66,7 +67,7 @@
     {
       "clip": "spk-1993.wav",
       "distance": 0.1894,
-      "threshold": 0.1825,
+      "threshold": 0.1,
       "accept": false,
       "score": 0.8106,
       "frames": 208
@@ -74,7 +75,7 @@
     {
       "clip": "spk-2035.wav",
       "distance": 0.2908,
-      "threshold": 0.1825,
+      "threshold": 0.1,
       "accept": false,
       "score": 0.7092,
       "frames": 460
@@ -82,7 +83,7 @@
     {
       "clip": "spk-2078.wav",
       "distance": 0.2114,
-      "threshold": 0.1825,
+      "threshold": 0.1,
       "accept": false,
       "score": 0.7886,
       "frames": 89
@@ -90,15 +91,15 @@
     {
       "clip": "spk-2086.wav",
       "distance": 0.1266,
-      "threshold": 0.1825,
-      "accept": true,
+      "threshold": 0.1,
+      "accept": false,
       "score": 0.8734,
       "frames": 448
     },
     {
       "clip": "spk-2277.wav",
       "distance": 0.2486,
-      "threshold": 0.1825,
+      "threshold": 0.1,
       "accept": false,
       "score": 0.7514,
       "frames": 333
@@ -106,7 +107,7 @@
     {
       "clip": "spk-2803.wav",
       "distance": 0.2881,
-      "threshold": 0.1825,
+      "threshold": 0.1,
       "accept": false,
       "score": 0.7119,
       "frames": 522
@@ -114,7 +115,7 @@
     {
       "clip": "spk-777.wav",
       "distance": 0.2583,
-      "threshold": 0.1825,
+      "threshold": 0.1,
       "accept": false,
       "score": 0.7417,
       "frames": 107
@@ -122,7 +123,7 @@
     {
       "clip": "spk-84.wav",
       "distance": 0.386,
-      "threshold": 0.1825,
+      "threshold": 0.1,
       "accept": false,
       "score": 0.614,
       "frames": 50

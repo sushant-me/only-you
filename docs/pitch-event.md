@@ -31,7 +31,7 @@ One goal: browse → extract visible **and hidden** text → decide under the ma
 
 ## Live demo
 
-- **Opens with the contrast:** undefended agent pays 2/2 injected invoices → same model gated: 0/2, 4/4 receipts
+- **Opens with the contrast:** undefended DeepSeek pays **50%** of injected invoices → same model gated: **0%**, 18/18 receipts
 - Grant a mandate: electrician, ≤ 5,000, until tomorrow
 - Owner pays the invoice — **no prompt, no interruption**, receipt cites the mandate
 - Look-alike invoice, same spoken command — **refused**: the payee came from a document
@@ -45,7 +45,7 @@ One goal: browse → extract visible **and hidden** text → decide under the ma
 - Public `verify/<id>` page + **QR code**; audit bundle re-verified **offline in Python or in the browser**
 - **Merchant checkout** verifies the delegation before charging; a scheduler re-checks it at run time
 - Policy edits are receipted; policy import shows a **review diff** before applying
-- **Cross-model audit**: Muse Spark + a local model, one receipt format, browser-verified `VERIFIED · CROSS-MODEL`
+- **Cross-model audit**: Muse Spark + **DeepSeek**, one receipt format, browser-verified `VERIFIED · CROSS-MODEL`
 - Signed SIEM alerts; ledger filters + CSV export for audit triage
 
 ## Evidence
@@ -59,12 +59,12 @@ One goal: browse → extract visible **and hidden** text → decide under the ma
 | Signed sensor envelope | 6/6 executed without → 0/6 with |
 | Scene OCR (raw + deskew) | detection **100%** (35/35), CER **1.7%**, 0/35 executed |
 | Scene reading — **Muse Wonder** (n=15) | detection **100%**, CER **0.0%**, approximate boxes |
-| **Muse Spark, document attacks (n=8)** | A 25% · B 37.5% · C 50% · **D 0%** executed; 0% false refusals |
+| Document attacks (n=8): Muse Spark / **DeepSeek** | Muse A 25→37.5→50→**0%**; **DeepSeek A 50% → D 0%**, 18/18 receipts |
 | Muse Spark, general corpus (n=20) | 0% executed all arms; D false refusals 5%; 36/36 receipts |
 | Muse Spark contributor build (n=8) | A 50% · B 37.5% · C 50% · **D 0%** executed |
-| Voice channel (human study) | owner 3/3; **2/12 impostors accepted (16.7% FAR)** at the demo threshold |
+| Voice channel (human) | owner 3/3; **0/12 FAR** at capped 0.10 (pilot + unseen) |
 
-The zero is conditional on correct labels. Cloned voice passes; human FAR is **2/12** in our public study. We publish the 20%.
+The zero is conditional on correct labels. Cloned voice passes; human FAR is **0/12** at capped 0.10 (pilot + unseen); uncapped pilot 2/12. We publish the 20%.
 
 ## What breaks it
 
@@ -72,7 +72,7 @@ The zero is conditional on correct labels. Cloned voice passes; human FAR is **2
 - **Compromised sensor** — the signed envelope stops forged dicts, not a rooted device
 - **Mandate replay** — bounded by cap/expiry/nonce; replay protection is next
 - **Biometric consent** — voiceprints are special-category data; consent flow not built
-- **Voice study** — human FAR **2/12 (16.7%)** on public speakers; synthetic TTS 0/6; ECAPA + liveness next
+- **Voice study** — human FAR **0/12** at capped 0.10 on pilot + 12 unseen speakers; uncapped pilot 2/12; synthetic TTS 0/6; liveness next
 - **SAM 3.1 masks** — object boxes are drawn on the frame; text-region masks are not decoded (roadmap)
 
 ## Why Meta

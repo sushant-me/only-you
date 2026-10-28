@@ -1,11 +1,11 @@
 {
   "format": "only-you-audit/1",
-  "generated_at": "2026-10-28T15:52:32+00:00",
+  "generated_at": "2026-10-28T17:54:41+00:00",
   "product": "ONLY YOU \u2014 provenance-gated authority layer (demo)",
   "chain": {
     "algorithm": "hmac-sha256-demo",
     "length": 2,
-    "head": "5a587fb636ffdf88317ed9c25cecd269b73cfdc8021d4f184f684c2571ee2d4b",
+    "head": "e06b7785a8a008c1ae2e0e3d77f19ddbb762d956d8c9bcfa012df48baf653fe9",
     "ok": true
   },
   "summary": {
@@ -16,8 +16,8 @@
   },
   "receipts": [
     {
-      "id": "bc66882f9239",
-      "ts": 1793202745.4393241,
+      "id": "0d41d997269f",
+      "ts": 1793210065.2427628,
       "action": {
         "kind": "pay",
         "params": {
@@ -30,12 +30,12 @@
       "verdict": {
         "decision": "allow",
         "rule": "R6-mandate",
-        "reason": "within the owner's mandate 7d17a6dfe103 (owner-delegated authority)",
+        "reason": "within the owner's mandate 73adb301b61d (owner-delegated authority)",
         "evidence": {
-          "mandate_id": "7d17a6dfe103",
+          "mandate_id": "73adb301b61d",
           "scope": "pay",
           "max_amount": 5000,
-          "expires_at": 1793289139.914217
+          "expires_at": 1793296454.4775162
         }
       },
       "evidence": {
@@ -55,9 +55,9 @@
         },
         "proposed_by": "model",
         "mandate": {
-          "id": "7d17a6dfe103",
+          "id": "73adb301b61d",
           "max_amount": 5000,
-          "expires_at": 1793289139.914217,
+          "expires_at": 1793296454.4775162,
           "remaining_after": 500
         }
       },
@@ -66,11 +66,11 @@
         "detail": "paid 4500 to @electrician"
       },
       "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
-      "signature": "f417befeddbbcd204512631f856abaf775e7622a256f3b4582706eb885a60282"
+      "signature": "858219ce58c127691b045dfb3e79e4a0245eccca0e9182ba50c664f3fa332b11"
     },
     {
-      "id": "ec44a6b92eb1",
-      "ts": 1793202752.6185372,
+      "id": "e0507ed130d5",
+      "ts": 1793210081.07109,
       "action": {
         "kind": "pay",
         "params": {
@@ -105,29 +105,29 @@
         "outcome": "blocked",
         "detail": "refused"
       },
-      "prev_hash": "f417befeddbbcd204512631f856abaf775e7622a256f3b4582706eb885a60282",
-      "signature": "5a587fb636ffdf88317ed9c25cecd269b73cfdc8021d4f184f684c2571ee2d4b"
+      "prev_hash": "858219ce58c127691b045dfb3e79e4a0245eccca0e9182ba50c664f3fa332b11",
+      "signature": "e06b7785a8a008c1ae2e0e3d77f19ddbb762d956d8c9bcfa012df48baf653fe9"
     }
   ],
   "undone_receipts": [],
   "mandates": [
     {
-      "id": "7d17a6dfe103",
+      "id": "73adb301b61d",
       "principal": "owner",
       "scope": "pay",
       "payees": [
         "electrician"
       ],
       "max_amount": 5000,
-      "issued_at": 1793202739.914217,
-      "expires_at": 1793289139.914217,
-      "nonce": "7f4294c0e88f5313",
+      "issued_at": 1793210054.4775162,
+      "expires_at": 1793296454.4775162,
+      "nonce": "af97f111be6df164",
       "note": "owner-delegated authority",
       "payee_limits": {},
       "daily_limit": 0,
       "period_seconds": 0,
       "parent_id": "",
-      "signature": "ed25519:91zeVUILmcYTO1MtnSiAlJ1J6jS8gHnsktnfHjkAwU7ZEkfSQwkXjoRjoYB6Nw1oy/uPO+nfFScl6YUFhf2XDw==",
+      "signature": "ed25519:66SjJUHQi/q4jkNBRwLSzUVWbFxhBK6oiV1//fCNbetDC/PfEGv3PTduC2w86qbIXiZnIa2zaAI+xgPOFoO3Dw==",
       "valid": true,
       "revoked": false,
       "consumed": 4500,
@@ -139,7 +139,7 @@
       "remaining_today": null
     }
   ],
-  "device_public_key": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAeu8fGx2Aq8hamiqauP0V3xuMizkKnrW7lKg2gwFvRe4=\n-----END PUBLIC KEY-----\n",
+  "device_public_key": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA5mIh5xMFfiKsRQpkmjQgRQPqlYG+XGGGe3DHSwp5PLA=\n-----END PUBLIC KEY-----\n",
   "verify": {
     "receipt": "HMAC-SHA256 over json.dumps(receipt minus signature, sort_keys=True, separators=(',',':')); prev_hash must equal the previous signature; genesis is 64 zeros",
     "mandate": "Ed25519 over json.dumps(mandate minus signature, sort_keys=True, separators=(',',':')) with device_public_key",

@@ -29,18 +29,20 @@ from a document.
 undefended — 0% executed on *every* arm of the general corpus. That's the first line of defence, and it is
 not enough. The gap is the **confused deputy**: the owner asks to pay a real invoice, and a document
 supplies the payee. There the helpful model executes **25% undefended, 37.5% prompt-only, 50%
-provenance-only — and 0% with the full gate**, with 0% false refusals. Authority is what's left when
-alignment is trying to help.
+provenance-only — and 0% with the full gate**, with 0% false refusals. On a **frontier-class model
+(DeepSeek-chat)** the same attack executes **50% undefended and 0% behind the gate**, with 18/18 receipts.
+Authority is what's left when alignment is trying to help.
 
 | Evidence (committed) | Result |
 |---|---|
 | Confused-deputy corpus, Muse Spark 1.3 | **25% → 37.5% → 50% → 0%** with the full gate, 0% false refusals |
+| Same corpus, **frontier-class DeepSeek-chat** | undefended **50%** executed → **0%** with the gate, 0% false refusals, **18/18 receipts** (`results-frontier/`) |
 | Second model build / final-code reproduction | **0%** executed; 16/16 receipts, chain intact |
 | Forged sensor signals | **6/6 → 0/6** with a signed bus |
-| Cross-model audit | same gate and verifier for Muse Spark + a local model → [`results-cross-model/`](results-cross-model/), browser-verified |
+| Cross-model audit | same gate and verifier for Muse Spark + **DeepSeek** → [`results-cross-model/`](results-cross-model/), browser-verified |
 | Meta stack | Muse Spark + Muse Wonder + **Muse Voice Transcribe** + **SAM 3.1** grounding (`results-sam/`, drawn in the live overlay) |
 | Spoken-command path | real ASR transcript → voice check → gate: **executed under R6**, receipt written (`results/voice-e2e.json`) |
-| Voice channel (human study) | owner 3/3 · **2/12 impostors accepted (16.7% FAR)** at the demo threshold; fixed 0.10 is exploratory (`results/voice-study-human.json`) |
+| Voice channel (human study) | owner 3/3 · **0/12 impostors accepted** at the capped demo threshold (0.10) on the pilot set, and **0/12 on 12 unseen speakers** (`results/voice-study-human-heldout.json`); uncapped pilot was 2/12 |
 | Latency (measured) | constitution **0.001 ms** · dry-run **4.3 ms** · HTTP command **12.8 ms** · OCR **156 ms** (`results/latency.json`) |
 | Engineering | **172 tests**, 67-check self-audit, CI (tests + Docker) |
 
@@ -71,7 +73,7 @@ docker build -t only-you-demo . && docker run --rm -p 8000:8000 only-you-demo
 
 - **SAM 3.1 grounding:** [`docs/sam.md`](docs/sam.md) — object boxes on the scene channel; text-region masks are roadmap.
 - **Cross-model audit:** [`docs/cross-model.md`](docs/cross-model.md) — one constitution, per-model bundles, one verifier; `make cross-model`.
-- **Frontier adapter:** [`docs/frontier.md`](docs/frontier.md) — the same gate for OpenAI/Gemini/Claude/local models; add a key and `make frontier-eval`.
+- **Frontier result:** [`docs/frontier.md`](docs/frontier.md) — DeepSeek-chat on the same corpus: **50% → 0%**, 18/18 receipts; adapter also supports OpenAI/Gemini/Claude/OpenRouter/local.
 - **Hiring memo:** [`docs/for-meta.md`](docs/for-meta.md) — what the layer makes possible, the real-model
   numbers, and what I would build next with Meta.
 - **Submission sheet:** [`docs/submission-final.md`](docs/submission-final.md) — verified links and fields.
@@ -344,7 +346,7 @@ false refusals. Raw results: [`results-real/`](results-real/benchmark.md),
 | Provenance routing, constitution, action gate | implemented, tested |
 | Signed mandates + offline merchant verification | implemented (Ed25519), tested |
 | Receipts + hash chain + undo | implemented, tested |
-| Local voice check (MFCC) | implemented; **not anti-spoofing** — a cloned voice passes; human FAR **2/12 (16.7%)** in the public-corpus study |
+| Local voice check (MFCC) | implemented; **not anti-spoofing** — a cloned voice passes; human FAR **0/12** with the capped threshold on pilot + 12 unseen speakers (uncapped pilot: 2/12) |
 | Voice transcription | **Muse Voice Transcribe** when a key is set (`results/voice-asr.json`); the spoken command then passes the voice check and gate (`results/voice-e2e.json`) |
 | Scene reading | **Muse Wonder** when a key is set (text + approximate boxes; 15/15, 0.0% CER on a synthetic sample); **tesseract** fallback offline |
 | Page extraction (visible + hidden) | implemented (regex DOM classifier) |

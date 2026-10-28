@@ -41,7 +41,7 @@ PAGE_KEY = {
     "The authority model": ("0% / 0%", "attacks executed / false refusals at the full gate"),
     "The Meta stack": ("4 models", "one authority layer; each model has a committed artifact"),
     "What the evidence proves (1)": ("18/18", "receipts verified on the hard corpus; 99 live calls"),
-    "What the evidence proves (2)": ("2/12", "human false accepts on LibriSpeech; 6/6 → 0/6 forged sensors"),
+    "What the evidence proves (2)": ("50% → 0%", "frontier DeepSeek: 50% → 0%; human FAR 0/12 capped"),
     "The demo, beat by beat": ("179 s", "a four-second contrast opens the film"),
     "The presentation kit": ("1 · 2 · 10", "brief pages · report pages · deck slides"),
     "Run it": ("make judge", "172 tests, 67-check audit and a live smoke in ~25 s"),
@@ -329,7 +329,9 @@ def build(check_only: bool = False) -> int:
       <li><b>172 tests</b> · audit <b>67/67</b> · CI green (tests + Docker)</li>
       <li><b>179 s</b> film · 1-page brief · 2-page report · 10-slide deck</li>
       <li><b>Four Meta models</b>, each with a committed artifact</li>
-      <li>Human voice study: owner 3/3 · <b>2/12 FAR</b> at the demo threshold</li>
+      <li><b>Frontier DeepSeek:</b> 50% undefended → <b>0%</b> gated, 18/18 receipts</li>
+      <li>Frontier DeepSeek: <b>50% → 0%</b>, 18/18 receipts</li>
+      <li>Human voice study: owner 3/3 · <b>0/12 FAR</b> at capped 0.10 (pilot + held-out)</li>
     </ul></div>
     <div><h3>How to use this book</h3><ul>
       <li>Every page ends with <b>EDIT · BUILD · PROOF</b>: the file, the command, the artifact.</li>

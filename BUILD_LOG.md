@@ -425,6 +425,17 @@ item below was built on top of it.
 - Thumbnail source moved into the repo (`docs/assets/youtube-thumb.html`, `make thumb`).
 - README/submission/preflight linked; rebuild `make handbook`.
 
+**Frontier A-vs-D with DeepSeek + capped voice threshold + new film opening**
+- **DeepSeek-chat** key arrived; added the provider preset and ran the real 8/12 confused-deputy corpus:
+  undefended **50%** executed → full gate **0%**, **0% false refusals**, **18/18 receipts** (`results-frontier/`,
+  40 calls, 54 s). This closes the "no frontier A-vs-D result" gap; the film and contrast clip were re-cut with
+  that opening.
+- Voice threshold capped at **0.10** (`VOICE_MAX_THRESHOLD`): pilot LibriSpeech set 3/3 owner, **0/12 FAR**
+  (was 2/12 uncapped); **held-out 12 unseen speakers 0/12** (`results/voice-study-human-heldout.json`). The
+  distinction between pilot-informed cap and held-out check is stated everywhere.
+- Cross-model bundle rebuilt as **Muse Spark + DeepSeek**, browser-verified; docs/report/brief/deck/handbook
+  updated. Report 2 pages, brief 1, deck 10, handbook 18.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
