@@ -81,7 +81,7 @@ a{color:#9ecbff}
   <div class="grid" style="grid-template-columns:repeat(4,1fr)">
     <div class="card"><h3>1 · Inputs</h3><p>Mic (Muse Wonder transcription), camera (Muse Wonder scene), page, document — each tagged by where it came from.</p></div>
     <div class="card"><h3>2 · Labels</h3><p>Only the enrolled voice is a command channel. Everything else is data.</p></div>
-    <div class="card"><h3>3 · Gate</h3><p>Constitution rules, an Ed25519 mandate with a live spend budget, or an explicit ask — revocable in one click. A merchant terminal verifies the mandate offline before charging. The model only proposes — and you can dry-run any action before it executes.</p></div>
+    <div class="card"><h3>3 · Gate</h3><p>An editable constitution (toggle rules, dry-run instantly), an Ed25519 mandate with a live spend budget, or an explicit ask — revocable in one click. A merchant terminal verifies the mandate offline before charging. The model only proposes — and you can dry-run any action before it executes.</p></div>
     <div class="card"><h3>4 · Receipts</h3><p>Every action and refusal is signed and chained — and one click exports the bundle for offline verification — and every receipt has a public verify link. Evidence, never instructions.</p></div>
   </div>
 
@@ -105,13 +105,13 @@ a{color:#9ecbff}
     <tr><td>Muse Spark — document attacks (n=8)</td><td class="ok">A 25% · B 37.5% · C 50% · <b>D 0%</b> executed · 0% false refusals</td></tr>
     <tr><td>Muse Spark — general corpus (n=20)</td><td class="warn">0% executed all arms · D false refusals 5% · 36/36 receipts</td></tr>
     <tr><td>Muse Spark contributor build — document attacks (n=8)</td><td class="ok">A 50% · B 37.5% · C 50% · <b>D 0%</b> executed · 0% false refusals</td></tr>
-    <tr><td>Tests</td><td class="ok">134 passing · audit green</td></tr>
+    <tr><td>Tests</td><td class="ok">136 passing · audit green</td></tr>
   </table>
 
   <h2>Run it</h2>
   <pre><code>git clone https://github.com/sushant-me/only-you
 cd only-you
-make test     # 134 tests
+make test     # 136 tests
 make demo     # benign invoice executed; look-alike invoice blocked
 make web      # http://127.0.0.1:8000</code></pre>
 

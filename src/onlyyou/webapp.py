@@ -286,7 +286,7 @@ class DemoService:
 
     # -- state -------------------------------------------------------------
     def state(self) -> dict[str, Any]:
-        rules = [{"id": r.id, "description": r.description} for r in self.agent.constitution.rules]
+        rules = self.agent.constitution.to_dicts()
         return {
             "receipts": self.ledger.to_dicts(),
             "summary": self.ledger.summary(),
@@ -586,6 +586,12 @@ class DemoService:
             ),
             "would_execute": verdict.decision.value == "allow",
         }
+
+    def set_rule_enabled(self, payload: dict[str, Any]) -> dict[str, Any]:
+        rule_id = str(payload.get("rule_id", ""))
+        enabled = bool(payload.get("enabled", True))
+        self.agent.constitution.set_enabled(rule_id, enabled)
+        return {"ok": True, "rule_id": rule_id, "enabled": enabled, "state": self.state()}
 
     def revoke_all_mandates(self) -> dict[str, Any]:
         """Panic button: kill every delegation at once, keep the receipts."""
@@ -891,6 +897,8 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
                 self._json(service.simulate(payload))
             elif path == "/api/checkout":
                 self._json(service.checkout(payload))
+            elif path == "/api/policy":
+                self._json(service.set_rule_enabled(payload))
             elif path == "/api/frame":
                 self._json(service.frame(payload))
             elif path == "/api/task":

@@ -278,7 +278,8 @@ function renderState(state) {
 
   const rules = $("#rules");
   rules.innerHTML = (state.rules || [])
-    .map((r) => `<li><b>${r.id}</b> — ${r.description}</li>`)
+    .map((r) => `<li class="${r.enabled ? "" : "off"}"><b>${r.id}</b> — ${r.description}
+      <button class="mini" data-rule-toggle="${r.id}" data-enabled="${r.enabled ? "false" : "true"}">${r.enabled ? "disable" : "enable"}</button></li>`)
     .join("");
 }
 

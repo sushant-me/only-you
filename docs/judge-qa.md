@@ -40,6 +40,11 @@ Yes — `GET /api/export` (or **export audit** in the UI) returns a single JSON 
 HMAC chain, mandates with Ed25519 signatures, the device public key, chain head and instructions.
 `python3 tools/verify_audit.py audit.json` re-checks everything offline and fails if one byte is changed.
 
+**Can I change the policy itself?**
+Yes — the constitution is editable at runtime (enable/disable any rule from the UI, `POST /api/policy`).
+Pair it with the dry run: disable `R1-payee-not-contact` and the same payment proposal moves from DENY to
+ASK before anything executes. `reset` restores the defaults.
+
 **Can I test a policy change before it ships?**
 Yes — the demo has a **Policy dry run** panel (and `/api/simulate`): it resolves a proposed action through
 provenance, constitution and mandates and returns the decision, rule, reason and remaining budget without
@@ -75,7 +80,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (134 tests + live-server smoke + audit) then `make web` →
+`make judge` (136 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 

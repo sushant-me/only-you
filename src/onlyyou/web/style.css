@@ -255,6 +255,14 @@ letter-spacing:.06em;padding:3px 7px;border-radius:6px;border:1px solid #2a3448;
 .sim-reason{color:#c7cedb;margin-top:4px}
 .sim-meta{color:var(--muted);margin-top:3px;font-family:ui-monospace,monospace;font-size:10.5px}
 
-#btn-export{float:right;margin-top:-2px}
+.rail-tools{display:flex;gap:8px;justify-content:flex-end;margin:-4px 0 10px}
+#btn-export{margin-top:0}
 
 a.mini{color:#7c9cff;text-decoration:none;border-bottom:1px dotted #7c9cff}
+
+#rules li.off{opacity:.55}
+#rules li.off b,#rules li.off{text-decoration:line-through}
+#rules li{position:relative;padding-right:74px;margin-bottom:4px}
+#rules li button.mini{position:absolute;right:0;top:0}
+
+

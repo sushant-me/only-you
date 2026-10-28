@@ -78,6 +78,26 @@ class TestDemoService(unittest.TestCase):
         self.assertEqual(result["verdict"]["rule"], "R0-source-not-authoritative")
         self.assertFalse(result["would_execute"])
 
+
+    def test_policy_rule_can_be_disabled_and_reenabled(self):
+        self.svc.set_rule_enabled({"rule_id": "R1-payee-not-contact", "enabled": False})
+        rules = {r["id"]: r for r in self.svc.state()["rules"]}
+        self.assertFalse(rules["R1-payee-not-contact"]["enabled"])
+        result = self.svc.simulate({
+            "action": {"kind": "pay", "params": {"payee": "scammer", "amount": 500}},
+        })
+        self.assertNotEqual(result["verdict"]["rule"], "R1-payee-not-contact")
+
+        self.svc.set_rule_enabled({"rule_id": "R1-payee-not-contact", "enabled": True})
+        result = self.svc.simulate({
+            "action": {"kind": "pay", "params": {"payee": "scammer", "amount": 500}},
+        })
+        self.assertEqual(result["verdict"]["rule"], "R1-payee-not-contact")
+
+    def test_unknown_rule_rejected(self):
+        with self.assertRaises(ValueError):
+            self.svc.set_rule_enabled({"rule_id": "R99-nope", "enabled": False})
+
     def test_state_reports_model_mode(self):
         state = self.svc.state()
         self.assertEqual(state["model"], "simulated")

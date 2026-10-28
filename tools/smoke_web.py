@@ -87,6 +87,12 @@ def main() -> int:
         })
         assert checkout["ok"] and checkout["payment"]["outcome"] == "executed", checkout
 
+        toggled = post("/api/policy", {"rule_id": "R3-unlock-requires-confirmation", "enabled": False})
+        assert toggled["state"]["rules"], toggled
+        rule = next(r for r in toggled["state"]["rules"] if r["id"] == "R3-unlock-requires-confirmation")
+        assert rule["enabled"] is False, rule
+        post("/api/policy", {"rule_id": "R3-unlock-requires-confirmation", "enabled": True})
+
         revoked = post("/api/mandate/revoke-all", {})
         assert revoked["ok"] is True and revoked["revoked"], revoked
         assert all(not m["valid"] for m in revoked["state"]["mandates"])

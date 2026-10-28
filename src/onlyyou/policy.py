@@ -135,6 +135,21 @@ DEFAULT_RULES: list[Rule] = [
 class Constitution:
     def __init__(self, rules: Iterable[Rule] | None = None) -> None:
         self.rules = list(rules) if rules is not None else list(DEFAULT_RULES)
+        self.disabled: set[str] = set()
+
+    def set_enabled(self, rule_id: str, enabled: bool) -> None:
+        if not any(rule.id == rule_id for rule in self.rules):
+            raise ValueError(f"unknown rule: {rule_id}")
+        if enabled:
+            self.disabled.discard(rule_id)
+        else:
+            self.disabled.add(rule_id)
+
+    def to_dicts(self) -> list[dict[str, Any]]:
+        return [
+            {"id": rule.id, "description": rule.description, "enabled": rule.id not in self.disabled}
+            for rule in self.rules
+        ]
 
     def add(self, rule: Rule) -> "Constitution":
         self.rules.append(rule)
@@ -181,6 +196,8 @@ class Constitution:
 
         verdicts: list[Verdict] = []
         for rule in self.rules:
+            if rule.id in self.disabled:
+                continue
             v = rule.check(action, ctx)
             if v is not None:
                 verdicts.append(v)
