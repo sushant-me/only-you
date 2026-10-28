@@ -284,6 +284,11 @@ item below was built on top of it.
   import, webhook spoofing, an exposed demo server and synthetic narration — with status per row.
 - `docs/report.md`/PDF updated: four real runs (including the final-code reproduction), rebuilt to 2 pages.
 
+**One-page executive brief**
+- `docs/brief.md` → `docs/brief.pdf` (1 page): problem, three primitives, evidence table, commercial why,
+  30-second try path, honest line, and the ask. Linked from the landing page, README and submission
+  sheet; `make brief` regenerates it.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

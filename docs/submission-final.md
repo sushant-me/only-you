@@ -63,6 +63,7 @@ Both are in the roadmap in `for-meta.md`, not claimed as shipped.
 - Repo: https://github.com/sushant-me/only-you
 - Live page: https://sushant-me.github.io/only-you/
 - 3-minute demo: **<YouTube unlisted URL>** (file: `docs/demo-3min.mp4`, 2:55, narrated + captioned)
+- Brief: https://github.com/sushant-me/only-you/blob/main/docs/brief.pdf
 - Report: https://github.com/sushant-me/only-you/blob/main/docs/report.pdf
 - Real runs: `results-real/`, `results-real-doc/`, `results-real-doc-contributor/`
 - Hiring memo: https://github.com/sushant-me/only-you/blob/main/docs/for-meta.md

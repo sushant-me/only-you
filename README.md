@@ -23,6 +23,7 @@ from a document.
 - 20-second agentic task clip: [`docs/demo-task-clip.mp4`](docs/demo-task-clip.mp4)
 - Voice-over mux: `make voice VOICE=narration.wav` · generative B-roll feasibility: [`docs/omni-video.md`](docs/omni-video.md)
 - 82-second silent walkthrough (fallback): [`docs/demo-fallback.mp4`](docs/demo-fallback.mp4)
+- **1-page executive brief:** [`docs/brief.pdf`](docs/brief.pdf) (problem → evidence → ask)
 - 2-page report: [`docs/report.pdf`](docs/report.pdf) · benchmark: [`results/benchmark.md`](results/benchmark.md)
 - Honest failure list: [`docs/limitations.md`](docs/limitations.md)
 - Post-build reproduction on the final code (live Muse Spark, 8 attacks / 8 benign): all arms 0%, **16/16 receipts, chain ok**, 99 calls — [`results-real-verify/`](results-real-verify/)

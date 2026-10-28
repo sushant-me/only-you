@@ -41,6 +41,8 @@ LOCAL = [
     "docker-compose.yml",
     "docs/deploy.md",
     "docs/img/invoice-scene.jpg",
+    "docs/brief.pdf",
+    "docs/brief.md",
     "docs/report.pdf",
     "docs/pitch.pdf",
     "docs/threat-model.md",
