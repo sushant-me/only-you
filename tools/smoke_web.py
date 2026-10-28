@@ -71,11 +71,20 @@ def main() -> int:
         asked = post("/api/ask", {"question": "what did you do today?"})
         assert "carried out" in asked["answer"]
 
+        mandate_state = next(m for m in state["state"]["mandates"] if m["id"] == state["mandate"]["id"])
+        assert mandate_state["consumed"] == 4500, mandate_state
+        assert mandate_state["remaining"] == 500, mandate_state
+
         merchant = post("/api/merchant-verify", {
             "id": state["mandate"]["id"],
             "action": {"kind": "pay", "params": {"payee": "electrician", "amount": 100}},
         })
         assert merchant["ok"] is True and merchant["algorithm"] == "ed25519"
+        assert merchant["remaining"] == 500, merchant
+
+        revoked = post("/api/mandate/revoke-all", {})
+        assert revoked["ok"] is True and revoked["revoked"], revoked
+        assert all(not m["valid"] for m in revoked["state"]["mandates"])
         bad_audio = post("/api/voice/transcribe", {"clip": "not-audio"})
         assert "error" in bad_audio, bad_audio
 

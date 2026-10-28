@@ -228,7 +228,15 @@ item below was built on top of it.
   (pass 2) while copying the video stream, padding/trimming to 175 s. Tested on the owner's sample:
   output 175.000 s, integrated −17.1 LUFS (gated, includes trailing silence), AAC 160k.
 
-**Tests:** 119 pass (`make test`).
+**Spend-aware mandates + revoke-all**
+- Backend: `MandateLedger.refund()`; undo restores the budget; receipts record `remaining_after`;
+  merchant verification returns consumed/remaining; `/api/mandate/revoke-all` kills every delegation
+  while keeping receipts.
+- UI: mandate card now shows a spend bar (`spent / remaining of cap`), a live count on the **revoke all**
+  button, and the merchant toast reports the remaining budget.
+- 3 new tests (undo refund, revoke-all, merchant remaining); 122 total.
+
+**Tests:** 122 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
 real-model benchmark. The only missing input is `META_API_BASE` / `META_API_KEY` / `MUSE_MODEL`.

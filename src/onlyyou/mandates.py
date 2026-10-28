@@ -175,6 +175,10 @@ class MandateLedger:
     def consume(self, mandate: Mandate, amount: int) -> None:
         self.spent[mandate.id] = self.spent.get(mandate.id, 0) + int(amount)
 
+    def refund(self, mandate: Mandate, amount: int) -> None:
+        """Undo an executed spend, so the mandate's remaining budget is restored."""
+        self.spent[mandate.id] = max(0, self.spent.get(mandate.id, 0) - int(amount))
+
     # -- merchant-side check (the commerce extension) ----------------------
     def verify_for_merchant(
         self, mandate: Mandate, action: dict[str, Any], now: float | None = None

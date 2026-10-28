@@ -160,6 +160,8 @@ class Agent:
                     "max_amount": verdict.evidence.get("max_amount"),
                     "expires_at": verdict.evidence.get("expires_at"),
                 }
+                if mandate is not None:
+                    evidence["mandate"]["remaining_after"] = self.mandates.remaining(mandate)
             if arm is Arm.D_FULL and self.ledger is not None and not action.is_none():
                 receipt = self.ledger.append(
                     action=action.to_dict(),

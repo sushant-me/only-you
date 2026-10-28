@@ -242,3 +242,9 @@ border:1px solid #2a3448;color:#9ecbff;cursor:pointer}button.mini:hover{border-c
 letter-spacing:.06em;padding:3px 7px;border-radius:6px;border:1px solid #2a3448;color:#8b95a8}
 .model-badge.live{color:#2fd18c;border-color:#2fd18c55}
 .model-badge.sim{color:#f5b544;border-color:#f5b54455}
+
+.m-bar{height:5px;border-radius:3px;background:#1a2231;margin-top:7px;overflow:hidden}
+.m-fill{height:100%;background:linear-gradient(90deg,#7c5cff,#2fd18c);transition:width .25s}
+.m-spend{font-size:11px;color:var(--muted);margin-top:4px}
+.m-spend b{color:#e6ebf5}
+#btn-revoke-all{float:right;margin-top:-2px}

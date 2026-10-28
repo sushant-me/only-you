@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 119 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 122 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -80,6 +80,14 @@ may issue them, what they may authorise, and what can be proven afterwards.
    can verify the owner's delegation offline with only the public key — no shared secret, no call to
    the platform. In the demo, each mandate has a **verify at merchant** button; the CLI
    `python3 tools/mandate_demo.py` does the same check offline.
+
+### Spend-aware mandates
+
+![Mandate budget](docs/img/spend-budget.png)
+
+The mandate card is a live budget: `spent / remaining of cap`, a progress bar, and one click to
+**revoke every delegation** while keeping the receipts. Undo refunds the budget, so an accidental
+payment does not silently consume authority. Merchant verification returns the remaining budget too.
 
 ### Voice channel
 
@@ -215,7 +223,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 119 tests
+make gen test          # corpus + 122 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -228,7 +236,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           119 tests
+tests/           122 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

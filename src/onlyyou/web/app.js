@@ -240,12 +240,20 @@ function renderState(state) {
   const mandateList = $("#mandate-list");
   mandateList.innerHTML = (state.mandates || [])
     .map(
-      (m) => `<div class="mandate">
-        <div class="m-top"><span>${m.scope} · ${m.payees.join(", ")} · ≤ ${m.max_amount}</span>
+      (m) => {
+        const max = Number(m.max_amount || 0);
+        const consumed = Number(m.consumed || 0);
+        const remaining = Number(m.remaining ?? Math.max(0, max - consumed));
+        const pct = max > 0 ? Math.min(100, Math.round((consumed / max) * 100)) : 0;
+        return `<div class="mandate">
+        <div class="m-top"><span>${m.scope} · ${m.payees.join(", ")} · ≤ ${max}</span>
         <span>${m.valid ? "valid" : m.revoked ? "revoked" : "expired"}</span></div>
+        ${max > 0 ? `<div class="m-bar"><div class="m-fill" style="width:${pct}%"></div></div>
+        <div class="m-spend">spent ${consumed} · remaining <b>${remaining}</b> of ${max}</div>` : ""}
         <div class="m-meta">${m.id} · ${m.note || ""} · exp ${new Date(m.expires_at * 1000).toLocaleString()}</div>
-        ${m.valid && m.payees.length ? `<button class="mini" data-merchant="${m.id}" data-payee="${m.payees[0]}" data-amount="${Math.min(500, m.remaining)}">verify at merchant</button>` : ""}
-      </div>`
+        ${m.valid && m.payees.length ? `<button class="mini" data-merchant="${m.id}" data-payee="${m.payees[0]}" data-amount="${Math.min(500, remaining)}">verify at merchant</button>` : ""}
+      </div>`;
+      }
     )
     .join("") || `<div class="receipt" style="color:var(--muted)">no mandates yet</div>`;
 
@@ -256,6 +264,13 @@ function renderState(state) {
     badge.title = state.model_mode === "meta"
       ? "Muse Spark through the Meta Model API — proposals are gated the same way"
       : "simulated model (no META_API_* set). The gate is unchanged; the proposer is not Muse.";
+  }
+
+  const revokeAll = $("#btn-revoke-all");
+  if (revokeAll) {
+    const active = (state.mandates || []).filter((m) => m.valid).length;
+    revokeAll.disabled = active === 0;
+    revokeAll.textContent = active ? `revoke all (${active})` : "revoke all";
   }
 
   const rules = $("#rules");
@@ -647,7 +662,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (taskBtn) taskBtn.addEventListener("click", runTask);
 
   document.addEventListener("click", async (ev) => {
-    const merchant = ev.target.getAttribute && ev.target.getAttribute("data-merchant");
+    if (ev.target.id === "btn-revoke-all") {
+    if (!window.confirm("Revoke every mandate? Receipts stay; delegation stops.")) return;
+    try {
+      const data = await post("/api/mandate/revoke-all", {});
+      renderState(data.state);
+      toast(`revoked ${data.revoked.length} mandate${data.revoked.length === 1 ? "" : "s"}`);
+    } catch (err) {
+      toast("could not revoke mandates");
+    }
+    return;
+  }
+  const merchant = ev.target.getAttribute && ev.target.getAttribute("data-merchant");
     if (merchant) {
       try {
         const data = await post("/api/merchant-verify", {
@@ -660,7 +686,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             },
           },
         });
-        toast(data.ok ? `MERCHANT VERIFIED — ${data.reason}` : `merchant rejected — ${data.reason}`);
+        toast(data.ok
+          ? `MERCHANT VERIFIED — ${data.algorithm} · remaining ${data.remaining ?? "?"}`
+          : `merchant rejected — ${data.reason}`);
       } catch (err) {
         toast(`merchant check failed: ${err.message}`);
       }

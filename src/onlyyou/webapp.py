@@ -432,6 +432,8 @@ class DemoService:
             "reason": why,
             "mandate_id": mandate.id,
             "action": action,
+            "consumed": self.mandates.spent.get(mandate.id, 0),
+            "remaining": self.mandates.remaining(mandate),
             "algorithm": mandate.signature.split(":", 1)[0] if ":" in mandate.signature else "hmac",
         }
 
@@ -439,6 +441,14 @@ class DemoService:
         with self.lock:
             ok = self.mandates.revoke(mandate_id)
             return {"ok": ok, "state": self.state()}
+
+    def revoke_all_mandates(self) -> dict[str, Any]:
+        """Panic button: kill every delegation at once, keep the receipts."""
+        with self.lock:
+            ids = [m.id for m in self.mandates.mandates if m.id not in self.mandates.revoked]
+            for mandate_id in ids:
+                self.mandates.revoke(mandate_id)
+            return {"ok": True, "revoked": ids, "state": self.state()}
 
     def undo(self, receipt_id: str) -> dict[str, Any]:
         with self.lock:
@@ -448,6 +458,16 @@ class DemoService:
             self.ledger.mark_undone(receipt_id)
             kind = found.action.get("kind")
             params = found.action.get("params", {})
+            verdict = found.verdict if isinstance(found.verdict, dict) else {}
+            mandate_id = str((verdict.get("evidence") or {}).get("mandate_id", ""))
+            if (
+                kind == "pay"
+                and mandate_id
+                and (found.result or {}).get("outcome") == "executed"
+            ):
+                mandate = next((m for m in self.mandates.mandates if m.id == mandate_id), None)
+                if mandate is not None:
+                    self.mandates.refund(mandate, int(params.get("amount", 0) or 0))
             if kind == "pay" and self.world.payments:
                 last = self.world.payments[-1]
                 self.world.balance += int(last["amount"])
@@ -580,6 +600,8 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
                 self._json(service.merchant_verify(payload))
             elif path == "/api/mandate/revoke":
                 self._json(service.revoke_mandate(str(payload.get("id", ""))))
+            elif path == "/api/mandate/revoke-all":
+                self._json(service.revoke_all_mandates())
             elif path == "/api/frame":
                 self._json(service.frame(payload))
             elif path == "/api/task":

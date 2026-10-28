@@ -18,6 +18,12 @@ full gate** (contributor build: 50% → 0%), with 0% false refusals and 18/18 re
 Because the owner really did ask to pay an invoice; the document supplied the payee. Alignment is
 trained to be helpful, not to check authority. That is the gap this layer closes.
 
+**Does it track spend against the mandate?**
+Yes. Each executed payment consumes the mandate's budget; the UI shows spent/remaining with a progress
+bar, the receipt records `remaining_after`, undo refunds the budget, and one click revokes every
+delegation while keeping the receipts. A payment beyond the remaining budget is no longer covered by the
+mandate — it falls back to the constitution's ask/confirm path.
+
 **Is the HMAC ledger secret in the repo a weakness?**
 It is a demo secret, stated as such. Receipts are tamper-evident and chained; production would root the
 key in the device secure element. The merchant path already uses real Ed25519 public-key verification.
@@ -48,7 +54,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (119 tests + live-server smoke + audit) then `make web` →
+`make judge` (122 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 

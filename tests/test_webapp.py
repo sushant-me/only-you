@@ -15,6 +15,49 @@ class TestDemoService(unittest.TestCase):
     def setUp(self):
         self.svc = DemoService()
 
+
+    def test_undo_refunds_mandate_budget(self):
+        self.svc.grant_mandate({"payees": ["electrician"], "max_amount": 5000})
+        paid = self.svc.command({
+            "speaker": "owner", "channel": "document", "text": "pay this invoice",
+            "payload": "INVOICE #7781 - ELECTRICIAN - 4500",
+            "invoice": {"payee": "electrician", "amount": 4500}, "confirms": True,
+        })
+        self.assertEqual(paid["outcome"], "executed")
+        mandate_id = paid["receipt"]["verdict"]["evidence"]["mandate_id"]
+        self.assertEqual(paid["receipt"]["evidence"]["mandate"]["remaining_after"], 500)
+        mandate = next(m for m in self.svc.state()["mandates"] if m["id"] == mandate_id)
+        self.assertEqual((mandate["consumed"], mandate["remaining"]), (4500, 500))
+
+        undo = self.svc.undo(paid["receipt"]["id"])
+        self.assertTrue(undo["ok"])
+        mandate = next(m for m in undo["state"]["mandates"] if m["id"] == mandate_id)
+        self.assertEqual((mandate["consumed"], mandate["remaining"]), (0, 5000))
+
+    def test_revoke_all_mandates(self):
+        self.svc.grant_mandate({"payees": ["electrician"], "max_amount": 100})
+        self.svc.grant_mandate({"payees": ["electrician"], "max_amount": 200})
+        result = self.svc.revoke_all_mandates()
+        self.assertEqual(len(result["revoked"]), 2)
+        self.assertTrue(all(not m["valid"] for m in result["state"]["mandates"]))
+        self.assertTrue(all(m["revoked"] for m in result["state"]["mandates"]))
+
+    def test_merchant_verify_reports_remaining(self):
+        self.svc.grant_mandate({"payees": ["electrician"], "max_amount": 5000})
+        paid = self.svc.command({
+            "speaker": "owner", "channel": "document", "text": "pay this invoice",
+            "payload": "INVOICE #7781 - ELECTRICIAN - 4500",
+            "invoice": {"payee": "electrician", "amount": 4500}, "confirms": True,
+        })
+        mandate_id = paid["receipt"]["verdict"]["evidence"]["mandate_id"]
+        check = self.svc.merchant_verify({
+            "id": mandate_id,
+            "action": {"kind": "pay", "params": {"payee": "electrician", "amount": 100}},
+        })
+        self.assertTrue(check["ok"])
+        self.assertEqual(check["consumed"], 4500)
+        self.assertEqual(check["remaining"], 500)
+
     def test_state_reports_model_mode(self):
         state = self.svc.state()
         self.assertEqual(state["model"], "simulated")
