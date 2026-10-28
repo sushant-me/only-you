@@ -151,7 +151,11 @@ class Agent:
             verdict = self._verdict(action, labels, ctx, arm, mandate)
             outcome, tool_result = self._apply(action, verdict, scenario)
             if outcome == "executed" and mandate is not None and action.kind == "pay":
-                self.mandates.consume(mandate, int(action.params.get("amount", 0)))
+                self.mandates.consume(
+                    mandate,
+                    int(action.params.get("amount", 0)),
+                    payee=str(action.params.get("payee", "")),
+                )
             evidence = self._evidence(action, labels)
             evidence["proposed_by"] = "model"
             if verdict.evidence.get("mandate_id"):

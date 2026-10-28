@@ -26,6 +26,7 @@ import hmac
 import json
 import secrets
 import time
+from datetime import datetime, timezone
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
@@ -43,6 +44,9 @@ class Mandate:
     expires_at: float = 0.0
     nonce: str = ""
     note: str = ""
+    # Optional sub-limits, signed with the rest of the mandate.
+    payee_limits: dict[str, int] = field(default_factory=dict)
+    daily_limit: int = 0
     signature: str = ""
 
     def payload(self) -> dict[str, Any]:
@@ -54,7 +58,12 @@ class Mandate:
         return json.dumps(self.payload(), sort_keys=True, separators=(",", ":"))
 
     def covers(
-        self, action: dict[str, Any], now: float | None = None, spent: int = 0
+        self,
+        action: dict[str, Any],
+        now: float | None = None,
+        spent: int = 0,
+        spent_payee: int = 0,
+        spent_today: int = 0,
     ) -> tuple[bool, str]:
         """Does this mandate authorise the given action, given prior spend?"""
         now = time.time() if now is None else now
@@ -74,6 +83,17 @@ class Mandate:
                 return False, (
                     f"amount {amount} exceeds remaining mandate budget {remaining} "
                     f"(cap {self.max_amount}, spent {spent})"
+                )
+            payee_limit = self.payee_limits.get(payee)
+            if payee_limit is not None and amount > payee_limit - spent_payee:
+                return False, (
+                    f"amount {amount} exceeds @{payee} sub-limit {payee_limit} "
+                    f"(spent {spent_payee})"
+                )
+            if self.daily_limit and amount > self.daily_limit - spent_today:
+                return False, (
+                    f"amount {amount} exceeds daily sub-limit {self.daily_limit} "
+                    f"(spent today {spent_today})"
                 )
         return True, "within mandate"
 
@@ -96,6 +116,8 @@ class MandateLedger:
         self.mandates: list[Mandate] = []
         self.revoked: set[str] = set()
         self.spent: dict[str, int] = {}
+        self.spent_payee: dict[str, int] = {}
+        self.spent_by_day: dict[str, dict[str, int]] = {}
 
     @property
     def public_key_pem(self) -> str:
@@ -115,6 +137,8 @@ class MandateLedger:
         ttl_seconds: int = 24 * 3600,
         principal: str = "owner",
         note: str = "",
+        payee_limits: dict[str, int] | None = None,
+        daily_limit: int = 0,
         now: float | None = None,
     ) -> Mandate:
         now = time.time() if now is None else now
@@ -129,6 +153,8 @@ class MandateLedger:
             expires_at=now + ttl,
             nonce=secrets.token_hex(8),
             note=note,
+            payee_limits={str(k).lower(): int(v) for k, v in (payee_limits or {}).items()},
+            daily_limit=int(daily_limit),
         )
         if self.device_key is not None:
             m.signature = self.device_key.sign(m.canonical().encode())
@@ -163,7 +189,15 @@ class MandateLedger:
         for m in self.mandates:
             if not self.verify(m, now):
                 continue
-            ok, why = m.covers(action, now, self.spent.get(m.id, 0))
+            params = action.get("params") or {}
+            payee = str(params.get("payee", "")).lower() if action.get("kind") == "pay" else ""
+            ok, why = m.covers(
+                action,
+                now,
+                self.spent.get(m.id, 0),
+                self.consumed_payee(m, payee),
+                self.consumed_today(m, now),
+            )
             if ok:
                 return m, why
         return None, "no covering mandate"
@@ -172,12 +206,40 @@ class MandateLedger:
     def remaining(self, mandate: Mandate) -> int:
         return max(0, mandate.max_amount - self.spent.get(mandate.id, 0))
 
-    def consume(self, mandate: Mandate, amount: int) -> None:
-        self.spent[mandate.id] = self.spent.get(mandate.id, 0) + int(amount)
+    @staticmethod
+    def _day(now: float | None = None) -> str:
+        return datetime.fromtimestamp(now or time.time(), timezone.utc).date().isoformat()
 
-    def refund(self, mandate: Mandate, amount: int) -> None:
-        """Undo an executed spend, so the mandate's remaining budget is restored."""
-        self.spent[mandate.id] = max(0, self.spent.get(mandate.id, 0) - int(amount))
+    def consumed_payee(self, mandate: Mandate, payee: str) -> int:
+        return self.spent_payee.get(f"{mandate.id}|{payee.lower().lstrip('@')}", 0)
+
+    def consumed_today(self, mandate: Mandate, now: float | None = None) -> int:
+        return self.spent_by_day.get(mandate.id, {}).get(self._day(now), 0)
+
+    def consume(
+        self, mandate: Mandate, amount: int, payee: str = "", now: float | None = None
+    ) -> None:
+        amount = int(amount)
+        self.spent[mandate.id] = self.spent.get(mandate.id, 0) + amount
+        if payee:
+            key = f"{mandate.id}|{payee.lower().lstrip('@')}"
+            self.spent_payee[key] = self.spent_payee.get(key, 0) + amount
+        day = self._day(now)
+        bucket = self.spent_by_day.setdefault(mandate.id, {})
+        bucket[day] = bucket.get(day, 0) + amount
+
+    def refund(
+        self, mandate: Mandate, amount: int, payee: str = "", now: float | None = None
+    ) -> None:
+        """Undo an executed spend, restoring total, per-payee and daily budgets."""
+        amount = int(amount)
+        self.spent[mandate.id] = max(0, self.spent.get(mandate.id, 0) - amount)
+        if payee:
+            key = f"{mandate.id}|{payee.lower().lstrip('@')}"
+            self.spent_payee[key] = max(0, self.spent_payee.get(key, 0) - amount)
+        day = self._day(now)
+        bucket = self.spent_by_day.setdefault(mandate.id, {})
+        bucket[day] = max(0, bucket.get(day, 0) - amount)
 
     # -- merchant-side check (the commerce extension) ----------------------
     def verify_for_merchant(
@@ -199,6 +261,10 @@ class MandateLedger:
                 "revoked": m.id in self.revoked,
                 "consumed": self.spent.get(m.id, 0),
                 "remaining": self.remaining(m),
+                "spent_today": self.consumed_today(m),
+                "remaining_today": (
+                    max(0, m.daily_limit - self.consumed_today(m)) if m.daily_limit else None
+                ),
             }
             for m in self.mandates
         ]
@@ -225,6 +291,8 @@ def merchant_verify(
         expires_at=float(mandate.get("expires_at", 0)),
         nonce=str(mandate.get("nonce", "")),
         note=str(mandate.get("note", "")),
+        payee_limits={str(k).lower(): int(v) for k, v in (mandate.get("payee_limits") or {}).items()},
+        daily_limit=int(mandate.get("daily_limit", 0) or 0),
         signature=str(mandate.get("signature", "")),
     )
     if not DeviceKey.verify(m.canonical().encode(), m.signature, public_pem):

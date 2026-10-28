@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 141 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 145 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -89,6 +89,11 @@ may issue them, what they may authorise, and what can be proven afterwards.
 The mandate card is a live budget: `spent / remaining of cap`, a progress bar, and one click to
 **revoke every delegation** while keeping the receipts. Undo refunds the budget, so an accidental
 payment does not silently consume authority. Merchant verification returns the remaining budget too.
+
+Mandates can also carry **signed sub-limits** below the cap — per-payee caps and a daily cap — enforced by
+the gate and by the merchant checkout, with undo restoring today's usage as well.
+
+![Signed sub-limits](docs/img/sub-limits.png)
 
 ### Merchant checkout
 
@@ -286,7 +291,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 141 tests
+make gen test          # corpus + 145 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -299,7 +304,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           141 tests
+tests/           145 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

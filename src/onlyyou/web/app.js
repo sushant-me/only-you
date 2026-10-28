@@ -248,11 +248,20 @@ function renderState(state) {
         const consumed = Number(m.consumed || 0);
         const remaining = Number(m.remaining ?? Math.max(0, max - consumed));
         const pct = max > 0 ? Math.min(100, Math.round((consumed / max) * 100)) : 0;
+        const subParts = [];
+        if (m.payee_limits && Object.keys(m.payee_limits).length) {
+          subParts.push(Object.entries(m.payee_limits).map(([p, v]) => `${p} ≤ ${v}`).join(" · "));
+        }
+        if (m.daily_limit) {
+          subParts.push(`daily ≤ ${m.daily_limit} · today ${m.spent_today || 0}`);
+        }
+        const subLine = subParts.length
+          ? `<div class="m-meta">sub-limits: ${subParts.join(" · ")}</div>` : "";
         return `<div class="mandate">
         <div class="m-top"><span>${m.scope} · ${m.payees.join(", ")} · ≤ ${max}</span>
         <span>${m.valid ? "valid" : m.revoked ? "revoked" : "expired"}</span></div>
         ${max > 0 ? `<div class="m-bar"><div class="m-fill" style="width:${pct}%"></div></div>
-        <div class="m-spend">spent ${consumed} · remaining <b>${remaining}</b> of ${max}</div>` : ""}
+        <div class="m-spend">spent ${consumed} · remaining <b>${remaining}</b> of ${max}</div>${subLine}` : ""}
         <div class="m-meta">${m.id} · ${m.note || ""} · exp ${new Date(m.expires_at * 1000).toLocaleString()}</div>
         ${m.valid && m.payees.length ? `<button class="mini" data-merchant="${m.id}" data-payee="${m.payees[0]}" data-amount="${Math.min(500, remaining)}">verify at merchant</button>` : ""}
       </div>`;

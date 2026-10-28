@@ -322,6 +322,20 @@ class DemoService:
         payees = [str(p).strip().lstrip("@").lower() for p in raw_payees if str(p).strip()]
         if not payees:
             raise ValueError("at least one payee is required")
+        raw_limits = payload.get("payee_limits") or {}
+        if not isinstance(raw_limits, dict):
+            raise ValueError("payee_limits must be an object")
+        try:
+            payee_limits = {
+                str(k).strip().lstrip("@").lower(): int(v) for k, v in raw_limits.items()
+            }
+            daily_limit = int(payload.get("daily_limit", 0) or 0)
+        except (TypeError, ValueError):
+            raise ValueError("payee_limits and daily_limit must be integers")
+        if any(limit <= 0 for limit in payee_limits.values()):
+            raise ValueError("payee limits must be positive")
+        if daily_limit < 0:
+            raise ValueError("daily_limit must be zero (off) or positive")
         with self.lock:
             mandate = self.mandates.issue(
                 scope=str(payload.get("scope", "pay")),
@@ -329,6 +343,8 @@ class DemoService:
                 max_amount=max_amount,
                 ttl_seconds=ttl_seconds,
                 note=str(payload.get("note", "owner-delegated authority")),
+                payee_limits=payee_limits,
+                daily_limit=daily_limit,
             )
             return {"ok": True, "mandate": mandate.to_dict(), "state": self.state()}
 
@@ -524,6 +540,9 @@ class DemoService:
             "max_amount": mandate.max_amount,
             "consumed": self.mandates.spent.get(mandate.id, 0),
             "remaining": self.mandates.remaining(mandate),
+            "payee_limits": dict(mandate.payee_limits),
+            "daily_limit": mandate.daily_limit,
+            "spent_today": self.mandates.consumed_today(mandate),
             "expires_at": mandate.expires_at,
         }
 
@@ -545,7 +564,13 @@ class DemoService:
             return {"ok": False, "stage": "merchant", "reason": "amount must be an integer"}
         action = {"kind": "pay", "params": {"payee": payee, "amount": amount}}
         valid = self.mandates.verify(mandate)
-        covered, why = mandate.covers(action, None, self.mandates.spent.get(mandate.id, 0))
+        covered, why = mandate.covers(
+            action,
+            None,
+            self.mandates.spent.get(mandate.id, 0),
+            self.mandates.consumed_payee(mandate, payee),
+            self.mandates.consumed_today(mandate),
+        )
         if not (valid and covered):
             reason = "mandate invalid (revoked or expired)" if not valid else why
             self._alert("checkout_rejected", reason, {"mandate_id": mandate.id, "payee": payee, "amount": amount})
@@ -680,7 +705,12 @@ class DemoService:
             ):
                 mandate = next((m for m in self.mandates.mandates if m.id == mandate_id), None)
                 if mandate is not None:
-                    self.mandates.refund(mandate, int(params.get("amount", 0) or 0))
+                    self.mandates.refund(
+                        mandate,
+                        int(params.get("amount", 0) or 0),
+                        payee=str(params.get("payee", "")),
+                        now=found.ts,
+                    )
             if kind == "pay" and self.world.payments:
                 last = self.world.payments[-1]
                 self.world.balance += int(last["amount"])
