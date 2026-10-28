@@ -13,7 +13,7 @@ measurement; anything not mitigated is listed as residual.
 ## Trust boundaries
 
 ```
-mic ──► speaker check ──┐
+mic ──► speaker check ──┐   (spoken commands: Muse Wonder transcript, then the same check)
 camera ─► scene reader ─┤
 page ───► DOM labeler ──┼─► provenance router ─► model (proposes) ─► gate (decides) ─► executor ─► receipts
 document ► invoice parse┘        (labels)                              (authority)

@@ -76,6 +76,9 @@ def main() -> int:
             "action": {"kind": "pay", "params": {"payee": "electrician", "amount": 100}},
         })
         assert merchant["ok"] is True and merchant["algorithm"] == "ed25519"
+        bad_audio = post("/api/voice/transcribe", {"clip": "not-audio"})
+        assert "error" in bad_audio, bad_audio
+
         print("smoke-web ok: invoice executed, look-alike refused, ledger + merchant verify, receipts signed")
         return 0
     finally:

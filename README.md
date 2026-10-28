@@ -12,8 +12,8 @@ Global AI Developer Hackathon 2026.
 
 [![tests](https://github.com/sushant-me/only-you/actions/workflows/ci.yml/badge.svg)](https://github.com/sushant-me/only-you/actions/workflows/ci.yml)
 
-**In 30 seconds.** Only the enrolled owner's voice is a command; camera text, page text and documents
-are data; irreversible actions need a signed, scoped mandate; every action *and every refusal* leaves a
+**In 30 seconds.** Only the enrolled owner's voice is a command (spoken commands are transcribed by Muse
+Wonder); camera text, page text and documents are data; irreversible actions need a signed, scoped mandate; every action *and every refusal* leaves a
 verifiable receipt. The demo: the owner delegates one payment, the agent pays an invoice without
 interrupting, and a look-alike invoice with the same spoken command is refused because its payee came
 from a document.
