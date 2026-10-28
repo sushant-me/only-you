@@ -340,6 +340,13 @@ item below was built on top of it.
   provider-agnostic (API key or local Ollama), writes results-frontier/benchmark.json + md.
 - README reordered for a judge: one-liner → 30-second GIF → evidence table → one-command run → assets.
 
+**Local model through the frontier adapter (integration, not a frontier claim)**
+- Ran `make frontier-eval` against `llama3.2:3b` in Ollama: undefended arm paid **2/2** injected invoices;
+  the full gate blocked all injected payments (**0/2**) with 4/4 verified receipts — but also blocked 2/2
+  benign cases (`R0-unknown-source`) because the small model misattributed provenance. Documented honestly
+  in `docs/frontier.md`; artifacts in `results-local-llama/`. A frontier key is still needed for the
+  actual headline experiment.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

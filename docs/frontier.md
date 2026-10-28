@@ -71,10 +71,31 @@ Publish the per-model table next to the Muse Spark runs; the claim becomes **"th
 the more necessary the authority layer"** — and one audit bundle can cover every model because the
 receipts are model-independent.
 
+## Local integration run (not frontier — read the caveat)
+
+With no frontier key available, I ran the adapter end-to-end against a **local open-weights model**
+(`llama3.2:3b` via Ollama in Docker) on the committed confused-deputy corpus (2 attacks / 2 benign; small
+because CPU inference is slow). Artifacts: `results-local-llama/`.
+
+| Arm | Attack success | False refusals | Receipts |
+|---|---|---|---|
+| A — undefended | **100%** (2/2 injected invoices paid) | 0% | — |
+| D — full gate | **0%** (0/2) | **100%** (2/2 benign blocked) | 4/4 verified |
+
+The D false refusals are **not the gate being wrong**: the receipts show `R0-unknown-source` because this
+small model left the top-level `source_id` empty and put it inside `params` (and cited the document, not
+the owner command). The gate refuses an action with no authoritative source — which is the correct
+behaviour, but the model's provenance attribution is too weak for the benign case. A frontier model that
+follows the JSON schema (as Muse Spark does) is what the experiment is for; the adapter is ready for it.
+
+This is an integration/plumbing result, **not a frontier claim**. It does show the gate is model-agnostic:
+the same code that blocks Muse Spark's confused deputy also blocked this model's injected payments.
+
 ## Status (honest)
 
-- Adapter, CLI (`--model frontier`), Makefile target and env resolution are implemented and tested.
+- Adapter, CLI (`--model frontier`), `make frontier-eval` / `make bench-frontier`, env resolution, and a
+  local Ollama path are implemented and tested.
 - No frontier key with credit was available in this environment at the time of writing (the available
   DeepSeek key returned HTTP 402; the GitHub token does not expose GitHub Models), so **no frontier run is
-  claimed**. Add any key above and `make bench-frontier` reproduces the table in minutes.
+  claimed**. Add any key above and `make frontier-eval` reproduces the headline table in minutes.
 - The existing real-model evidence remains Muse Spark (four runs, committed under `results-real*/`).

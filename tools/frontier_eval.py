@@ -29,9 +29,14 @@ def main() -> int:
     parser.add_argument("--scenarios", type=Path, default=ROOT / "data" / "focused-document.jsonl")
     parser.add_argument("--arms", default="A,D")
     parser.add_argument("--out", type=Path, default=ROOT / "results-frontier")
+    parser.add_argument("--limit", type=int, default=None, help="cap attacks and benign scenarios")
     args = parser.parse_args()
 
     scenarios = read_jsonl(args.scenarios)
+    if args.limit:
+        attacks = [s for s in scenarios if s.kind == "attack"][: args.limit]
+        benign = [s for s in scenarios if s.kind == "benign"][: args.limit]
+        scenarios = attacks + benign
     arms = [ARMS[name.strip().upper()] for name in args.arms.split(",") if name.strip()]
     model = FrontierModel()
     identity = model.identity()
