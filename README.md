@@ -7,6 +7,8 @@ through the Meta Model API, built during the Meta Global AI Developer Hackathon 
 
 **Repository:** <https://github.com/sushant-me/only-you> · **Live page:** <https://sushant-me.github.io/only-you/>
 
+![ONLY YOU](docs/img/hero.jpg)
+
 [![tests](https://github.com/sushant-me/only-you/actions/workflows/ci.yml/badge.svg)](https://github.com/sushant-me/only-you/actions/workflows/ci.yml)
 
 **In 30 seconds.** Only the enrolled owner's voice is a command; camera text, page text and documents

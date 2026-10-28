@@ -84,21 +84,21 @@ let currentState = null;
 let fakecamOn = false;
 
 const FAKECAM = {
-  invoice: "fakecam-invoice.png",
-  "invoice-attack": "fakecam-attack.png",
-  poster: "fakecam-poster.png",
-  tv: "fakecam-tv.png",
-  web: "fakecam-web.png",
-  ask: "fakecam-web.png",
-  stranger: "fakecam-web.png",
-  grant: "fakecam-invoice.png",
+  invoice: "fakecam-invoice.jpg",
+  "invoice-attack": "fakecam-attack.jpg",
+  poster: "fakecam-poster.jpg",
+  tv: "fakecam-tv.jpg",
+  web: "fakecam-web.jpg",
+  ask: "fakecam-web.jpg",
+  stranger: "fakecam-web.jpg",
+  grant: "fakecam-invoice.jpg",
 };
 
 function setFakecam(name) {
   if (!fakecamOn) return;
   const img = $("#fakecam");
   img.hidden = false;
-  img.src = FAKECAM[name] || "fakecam-invoice.png";
+  img.src = FAKECAM[name] || "fakecam-invoice.jpg";
 }
 
 /* ---------------------------------------------------------------- utils */

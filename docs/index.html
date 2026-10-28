@@ -7,7 +7,7 @@
 <meta name="description" content="A provenance-gated authority layer for wearable agents. Only the enrolled voice is a command; everything else is data; every action and refusal leaves a receipt.">
 <meta property="og:title" content="ONLY YOU — the agent you can hand your wallet to">
 <meta property="og:description" content="Provenance, mandates and receipts for wearable agents. Built for the Meta Global AI Developer Hackathon 2026.">
-<meta property="og:image" content="img/thumb.png">
+<meta property="og:image" content="img/hero.jpg">
 <style>
 :root{--bg:#07080c;--panel:#0c1019;--line:#1f2636;--text:#e8ecf4;--muted:#8b95a8;--red:#ff2d55;--green:#2fd18c;--amber:#f5b544}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);
@@ -27,6 +27,7 @@ font-style:italic;font-size:17px}.quote span{display:block;color:var(--muted);fo
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
 .card h3{margin:0 0 8px;font-size:17px}.card p{margin:0;color:var(--muted);font-size:14px}
+.hero{width:100%;max-height:300px;object-fit:cover;border-radius:16px;border:1px solid var(--line);margin-bottom:26px}
 .shot{width:100%;border-radius:14px;border:1px solid var(--line);display:block}
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{text-align:left;border-bottom:1px solid var(--line);padding:11px 8px}
@@ -42,6 +43,7 @@ a{color:#9ecbff}
 </head>
 <body>
 <div class="wrap">
+  <img class="hero" src="img/hero.jpg" alt="Smart glasses with a red rim light">
   <div class="kicker">META GLOBAL AI DEVELOPER HACKATHON 2026</div>
   <h1>ONLY YOU</h1>
   <p class="lead"><b>The agent you can hand your wallet to.</b><br>
@@ -111,6 +113,8 @@ make web      # http://127.0.0.1:8000</code></pre>
   model otherwise — the report stamps which. <b>SAM 3.1 is not integrated</b>; scene boxes come from OCR.
   The voice check is not anti-spoofing. Payments are a mock world. All of this is in the
   <a href="https://github.com/sushant-me/only-you/blob/main/docs/limitations.md">failure list</a>.</p>
+
+  <p class="muted" style="font-size:13px;margin-top:30px">Scene images generated with <b>Muse Image</b> (muse-image-1.0).</p>
 
   <footer>
     Built during the Meta Global AI Developer Hackathon 2026 · MIT ·
