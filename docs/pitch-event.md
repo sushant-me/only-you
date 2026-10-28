@@ -44,6 +44,7 @@ One goal: browse → extract visible **and hidden** text → decide under the ma
 - Public `verify/<id>` page + **QR code**; audit bundle re-verified **offline in Python or in the browser**
 - **Merchant checkout** verifies the delegation before charging; a scheduler re-checks it at run time
 - Policy edits are receipted; policy import shows a **review diff** before applying
+- **Cross-model audit**: Muse Spark + a local model, one receipt format, browser-verified `VERIFIED · CROSS-MODEL`
 - Signed SIEM alerts; ledger filters + CSV export for audit triage
 
 ## Evidence
@@ -70,6 +71,8 @@ The zero is conditional on correct labels. Cloned voice passes; human speaker ac
 - **Compromised sensor** — the signed envelope stops forged dicts, not a rooted device
 - **Mandate replay** — bounded by cap/expiry/nonce; replay protection is next
 - **Biometric consent** — voiceprints are special-category data; consent flow not built
+- **Voice study** — synthetic TTS impostors rejected 6/6; human speakers unmeasured (harness shipped)
+- **SAM 3.1 masks** — Responses API accepts the image but returns no mask payload; OCR boxes remain
 
 ## Why Meta
 

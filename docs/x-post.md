@@ -13,7 +13,7 @@ Engagement closes before judging, so post early — **Nov 6–8**, tag @AIatMeta
 >
 > Real Muse Spark run: 25% → 37.5% → 50% → 0% executed as the gate is added. 🧵
 
-Attach the vertical clip and/or `img/x-stat.png`. Reply with the repo, the 3-minute demo, the no-install
+Attach the vertical clip and/or the 20s contrast clip (`docs/demo-contrast.mp4`) and/or `img/x-stat.png`. Reply with the repo, the 3-minute demo, the no-install
 playground (sushant-me.github.io/only-you/playground.html) and the browser verifier
 (sushant-me.github.io/only-you/verify.html).
 

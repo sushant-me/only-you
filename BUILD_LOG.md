@@ -354,6 +354,13 @@ item below was built on top of it.
   blocked; local model: attack blocked, benign blocked due to provenance misattribution (documented).
 - Artifacts in `results-cross-model/`; `docs/cross-model.md`; landing link.
 
+**20-second contrast clip + deck/brief cross-model slide**
+- `docs/demo-contrast.mp4` (20.5 s, narrated): undefended local model pays 2/2 injected invoices →
+  same model behind the gate pays 0/2 with 4/4 verified receipts → Muse Spark 25%→0% → closing line.
+  Honest label: local open-weights model, frontier key still pending. Linked from README/landing/X kit.
+- Deck (10 slides) now carries the cross-model audit line and the voice-study + SAM honesty lines; the
+  1-page brief adds the cross-model row.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
