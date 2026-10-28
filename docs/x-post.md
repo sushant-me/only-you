@@ -7,6 +7,7 @@ Engagement closes before judging, so post early — **Nov 6–8**, tag @AIatMeta
 ## Variant A — short and sharp (recommended)
 
 > Meta's own docs say the untrusted-content flag is *"not an enforced security boundary."*
+> The more capable the model, the more it needs an authority layer.
 >
 > So during their hackathon I built the layer that decides who your agent obeys: only the enrolled voice
 > commands, everything else is data, and every refusal is receipted.

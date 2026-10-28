@@ -2,6 +2,8 @@
 
 **Your glasses can hear the world. Who do they obey?**
 
+**The more capable the model, the more it needs an authority layer.** Capability is solved. Authority isn't.
+
 A provenance-gated authority layer for wearable agents — built on **Muse Spark** and **Muse Wonder**
 through the Meta Model API (SAM 3.1 masks are on the roadmap, not integrated); built during the Meta
 Global AI Developer Hackathon 2026.

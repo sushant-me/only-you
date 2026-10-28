@@ -17,6 +17,8 @@ Thumbnail: [`img/thumb.png`](img/thumb.png) (1280×720)
 ## Description
 
 ```
+The more capable the model, the more it needs an authority layer. Capability is solved. Authority isn't.
+
 Your glasses can hear the world. Who do they obey?
 
 Meta's own WebMCP docs say the untrusted-content flag is "not an enforced security

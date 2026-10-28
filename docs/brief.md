@@ -1,6 +1,8 @@
 # ONLY YOU — one-page brief
 
-**The authority layer that lets a wearable agent act in the world without being trusted with it.**
+**The more capable the model, the more it needs an authority layer.**
+
+ONLY YOU is the authority layer that lets a wearable agent act in the world without being trusted with it.
 Sushant Poudel · Meta Global AI Developer Hackathon 2026 · Build for Your World
 
 ## The problem

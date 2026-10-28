@@ -367,6 +367,12 @@ item below was built on top of it.
 - Incognito-style live QA: landing, playground auto-run (3 blocked), verifier cross-model
   (`VERIFIED · CROSS-MODEL`), and all six assets return 200 on Pages.
 
+**Frontier thesis across every submission asset**
+- The pitch line "the more capable the model, the more it needs an authority layer" now opens README,
+  brief, YouTube description, X post and the form answers; the deck's Why-Meta slide spells out the
+  Amazon/Muse verification argument.
+- Rebuilt the 1-page brief and the 10-slide deck (page counts unchanged).
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
