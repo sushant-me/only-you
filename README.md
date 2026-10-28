@@ -34,6 +34,7 @@ make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 - **Hiring memo:** [`docs/for-meta.md`](docs/for-meta.md) — what the layer makes possible, the real-model
   numbers, and what I would build next with Meta.
 - **Submission sheet:** [`docs/submission-final.md`](docs/submission-final.md) — verified links and fields.
+- **Judge Q&A:** [`docs/judge-qa.md`](docs/judge-qa.md) — honest answers to the obvious questions.
 
 > "Set `untrustedContentHint` honestly, since **it's not an enforced security boundary**."
 > "Your tool's result text goes into the assistant's context, so returning unmarked untrusted content
