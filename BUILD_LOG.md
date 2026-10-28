@@ -258,6 +258,12 @@ item below was built on top of it.
   `docker-compose.yml`, `make docker` / `make docker-run`, `docs/deploy.md`. Verified locally: image builds
   and serves `/`, `/api/state`, `/docs` on a mapped port. No test count change (172).
 
+**Security hardening + judge-ready landing**
+- All responses now carry `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, a camera/mic
+  `Permissions-Policy`, COOP and CORP (asserted in the existing hardening test, no new test count).
+- Added `SECURITY.md` (private advisory path, demo-only list, defensive details) and compressed the
+  landing gallery to 720px JPEGs (~1.7 MB → ~350 KB total). 172 tests.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

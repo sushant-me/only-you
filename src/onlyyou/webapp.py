@@ -1283,6 +1283,20 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
             return
 
         # -- helpers -------------------------------------------------------
+        def send_response(self, code: int, message: str | None = None) -> None:
+            self._security_headers_sent = False
+            super().send_response(code, message)
+
+        def end_headers(self) -> None:
+            if not getattr(self, "_security_headers_sent", False):
+                self._security_headers_sent = True
+                self.send_header("X-Frame-Options", "DENY")
+                self.send_header("Referrer-Policy", "no-referrer")
+                self.send_header("Permissions-Policy", "camera=(self), microphone=(self), geolocation=()")
+                self.send_header("Cross-Origin-Opener-Policy", "same-origin")
+                self.send_header("Cross-Origin-Resource-Policy", "same-origin")
+            super().end_headers()
+
         def _json(self, obj: Any, code: int = 200, filename: str | None = None) -> None:
             body = json.dumps(obj).encode()
             self.send_response(code)

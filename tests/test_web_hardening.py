@@ -75,6 +75,10 @@ class TestWebHardening(unittest.TestCase):
     def test_security_header_present(self):
         with urllib.request.urlopen(self.base + "/api/state", timeout=5) as resp:
             self.assertEqual(resp.headers.get("X-Content-Type-Options"), "nosniff")
+            self.assertEqual(resp.headers.get("X-Frame-Options"), "DENY")
+            self.assertEqual(resp.headers.get("Referrer-Policy"), "no-referrer")
+            self.assertIn("camera=(self)", resp.headers.get("Permissions-Policy", ""))
+            self.assertEqual(resp.headers.get("Cross-Origin-Opener-Policy"), "same-origin")
             json.load(resp)
 
 

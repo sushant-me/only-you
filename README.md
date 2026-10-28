@@ -45,6 +45,7 @@ docker build -t only-you-demo . && docker run --rm -p 8000:8000 only-you-demo
 - **Submission sheet:** [`docs/submission-final.md`](docs/submission-final.md) — verified links and fields.
 - **Judge Q&A:** [`docs/judge-qa.md`](docs/judge-qa.md) — honest answers to the obvious questions.
 - **Threat model:** [`docs/threat-model.md`](docs/threat-model.md) — assets, adversaries, and the residual risks we publish.
+- **Security policy:** [`SECURITY.md`](SECURITY.md) — what is demo-only, how to report a bypass, defensive details.
 - **Novelty, honestly:** [`docs/novelty.md`](docs/novelty.md) — what is new, what is prior art, and what we do not claim.
 
 > "Set `untrustedContentHint` honestly, since **it's not an enforced security boundary**."
