@@ -6,13 +6,13 @@ Submission: CV platform + 3-minute demo video + public GitHub repo.
 This is the honest record of what was built when. The rules ask that the demo show what was built
 during the event, so pre-event work is labelled instead of hidden.
 
-## 2026-10-27 — planning
+## 2026-10-27 — 09:00 start: planning + first scaffold
 
 - Read the kickoff rules and prize structure; fixed the target: Top 5 indie + $5K Best Agentic Use-Case.
 - Chose the project (ONLY YOU) and wrote the 7-day plan and the 3-minute video shot list.
 - Set up the repo plan and the Meta Model API environment (`.env.example`, smoke script).
 
-## 2026-10-28 — build day
+## 2026-10-28 — build continued
 
 A single long session. The pre-event prototype was imported first as a labelled scaffold, then every
 item below was built on top of it.
