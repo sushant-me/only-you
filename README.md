@@ -105,6 +105,7 @@ receipts, benchmark harness). Everything below was built on top of it during the
 |---|---|---|---|---|
 | General (20 attacks / 20 benign) | A/B/C/D **0%** | D 5% · C 10% · A/B 0% | 36/36 verified | 6.8 s |
 | Document / confused-deputy (8 attacks / 12 benign) | A 25% · B 37.5% · C 50% · **D 0%** | 0% | 18/18 verified | 10.7 s |
+| Same corpus, contributor build (8 / 12) | A 50% · B 37.5% · C 50% · **D 0%** | 0% | 18/18 verified | 11.9 s |
 
 On obvious injections, Muse Spark's own alignment refuses even when undefended. Where the model is
 trying to be *helpful* — the owner asks to pay an invoice and the document supplies the payee — it

@@ -8,12 +8,12 @@ Deadline: **4 Nov 2026, 9:00 PM ET = 5 Nov, 7:45 AM NPT**. Do not start this on 
 - [ ] From `only-you-hackathon/`: `git remote add origin <url>` → `git push -u origin main`
 - [ ] Open the repo URL in a **logged-out** browser: README renders, LICENSE visible, no `.env`
 - [ ] `make gen test bench` works from a fresh clone
-- [ ] `make audit` prints **42 passed · 0 failed**
+- [ ] `make judge` runs 105 tests and a 59-check audit, all green
 
 ## 2. Record and upload the 3-minute video
 
 - [ ] Rehearse the shot list in `docs/video-3min.md` twice
-- [ ] Record screen + voice — or voice-over `docs/demo-3min.mp4` (2:55, already within the limit)
+- [ ] Record screen + voice — or voice-over `docs/demo-3min.mp4` (2:55, captioned, already within the limit)
 - [ ] Length **≤ 3:00**; 1920×1080; H.264; under 300 MB
 - [ ] Upload **unlisted** to YouTube; check it plays logged out
 - [ ] Title: "ONLY YOU — the layer that decides who your agent obeys"
@@ -22,12 +22,12 @@ Deadline: **4 Nov 2026, 9:00 PM ET = 5 Nov, 7:45 AM NPT**. Do not start this on 
 ## 3. Submit on the CV platform
 
 - [ ] Open the submission form; keep it open in a second tab
-- [ ] Paste fields from `../SUBMISSION-DRAFT.md`:
+- [ ] Paste fields from [`submission-final.md`](submission-final.md) (or `../SUBMISSION-DRAFT.md`):
   - name, one-line, track (Indie), theme (Build for Your World)
   - 60-word and 230-word descriptions
   - 3-minute video URL
   - public repo URL
-  - bonus categories: Best Agentic Use-Case; Most Viral; (Open Weights only if it ships)
+  - bonus categories: Best Agentic Use-Case; Most Viral; Best Build on Meta Open Weights (contributor-model run committed)
 - [ ] Add every teammate (solo = yourself)
 - [ ] Screenshot the confirmation page; save the submission URL
 

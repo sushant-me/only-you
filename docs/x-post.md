@@ -1,7 +1,8 @@
 # X post — the 45-second vertical clip
 
 Prize: **$20K Most Viral Project** — most engagement (likes, reposts, comments) **by 8 Nov, 11:59 PM ET**.
-The clip: [`demo-x-vertical.mp4`](demo-x-vertical.mp4). Engagement closes before judging, so post early.
+The clip: [`demo-x-vertical.mp4`](demo-x-vertical.mp4) (45 s, 1080×1920, rebuilt with Muse Image assets).
+Engagement closes before judging, so post early — **Nov 6–8**, tag @AIatMeta, reply to the hackathon thread.
 
 ## Variant A — short and sharp (recommended)
 
@@ -10,7 +11,7 @@ The clip: [`demo-x-vertical.mp4`](demo-x-vertical.mp4). Engagement closes before
 > So during their hackathon I built the layer that decides who your agent obeys: only the enrolled voice
 > commands, everything else is data, and every refusal is receipted.
 >
-> Forged sensor signals: 6/6 → 0/6. 🧵
+> Real Muse Spark run: 25% → 37.5% → 50% → 0% executed as the gate is added. 🧵
 
 Attach the vertical clip. Reply with the repo + 3-minute demo link.
 
@@ -21,7 +22,7 @@ Attach the vertical clip. Reply with the repo + 3-minute demo link.
 > A TV ad, a poster, a look-alike invoice — all of them reach your agent's context. I built the
 > provenance layer that makes only *your* voice a command, and receipts every refusal.
 >
-> Built during the Meta hackathon. 45s demo 👇
+> Built during the Meta hackathon on Muse Spark, Muse Wonder and Muse Image. 45s demo 👇
 
 ## Variant C — the honest-numbers post
 
@@ -61,3 +62,13 @@ Attach the vertical clip. Reply with the repo + 3-minute demo link.
 - Do not claim you solved prompt injection, that it is perfectly secure, or that it is Meta-API-built if the run is simulated.
 - Do not use engagement pods or bots — disqualification risk.
 - Do not bury the clip behind a link.
+
+
+## Posting checklist
+
+- [ ] Post **6–8 Nov** (engagement closes **8 Nov 11:59 PM ET**)
+- [ ] Attach `docs/demo-x-vertical.mp4`; first frame must be readable without sound (it is)
+- [ ] Tag **@AIatMeta**; reply to the hackathon announcement thread
+- [ ] Reply with repo + live page + 3-minute demo; pin the post
+- [ ] Do not claim SAM/voice integration; say "not yet" if asked
+- [ ] Keep replies technical: 0% with the gate, 0% false refusals, receipts verified

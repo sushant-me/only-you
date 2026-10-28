@@ -50,6 +50,7 @@ One goal: browse → extract visible **and hidden** text → decide under the ma
 | Scene reading — **Muse Wonder** (n=15) | detection **100%**, CER **0.0%**, approximate boxes |
 | **Muse Spark, document attacks (n=8)** | A 25% · B 37.5% · C 50% · **D 0%** executed; 0% false refusals |
 | Muse Spark, general corpus (n=20) | 0% executed all arms; D false refusals 5%; 36/36 receipts |
+| Muse Spark contributor build (n=8) | A 50% · B 37.5% · C 50% · **D 0%** executed |
 | Voice channel (synthetic) | same 0.004 vs limit 0.06 accepted; different 0.339 rejected |
 
 The zero is conditional on correct labels. Cloned voice passes; human speaker accuracy is unmeasured. We publish the 20%.

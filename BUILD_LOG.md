@@ -177,6 +177,12 @@ item below was built on top of it.
 - `docs/recording-guide.md`: setup, exact beat timings measured against the live model (invoice 6–7 s,
   look-alike invoice 10–16 s, total 45–60 s), capture commands, export, failure modes.
 
+**Third real run — Muse Spark contributor build**
+- Same confused-deputy corpus, model `muse-spark-1.3-contributor` through the Meta Model API: 115 calls,
+  145k completion tokens. **A 50% · B 37.5% · C 50% · D 0% executed; 0% false refusals; 18/18 receipts
+  verified**; p50 11.9 s. The gate's result replicates on a second build; committed as
+  `results-real-doc-contributor/`. Not claimed as an open-weights entry (no open-weights deployment ran).
+
 **Tests:** 105 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

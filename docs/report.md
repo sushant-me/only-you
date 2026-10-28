@@ -58,7 +58,11 @@ and the document supplies the payee, the model is helpful — and wrong: **A 25%
 (provenance alone is worse, because it reclassifies instructions but not arguments). The full gate blocks
 **8/8 (D 0%) with 0% false refusals** and 18/18 verified receipts. p50 10.7 s, p95 34.7 s.
 
-The two runs are the honest picture: alignment is a strong first line against obvious injections; the
+The same confused-deputy corpus on the **contributor build** (`muse-spark-1.3-contributor`, 115 calls)
+replicates the finding: **50% undefended, 37.5% prompt-only, 50% provenance-only, 0% with the full gate**,
+0% false refusals, 18/18 receipts verified.
+
+The three runs are the honest picture: alignment is a strong first line against obvious injections; the
 authority layer is what catches the confused deputy the model is trying to be helpful about. The samples
 are small and the corpus is synthetic, and the latencies are dominated by the model call, not the gate.
 
