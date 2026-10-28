@@ -8,7 +8,7 @@ A provenance-gated authority layer for wearable agents — built on **Muse Spark
 through the Meta Model API (SAM 3.1 masks are on the roadmap, not integrated); built during the Meta
 Global AI Developer Hackathon 2026.
 
-**▶ Start here:** [2:55 narrated demo](docs/demo-3min.mp4) · [try the playground](https://sushant-me.github.io/only-you/playground.html) · [1-page brief](docs/brief.pdf) · [repo](https://github.com/sushant-me/only-you) · [live page](https://sushant-me.github.io/only-you/)
+**▶ Start here:** [2:59 narrated demo](docs/demo-3min.mp4) · [try the playground](https://sushant-me.github.io/only-you/playground.html) · [1-page brief](docs/brief.pdf) · [repo](https://github.com/sushant-me/only-you) · [live page](https://sushant-me.github.io/only-you/)
 
 [![tests](https://github.com/sushant-me/only-you/actions/workflows/ci.yml/badge.svg)](https://github.com/sushant-me/only-you/actions/workflows/ci.yml)
 [![audit](https://img.shields.io/badge/self--audit-67%2F67-2fd18c)](AUDIT.md)
@@ -55,7 +55,7 @@ docker build -t only-you-demo . && docker run --rm -p 8000:8000 only-you-demo
 
 - **Deploy:** [`docs/deploy.md`](docs/deploy.md) — Docker/compose, Meta credentials, healthcheck, ports.
 
-- **3-minute demo (2:55, narrated + captioned):** [`docs/demo-3min.mp4` · recording steps in [`docs/recording-guide.md`](docs/recording-guide.md)](docs/demo-3min.mp4) — upload kit in [`docs/youtube-upload.md`](docs/youtube-upload.md)
+- **3-minute demo (2:59, narrated + captioned):** [`docs/demo-3min.mp4` · recording steps in [`docs/recording-guide.md`](docs/recording-guide.md)](docs/demo-3min.mp4) — upload kit in [`docs/youtube-upload.md`](docs/youtube-upload.md)
 - 20-second **contrast clip** (undefended vs gated, narrated): [`docs/demo-contrast.mp4`](docs/demo-contrast.mp4)
 - 20-second agentic task clip: [`docs/demo-task-clip.mp4`](docs/demo-task-clip.mp4)
 - Voice-over mux: `make voice VOICE=narration.wav` · generative B-roll feasibility: [`docs/omni-video.md`](docs/omni-video.md)

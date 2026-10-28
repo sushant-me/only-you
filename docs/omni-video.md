@@ -44,7 +44,7 @@ GEN_TASK="v2v-A14B" GEN_SIZE="832*480" GEN_FRAME_NUM=41 GEN_SAMPLE_FPS=8 \
 ## What actually improves the video
 
 A human voice-over. Record 60–90 s reading `docs/video-3min.md` (or improvise over the captions) and drop
-the file here; `make voice VOICE=narration.wav` muxes and loudness-normalises it onto the 2:55 cut:
+the file here; `make voice VOICE=narration.wav` muxes and loudness-normalises it onto the 2:59 cut:
 
 ```bash
 make voice VOICE=~/narration.wav     # → docs/demo-3min-voice.mp4

@@ -91,7 +91,7 @@ item below was built on top of it.
   plumbing is verified; only the credential is missing.
 
 **3-minute demo video**
-- `docs/demo-3min.mp4`: **2:55**, 1600×900, silent + captioned — the full submission video: title → problem
+- `docs/demo-3min.mp4`: **2:59**, 1600×900, silent + captioned — the full submission video: title → problem
   (Meta quote) → the gap → mandate → invoice → look-alike refusal → poster → TV → hidden page → ledger →
   agentic task trace → evidence → what breaks it → why Meta → close. Assembled from the real UI and
   cards; a voice-over can be laid over it or the 3-minute script used to re-record.
@@ -111,7 +111,7 @@ item below was built on top of it.
   (tests + demo + self-audit) on every push.
 - **"Verify at merchant"** button in the mandates panel: a merchant-side offline Ed25519 check
   (`POST /api/merchant-verify`), showing `MERCHANT VERIFIED` or the rejection reason. 3 new tests.
-- GitHub Pages landing page with the embedded 2:55 demo: <https://sushant-me.github.io/only-you/>.
+- GitHub Pages landing page with the embedded 2:59 demo: <https://sushant-me.github.io/only-you/>.
 
 **Receipt hardening (second-order injection + tamper evidence)**
 - `clean_for_display()`: receipt-derived text is stripped of control characters, `<`/`>` neutralised,
@@ -196,8 +196,8 @@ item below was built on top of it.
 - 6 new tests (`tests/test_web_hardening.py`); 111 total. The demo is a product surface, not a toy server.
 
 **Voice-over path + Omni-Video feasibility**
-- `make voice VOICE=…` normalises a narration track (loudnorm, 48 kHz) and muxes it onto the 2:55 captioned
-  cut, padded/trimmed to 175 s; output gitignored. Verified with a test tone: 175.000 s, AAC mono.
+- `make voice VOICE=…` normalises a narration track (loudnorm, 48 kHz) and muxes it onto the 2:59 captioned
+  cut, padded/trimmed to 175 s; output gitignored. Verified with a test tone: 179.000 s, AAC mono.
 - `docs/omni-video.md` records why Omni-Video 2 cannot run locally (6 GB RTX 4050 vs 80 GB recommendation,
   no torch/pip, 14 GB RAM) and what it is safe to use it for (atmospheric B-roll, never diffusion-edited UI
   footage, never voice).
@@ -226,7 +226,7 @@ item below was built on top of it.
 **Two-pass voice mux**
 - `tools/mux_voice.py`: measures the narration (loudnorm pass 1), then applies the measured values
   (pass 2) while copying the video stream, padding/trimming to 175 s. Tested on the owner's sample:
-  output 175.000 s, integrated −17.1 LUFS (gated, includes trailing silence), AAC 160k.
+  output 179.000 s, integrated −17.1 LUFS (gated, includes trailing silence), AAC 160k.
 
 **Spend-aware mandates + revoke-all**
 - Backend: `MandateLedger.refund()`; undo restores the budget; receipts record `remaining_after`;
@@ -372,6 +372,13 @@ item below was built on top of it.
   brief, YouTube description, X post and the form answers; the deck's Why-Meta slide spells out the
   Amazon/Muse verification argument.
 - Rebuilt the 1-page brief and the 10-slide deck (page counts unchanged).
+
+**3-minute film re-cut — the contrast now opens the demo**
+- Prepended a 4 s opening to `docs/demo-3min.mp4`: undefended local model **2/2 injected invoices paid** →
+  same model behind the gate **0/2 paid, 4/4 receipts verified** (honestly labelled "local open-weights model",
+  frontier key still pending). Narration and burned-in captions shifted +4 s; duration 175 → 179 s (still ≤3:00).
+- Updated SRT/VTT (-+4 s), narration script, YouTube chapters, mux duration, audit duration check, README/brief/
+  deck/"2:59" references; rebuilt the 26 s README GIF from the new timeline.
 
 **Tests:** 172 pass (`make test`).
 

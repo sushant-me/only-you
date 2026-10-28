@@ -13,7 +13,7 @@ Deadline: **4 Nov 2026, 9:00 PM ET = 5 Nov, 7:45 AM NPT**. Do not start this on 
 ## 2. Record and upload the 3-minute video
 
 - [ ] Rehearse the shot list in `docs/video-3min.md` twice
-- [ ] Record screen + voice — or voice-over `docs/demo-3min.mp4` (2:55, captioned, already within the limit)
+- [ ] Record screen + voice — or voice-over `docs/demo-3min.mp4` (2:59, captioned, already within the limit)
 - [ ] Length **≤ 3:00**; 1920×1080; H.264; under 300 MB
 - [ ] Upload **unlisted** to YouTube; check it plays logged out
 - [ ] Title: "ONLY YOU — the layer that decides who your agent obeys"

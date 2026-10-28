@@ -1,6 +1,7 @@
 # 3-minute demo video — shot list, script, and production notes
 
-> **Current build:** `docs/demo-3min.mp4` — 175 s, silent, burned-in captions, frames from the current UI
+> **Current build:** `docs/demo-3min.mp4` — 179 s, narrated (synthetic Edge voice), burned-in captions, a 4 s
+> undefended-vs-gated opening, then frames from the current UI
 > (Muse Image scene assets). It is the fallback if the live voice-over take is not ready. Rebuild recipe:
 > capture the UI at 1600×900, add title/quote/benchmark/end cards, 11 segments with gentle push-in and a
 > caption bar, concat. The script below is for the spoken take.

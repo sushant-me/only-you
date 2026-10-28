@@ -23,7 +23,7 @@ cd /tmp/accept && make judge
 | Link | Status |
 |---|---|
 | https://sushant-me.github.io/only-you/ | 200 |
-| `demo-3min.mp4` (175.000 s) | 200 |
+| `demo-3min.mp4` (179.000 s) | 200 |
 | `demo-x-vertical.mp4` (45.000 s) | 200 |
 | `demo-fallback.mp4` (82.000 s) | 200 |
 | `report.pdf` (2 pages) | 200 |

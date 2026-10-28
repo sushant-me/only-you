@@ -64,7 +64,7 @@ Both are in the roadmap in `for-meta.md`, not claimed as shipped.
 - Live page: https://sushant-me.github.io/only-you/
 - Try it (no install): https://sushant-me.github.io/only-you/playground.html
 - Verify evidence in the browser: https://sushant-me.github.io/only-you/verify.html (load cross-model bundle)
-- 3-minute demo: **<YouTube unlisted URL>** (file: `docs/demo-3min.mp4`, 2:55, narrated + captioned)
+- 3-minute demo: **<YouTube unlisted URL>** (file: `docs/demo-3min.mp4`, 2:59, narrated + captioned)
 - 20s contrast clip (undefended vs gated): `docs/demo-contrast.mp4`
 - Brief: https://github.com/sushant-me/only-you/blob/main/docs/brief.pdf
 - Report: https://github.com/sushant-me/only-you/blob/main/docs/report.pdf

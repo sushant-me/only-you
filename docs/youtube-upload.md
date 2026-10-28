@@ -1,6 +1,6 @@
 # YouTube upload — the 3-minute demo
 
-File: [`demo-3min.mp4`](demo-3min.mp4) · 2:55 · 1600×900 · narrated (synthetic draft) + captioned · thumbnail: [`img/youtube-thumb.jpg`](img/youtube-thumb.jpg) · captions: [`demo-3min.srt`](demo-3min.srt)
+File: [`demo-3min.mp4`](demo-3min.mp4) · 2:59 · 1600×900 · narrated (synthetic draft) + captioned · thumbnail: [`img/youtube-thumb.jpg`](img/youtube-thumb.jpg) · captions: [`demo-3min.srt`](demo-3min.srt)
 Thumbnail: [`img/thumb.png`](img/thumb.png) (1280×720)
 
 ## Settings
@@ -30,18 +30,18 @@ refusal leaves a verifiable receipt.
 Built during the Meta Global AI Developer Hackathon 2026. 172 tests, a four-arm benchmark,
 and a published failure list — including the 20% of adaptive attacks that still get through.
 
-Chapters (match the rebuilt 175 s captioned cut)
-0:00 Who does your agent answer to
-0:12 The gap
-0:28 Meta's own warning
-0:44 A mandate, then paid without a prompt
-1:02 The look-alike invoice is refused
-1:18 A poster is scene data
-1:32 A TV ad is not your voice
-1:46 Hidden page text
-2:00 The record
-2:16 Real-model numbers
-2:36 Close
+Chapters (match the rebuilt 179 s captioned cut)
+0:04 Who does your agent answer to
+0:16 The gap
+0:32 Meta's own warning
+0:48 A mandate, then paid without a prompt
+1:06 The look-alike invoice is refused
+1:22 A poster is scene data
+1:36 A TV ad is not your voice
+1:50 Hidden page text
+2:04 The record
+2:20 Real-model numbers
+2:40 Close
 
 20-second contrast clip (undefended vs gated): https://github.com/sushant-me/only-you/blob/main/docs/demo-contrast.mp4
 Play it yourself (no install): https://sushant-me.github.io/only-you/playground.html
@@ -73,7 +73,7 @@ chapters). Set the thumbnail to `docs/img/youtube-thumb.jpg` (1280×720).
 
 ## Checklist
 
-- [ ] File is ≤ 3:00 (this one is 2:55)
+- [ ] File is ≤ 3:00 (this one is 2:59)
 - [ ] Plays logged out
 - [ ] Thumbnail uploaded
 - [ ] Description links filled in after the repo is public

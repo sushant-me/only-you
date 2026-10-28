@@ -145,7 +145,7 @@ def main() -> int:
     for extra in ("docs/demo-3min.srt", "docs/img/youtube-thumb.jpg"):
         check(f"artifact {extra}", (ROOT / extra).exists())
 
-    for rel, expected in (("docs/demo-task-clip.mp4", 20.0), ("docs/demo-fallback.mp4", 82.0), ("docs/demo-3min.mp4", 175.0)):
+    for rel, expected in (("docs/demo-task-clip.mp4", 20.0), ("docs/demo-fallback.mp4", 82.0), ("docs/demo-3min.mp4", 179.0)):
         path = ROOT / rel
         if path.exists():
             info = subprocess.run(

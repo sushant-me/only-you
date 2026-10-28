@@ -48,7 +48,7 @@ captions) so it is not silent. Your own voice is better; replace it with:
 If you send a voice memo instead of recording the screen, mux it onto the captioned cut:
 
 ```bash
-make voice VOICE=~/narration.wav   # 60–90 s is enough; it is padded/trimmed to 2:55, two-pass -16 LUFS
+make voice VOICE=~/narration.wav   # 60–90 s is enough; it is padded/trimmed to 2:59, two-pass -16 LUFS
 ```
 
 Speak the script from `docs/video-3min.md`; the captions already carry the beats. Record in a quiet room,
@@ -72,7 +72,7 @@ Target ≤ 3:00, 1920×1080, under 300 MB. Upload with `docs/youtube-upload.md`.
 | Invoice beat blocked | check the mandate was granted (beat 1) and the app has `electrician` in contacts; re-run the beat |
 | Camera unavailable | keep `?fakecam=1`; scene provenance is unchanged |
 | Model slow / API error | the gate refuses cleanly; re-run the take. Do not fake the outcome |
-| No time to record | use `docs/demo-3min.mp4` (2:55, captioned) and lay your voice-over on it |
+| No time to record | use `docs/demo-3min.mp4` (2:59, captioned) and lay your voice-over on it |
 
 ## Save the raw file
 

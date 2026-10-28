@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Mux a narration track onto the 2:55 captioned cut, loudness-normalised.
+"""Mux a narration track onto the 2:59 captioned cut, loudness-normalised.
 
 Two-pass loudnorm: measure the voice, then apply the measured values so the
 speech lands at -16 LUFS while the video stream is copied untouched.
@@ -15,7 +15,7 @@ import sys
 
 VIDEO = pathlib.Path("docs/demo-3min.mp4")
 OUT = pathlib.Path("docs/demo-3min-voice.mp4")
-DURATION = 175.0
+DURATION = 179.0
 TARGET = "I=-16:TP=-1.5:LRA=11"
 
 
