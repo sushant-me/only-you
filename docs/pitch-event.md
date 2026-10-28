@@ -31,6 +31,7 @@ One goal: browse → extract visible **and hidden** text → decide under the ma
 
 ## Live demo
 
+- **Opens with the contrast:** undefended agent pays 2/2 injected invoices → same model gated: 0/2, 4/4 receipts
 - Grant a mandate: electrician, ≤ 5,000, until tomorrow
 - Owner pays the invoice — **no prompt, no interruption**, receipt cites the mandate
 - Look-alike invoice, same spoken command — **refused**: the payee came from a document

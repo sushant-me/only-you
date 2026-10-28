@@ -23,8 +23,9 @@ the first recording.
 
 | Time | Say | Do |
 |---|---|---|
-| 0:00 | "Your glasses can hear the world. The question is who they obey." | Title over the UI |
-| 0:15 | Meta's own quote: "not an enforced security boundary." | Quote card / report |
+| 0:00 | "The film opens with the contrast: an undefended agent pays the attacker's invoice — 2 out of 2. The same model behind the gate pays 0 of 2, with four receipts verified." | Play the 4 s opening of the film, pause after card 2 |
+| 0:12 | "Your glasses can hear the world. The question is who they obey." | Title over the UI |
+| 0:25 | Meta's own quote: "not an enforced security boundary." | Quote card / report |
 | 0:30 | "Only the enrolled voice commands; everything else is data." | Point at provenance chips |
 | 0:45 | "I delegate: electrician, up to 5,000, with a daily sub-limit." | **8 · grant a mandate**, then mention the card's sub-limit line |
 | 1:05 | "A merchant verifies that offline — signature, payee, cap, remaining." | Open `/merchant-page`, **Verify mandate & charge** → `MERCHANT VERIFIED · PAID` |
