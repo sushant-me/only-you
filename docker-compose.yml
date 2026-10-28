@@ -1,5 +1,5 @@
 # docker compose up --build
-# Pass Meta credentials with: META_API_KEY=... META_API_BASE=... docker compose up --build
+# Credentials come from your shell environment or a local .env file (never baked into the image).
 services:
   only-you:
     build: .

@@ -15,11 +15,12 @@ docker run --rm -p 8000:8000 only-you-demo
 the simulated one:
 
 ```bash
-docker run --rm -p 8000:8000 \
-  -e ONLYYOU_MODEL=meta \
-  -e META_API_KEY=... -e META_API_BASE=https://api.meta.ai/v1 -e MUSE_MODEL=muse-spark-1.3 \
-  only-you-demo
+cp .env.example .env      # fill in your key locally (gitignored)
+docker run --rm -p 8000:8000 --env-file .env -e ONLYYOU_MODEL=meta only-you-demo
 ```
+
+`docker-compose.yml` reads the three Meta variables from your environment (or compose's `.env`) and
+defaults `ONLYYOU_MODEL` to `simulated`; the key is never baked into the image.
 
 The image includes the optional system tools the demo uses (`tesseract-ocr` for scene text, `qrencode`
 for receipt QR codes). Healthcheck: `GET /api/state` every 30 s. Port: 8000.
@@ -27,7 +28,7 @@ for receipt QR codes). Healthcheck: `GET /api/state` every 30 s. Port: 8000.
 ## Compose
 
 ```bash
-META_API_KEY=... MUSE_MODEL=muse-spark-1.3 docker compose up --build
+docker compose --env-file .env up --build
 ```
 
 `ONLYYOU_MODEL=simulated` (the default) keeps the demo deterministic and offline; `meta` calls the
