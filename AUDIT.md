@@ -1,6 +1,6 @@
-# Repo audit — 2026-10-28T08:47:25+00:00
+# Repo audit — 2026-10-28T08:54:58+00:00
 
-**55 passed · 0 failed**
+**59 passed · 0 failed**
 
 ## Checks
 
@@ -21,10 +21,13 @@
 - ✅ results-real-doc/benchmark.json exists
 - ✅ results-real-doc/benchmark.json mode meta — meta
 - ✅ results-real-doc/benchmark.json model muse-spark
+- ✅ results/scene-muse.json exists
+- ✅ Muse Wonder scene sample 100%
+- ✅ Muse Wonder scene sample CER 0
 - ✅ real doc run: undefended > 0%
 - ✅ real doc run: full gate 0%
 - ✅ real doc run: full gate 0% false refusals
-- ✅ docs mention 98 tests
+- ✅ docs mention 102 tests
 - ✅ docs mention 81.0%
 - ✅ docs mention 14.3%
 - ✅ docs mention 100.0%
@@ -32,6 +35,7 @@
 - ✅ docs mention 6/6
 - ✅ docs mention 0/6
 - ✅ docs mention Muse Spark
+- ✅ docs mention Muse Wonder
 - ✅ docs mention conditional
 - ✅ no stale claim '71 ms'
 - ✅ no stale claim 'under 100 ms'
