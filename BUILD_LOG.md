@@ -329,6 +329,12 @@ item below was built on top of it.
 - Ran a synthetic TTS study: owner 3/3 accepted, **6/6 TTS impostors rejected** (0% false accept). Honest
   scope: synthetic voices, not humans; `docs/voice-study.md` gives the consented human protocol.
 
+**SAM 3.1 probe (honest negative)**
+- `sam-3.1` is listed by `/v1/models` but is not available on `/v1/chat/completions`; `/v1/responses`
+  accepts the image (`images_processed: 1`) and returns an **empty message with 0 tokens** on this key.
+  No mask payload or documented format was found, so scene grounding stays OCR-based; added to the failure
+  list rather than claimed.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
