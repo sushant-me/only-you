@@ -55,6 +55,12 @@ Yes — policy changes, mandate revocations and rejected checkouts raise structu
 and in `GET /api/state`. Set `ONLYYOU_WEBHOOK_URL` and each alert is POSTed as JSON to your webhook/SIEM
 (delivery is queued with retries and a delivery log, and never blocks the action).
 
+**Can I version and deploy the policy?**
+Yes — `GET /api/policy/export` is a signed snapshot (rule states + device public key); import verifies the
+signature for this device, refuses unknown rules, receipts the import (`R7-policy-import`) and alerts. The
+signature is device-bound in this demo: production would trust an owner/organisation key so one policy can
+be rolled out to many devices.
+
 **Are policy changes auditable?**
 Yes — every enable/disable appends a signed `R7-policy-change` receipt (rule id, new state, source) to the
 same hash chain, and it appears in the audit export and receipt verification pages. Changing the rules is
@@ -100,7 +106,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (151 tests + live-server smoke + audit) then `make web` →
+`make judge` (154 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 

@@ -69,4 +69,5 @@ document ► invoice parse┘        (labels)                              (auth
 | Audit export verifies offline / detects tamper | `tools/verify_audit.py`, `tests/test_audit_export.py` |
 | Policy changes are receipted (R7) | `tests/test_webapp.py` (policy-change receipt + export) |
 | Sub-mandates cannot widen authority | `tests/test_delegation.py` (payees/cap/expiry, parent budget) |
+| Policy import requires a device-signed snapshot | `tests/test_policy_export.py` |
 | Known failures | `docs/limitations.md` |

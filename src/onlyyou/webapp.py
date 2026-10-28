@@ -725,6 +725,80 @@ class DemoService:
             "would_execute": verdict.decision.value == "allow",
         }
 
+    def export_policy(self) -> dict[str, Any]:
+        """A signed, deployable snapshot of the constitution (rule states)."""
+        payload = {
+            "format": "only-you-policy/1",
+            "issued_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "rules": self.agent.constitution.to_dicts(),
+        }
+        canonical = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
+        signature = self.device_key.sign(canonical)
+        return {
+            **payload,
+            "public_key": self.mandates.public_key_pem,
+            "signature": signature,
+            "note": "Signed by the device key. Import verifies this signature before applying any state.",
+        }
+
+    def import_policy(self, payload: dict[str, Any]) -> dict[str, Any]:
+        """Apply a signed policy snapshot; refuses anything not signed by this device."""
+        bundle = payload.get("bundle") if isinstance(payload.get("bundle"), dict) else payload
+        if not isinstance(bundle, dict) or bundle.get("format") != "only-you-policy/1":
+            raise ValueError("not an only-you policy bundle")
+        rules = bundle.get("rules")
+        if not isinstance(rules, list) or not rules:
+            raise ValueError("policy bundle has no rules")
+        canonical = json.dumps(
+            {
+                "format": bundle.get("format"),
+                "issued_at": bundle.get("issued_at", ""),
+                "rules": rules,
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode()
+        signature = str(bundle.get("signature", ""))
+        if not signature or not self.device_key.verify(
+            canonical, signature, self.mandates.public_key_pem
+        ):
+            raise ValueError("policy signature is not valid for this device")
+        known = {rule.id for rule in self.agent.constitution.rules}
+        state_map: dict[str, bool] = {}
+        for row in rules:
+            rule_id = str((row or {}).get("id", ""))
+            if rule_id not in known:
+                raise ValueError(f"unknown rule in policy bundle: {rule_id}")
+            state_map[rule_id] = bool((row or {}).get("enabled", True))
+        with self.lock:
+            for rule_id, enabled in state_map.items():
+                self.agent.constitution.set_enabled(rule_id, enabled)
+            action = {"kind": "policy_import", "params": {"rules": state_map}}
+            verdict = Verdict(
+                Decision.ALLOW,
+                "R7-policy-import",
+                f"owner imported a policy snapshot ({len(state_map)} rules)",
+                {"rules": state_map},
+            )
+            receipt = self.ledger.append(
+                action=action,
+                verdict=verdict.to_dict(),
+                evidence={"changed_by": "owner", "source": "/api/policy/import"},
+                result={"outcome": "executed", "detail": "policy imported"},
+            )
+            self._alert(
+                "policy_import",
+                f"owner imported a policy snapshot ({len(state_map)} rules)",
+                {"rules": state_map},
+            )
+            return {
+                "ok": True,
+                "rules": len(state_map),
+                "receipt": asdict(receipt),
+                "receipt_ok": self.ledger.verify(receipt),
+                "state": self.state(),
+            }
+
     def set_rule_enabled(self, payload: dict[str, Any]) -> dict[str, Any]:
         rule_id = str(payload.get("rule_id", ""))
         enabled = bool(payload.get("enabled", True))
@@ -1000,6 +1074,9 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
             if path == "/api/export":
                 self._json(service.export_audit(), filename="only-you-audit.json")
                 return
+            if path == "/api/policy/export":
+                self._json(service.export_policy(), filename="only-you-policy.json")
+                return
             if path == "/invoice-page":
                 self._html(INVOICE_PAGE)
                 return
@@ -1070,6 +1147,8 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
                 self._json(service.checkout(payload))
             elif path == "/api/policy":
                 self._json(service.set_rule_enabled(payload))
+            elif path == "/api/policy/import":
+                self._json(service.import_policy(payload))
             elif path == "/api/frame":
                 self._json(service.frame(payload))
             elif path == "/api/task":

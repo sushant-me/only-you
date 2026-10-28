@@ -60,7 +60,7 @@ Receipts and raw results are committed: `results-real/`, `results-real-doc/`.
 
 ## Why me
 
-I built this in the hackathon window, alone: 151 tests, a self-audit, CI, two real-model evaluations,
+I built this in the hackathon window, alone: 154 tests, a self-audit, CI, two real-model evaluations,
 and an honest failure list — including the cases where the layer does not help. I want to keep building
 this at Meta, on the team that ships agents people can actually delegate to.
 

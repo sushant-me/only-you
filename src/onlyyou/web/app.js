@@ -631,6 +631,21 @@ async function speakFromFile(event) {
   }
 }
 
+async function importPolicyFile(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  try {
+    const bundle = JSON.parse(await file.text());
+    const data = await post("/api/policy/import", { bundle });
+    renderState(data.state);
+    toast(`policy imported · ${data.rules} rules · receipt ${data.receipt.id}`);
+  } catch (err) {
+    toast(`policy import failed: ${err.message}`);
+  } finally {
+    event.target.value = "";
+  }
+}
+
 async function simulateAction() {
   const kind = $("#sim-kind").value;
   const params = {};

@@ -29,6 +29,11 @@ def post(path: str, payload: dict) -> dict:
         return json.load(resp)
 
 
+def get(path: str) -> dict:
+    with urllib.request.urlopen(BASE + path, timeout=10) as resp:
+        return json.load(resp)
+
+
 def wait_ready(deadline: float = 30.0) -> None:
     start = time.time()
     while time.time() - start < deadline:
@@ -94,6 +99,11 @@ def main() -> int:
         assert toggled["receipt_ok"] and toggled["receipt"]["action"]["kind"] == "policy_change", toggled
         assert any(a["kind"] == "policy_change" for a in toggled["state"]["alerts"]), toggled
         post("/api/policy", {"rule_id": "R3-unlock-requires-confirmation", "enabled": True})
+        policy = get("/api/policy/export")
+        assert policy["format"] == "only-you-policy/1"
+        post("/api/policy", {"rule_id": "R3-unlock-requires-confirmation", "enabled": False})
+        restored = post("/api/policy/import", {"bundle": policy})
+        assert restored["ok"] and all(r["enabled"] for r in restored["state"]["rules"]), restored
 
         revoked = post("/api/mandate/revoke-all", {})
         assert revoked["ok"] is True and revoked["revoked"], revoked
