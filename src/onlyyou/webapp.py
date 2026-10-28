@@ -29,7 +29,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
-from .actions import parse_action
+from .actions import Action, parse_action
 from .devicekey import DeviceKey
 from .env import load_env
 from .agent import Agent, Arm
@@ -39,7 +39,7 @@ from .tasks import run_task
 from .voice import enroll as voice_enroll
 from .voice import verify as voice_verify
 from .model import MetaModelClient, SimulatedModel
-from .policy import Constitution
+from .policy import Constitution, Context
 from .provenance import Channel, Input, Origin, ProvenanceRouter, origin_label
 from .receipts import DEMO_SECRET, ReceiptLedger, clean_for_display
 from .scene_muse import muse_read
@@ -442,6 +442,56 @@ class DemoService:
             ok = self.mandates.revoke(mandate_id)
             return {"ok": ok, "state": self.state()}
 
+    def simulate(self, payload: dict[str, Any]) -> dict[str, Any]:
+        """Policy dry run: resolve a proposed action to a verdict without executing it."""
+        action_dict = payload.get("action") or {}
+        kind = str(action_dict.get("kind", "pay"))
+        params = dict(action_dict.get("params") or {})
+        speaker = str(payload.get("speaker", "owner"))
+        source_id = "voice:sim:owner" if speaker == "owner" else "voice:sim:stranger"
+        action = Action(kind=kind, params=params, source_id=source_id)
+        channel = str(payload.get("channel", "voice"))
+        channel = {"ambient": "ambient_audio"}.get(channel, channel)
+        signals = (
+            {"speaker_score": 0.93, "proximity": True}
+            if speaker == "owner"
+            else {"speaker_score": 0.31, "proximity": False}
+        )
+        inputs = [Input(Channel.VOICE, str(payload.get("text", "dry run")), source_id, signals)]
+        if payload.get("payload"):
+            signals: dict[str, Any] = {}
+            if channel == "web":
+                signals["dom_origin"] = str(payload.get("dom_origin", "hidden"))
+            if channel == "scene":
+                signals["surface_kind"] = "poster"
+            inputs.append(Input(Channel(channel), str(payload["payload"]), f"{channel}:sim:data", signals))
+        labels = self.agent.router.route(inputs)
+        ctx = Context(
+            contacts=set(self.world.contacts),
+            pay_limit=int(payload.get("pay_limit", 1000)),
+            confirmed=bool(payload.get("confirms", False)),
+        )
+        mandate = None
+        if self.agent.mandates is not None and not action.is_none():
+            mandate, _why = self.agent.mandates.find_covering(action.to_dict())
+        verdict = self.agent._verdict(action, labels, ctx, Arm.D_FULL, mandate)
+        return {
+            "dry_run": True,
+            "action": action.to_dict(),
+            "verdict": verdict.to_dict(),
+            "mandate": (
+                {
+                    "id": mandate.id,
+                    "max_amount": mandate.max_amount,
+                    "consumed": self.mandates.spent.get(mandate.id, 0),
+                    "remaining": self.mandates.remaining(mandate),
+                }
+                if mandate is not None
+                else None
+            ),
+            "would_execute": verdict.decision.value == "allow",
+        }
+
     def revoke_all_mandates(self) -> dict[str, Any]:
         """Panic button: kill every delegation at once, keep the receipts."""
         with self.lock:
@@ -602,6 +652,8 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
                 self._json(service.revoke_mandate(str(payload.get("id", ""))))
             elif path == "/api/mandate/revoke-all":
                 self._json(service.revoke_all_mandates())
+            elif path == "/api/simulate":
+                self._json(service.simulate(payload))
             elif path == "/api/frame":
                 self._json(service.frame(payload))
             elif path == "/api/task":

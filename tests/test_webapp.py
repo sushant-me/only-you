@@ -58,6 +58,26 @@ class TestDemoService(unittest.TestCase):
         self.assertEqual(check["consumed"], 4500)
         self.assertEqual(check["remaining"], 500)
 
+
+    def test_dry_run_allows_with_mandate_without_executing(self):
+        self.svc.grant_mandate({"payees": ["electrician"], "max_amount": 5000})
+        result = self.svc.simulate({
+            "action": {"kind": "pay", "params": {"payee": "electrician", "amount": 4500}},
+        })
+        self.assertEqual(result["verdict"]["rule"], "R6-mandate")
+        self.assertTrue(result["would_execute"])
+        self.assertIsNotNone(result["mandate"])
+        self.assertEqual(result["mandate"]["remaining"], 5000)
+        self.assertEqual(self.svc.state()["summary"]["count"], 0)
+
+    def test_dry_run_denies_stranger_voice(self):
+        result = self.svc.simulate({
+            "speaker": "stranger",
+            "action": {"kind": "pay", "params": {"payee": "electrician", "amount": 10}},
+        })
+        self.assertEqual(result["verdict"]["rule"], "R0-source-not-authoritative")
+        self.assertFalse(result["would_execute"])
+
     def test_state_reports_model_mode(self):
         state = self.svc.state()
         self.assertEqual(state["model"], "simulated")

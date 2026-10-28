@@ -236,7 +236,7 @@ item below was built on top of it.
   button, and the merchant toast reports the remaining budget.
 - 3 new tests (undo refund, revoke-all, merchant remaining); 122 total.
 
-**Tests:** 122 pass (`make test`).
+**Tests:** 124 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
 real-model benchmark. The only missing input is `META_API_BASE` / `META_API_KEY` / `MUSE_MODEL`.

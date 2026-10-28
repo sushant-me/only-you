@@ -24,6 +24,11 @@ bar, the receipt records `remaining_after`, undo refunds the budget, and one cli
 delegation while keeping the receipts. A payment beyond the remaining budget is no longer covered by the
 mandate — it falls back to the constitution's ask/confirm path.
 
+**Can I test a policy change before it ships?**
+Yes — the demo has a **Policy dry run** panel (and `/api/simulate`): it resolves a proposed action through
+provenance, constitution and mandates and returns the decision, rule, reason and remaining budget without
+executing anything or writing a receipt.
+
 **Is the HMAC ledger secret in the repo a weakness?**
 It is a demo secret, stated as such. Receipts are tamper-evident and chained; production would root the
 key in the device secure element. The merchant path already uses real Ed25519 public-key verification.
@@ -54,7 +59,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (122 tests + live-server smoke + audit) then `make web` →
+`make judge` (124 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 

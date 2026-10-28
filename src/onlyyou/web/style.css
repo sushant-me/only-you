@@ -248,3 +248,9 @@ letter-spacing:.06em;padding:3px 7px;border-radius:6px;border:1px solid #2a3448;
 .m-spend{font-size:11px;color:var(--muted);margin-top:4px}
 .m-spend b{color:#e6ebf5}
 #btn-revoke-all{float:right;margin-top:-2px}
+
+.sim-result{margin-top:8px;border:1px solid var(--line);border-radius:9px;background:#0b0e15;padding:10px 12px;font-size:12px}
+.sim-head{font-weight:800;letter-spacing:.06em;font-size:13px}
+.sim-head.ok{color:#2fd18c}.sim-head.warn{color:#f5b544}.sim-head.bad{color:#ff5a68}
+.sim-reason{color:#c7cedb;margin-top:4px}
+.sim-meta{color:var(--muted);margin-top:3px;font-family:ui-monospace,monospace;font-size:10.5px}

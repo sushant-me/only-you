@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 122 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 124 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -88,6 +88,14 @@ may issue them, what they may authorise, and what can be proven afterwards.
 The mandate card is a live budget: `spent / remaining of cap`, a progress bar, and one click to
 **revoke every delegation** while keeping the receipts. Undo refunds the budget, so an accidental
 payment does not silently consume authority. Merchant verification returns the remaining budget too.
+
+### Policy dry run
+
+![Policy dry run](docs/img/policy-dry-run.png)
+
+Test any proposed action against the constitution and mandates **without executing it**: decision, rule,
+reason and remaining budget. Enterprise teams can validate a policy change before deploying it — no
+receipt, no side effect.
 
 ### Voice channel
 
@@ -223,7 +231,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 122 tests
+make gen test          # corpus + 124 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -236,7 +244,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           122 tests
+tests/           124 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

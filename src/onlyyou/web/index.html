@@ -88,6 +88,34 @@
         </div>
       </div>
 
+      <h2>Policy dry run <small>no execution, no receipt</small></h2>
+      <div class="composer">
+        <div class="row">
+          <select id="sim-kind" title="action">
+            <option value="pay">pay</option>
+            <option value="unlock">unlock</option>
+            <option value="delete_file">delete file</option>
+            <option value="send_file">send file</option>
+          </select>
+          <input id="sim-payee" placeholder="payee / path" value="electrician" />
+          <input id="sim-amount" type="number" placeholder="amount" value="4500" />
+        </div>
+        <div class="row">
+          <select id="sim-speaker" title="speaker">
+            <option value="owner">owner voice</option>
+            <option value="stranger">stranger voice</option>
+          </select>
+          <select id="sim-channel" title="channel">
+            <option value="voice">voice</option>
+            <option value="document">document</option>
+            <option value="scene">scene</option>
+            <option value="web">web</option>
+          </select>
+          <button id="btn-simulate" class="ghost">Dry run — what would the gate do?</button>
+        </div>
+        <div id="sim-result" class="sim-result" hidden></div>
+      </div>
+
       <div id="feed" class="feed"></div>
     </section>
 

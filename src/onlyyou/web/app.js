@@ -575,6 +575,37 @@ async function speakFromFile(event) {
   }
 }
 
+async function simulateAction() {
+  const kind = $("#sim-kind").value;
+  const params = {};
+  if (kind === "pay") {
+    params.payee = $("#sim-payee").value.trim() || "electrician";
+    params.amount = Number($("#sim-amount").value || 0);
+  } else {
+    params.path = $("#sim-payee").value.trim() || "taxes.pdf";
+  }
+  const box = $("#sim-result");
+  box.hidden = false;
+  box.innerHTML = "resolving…";
+  try {
+    const data = await post("/api/simulate", {
+      speaker: $("#sim-speaker").value,
+      channel: $("#sim-channel").value,
+      action: { kind, params },
+    });
+    const d = data.verdict.decision;
+    const cls = d === "allow" ? "ok" : d === "ask" ? "warn" : "bad";
+    const mandate = data.mandate
+      ? `<div class="sim-meta">mandate ${data.mandate.id} · remaining ${data.mandate.remaining} of ${data.mandate.max_amount}</div>`
+      : `<div class="sim-meta">no covering mandate</div>`;
+    box.innerHTML = `<div class="sim-head ${cls}">${d.toUpperCase()} · ${data.verdict.rule}</div>
+      <div class="sim-reason">${data.verdict.reason}</div>${mandate}
+      <div class="sim-meta">${data.would_execute ? "would execute" : "would not execute"} · nothing was run</div>`;
+  } catch (err) {
+    box.innerHTML = `<div class="sim-head bad">ERROR</div><div class="sim-reason">${err.message}</div>`;
+  }
+}
+
 async function refreshState() {
   try {
     renderState(await (await fetch("/api/state")).json());
@@ -746,6 +777,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       runTask();
     }, delay);
   }
+  if (params.get("sim") === "1") setTimeout(simulateAction, 350);
   const beat = params.get("beat");
   if (beat) setTimeout(() => doBeat(beat), 350);
 });

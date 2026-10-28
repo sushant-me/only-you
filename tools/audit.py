@@ -82,7 +82,7 @@ def main() -> int:
     text = "\n".join(
         p.read_text(errors="ignore") for p in ROOT.rglob("*.md") if p.name != "AUDIT.md"
     )
-    for needle in ["122 tests", "81.0%", "14.3%", "100.0%", "1.7%", "6/6", "0/6", "Muse Spark", "Muse Wonder", "conditional"]:
+    for needle in ["124 tests", "81.0%", "14.3%", "100.0%", "1.7%", "6/6", "0/6", "Muse Spark", "Muse Wonder", "conditional"]:
         check(f"docs mention {needle}", needle in text)
 
     # no stale overclaims
