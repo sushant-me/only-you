@@ -84,6 +84,26 @@ class Agent:
         obs = Observation(mode=mode, labels=labels, owner_command=scenario.owner_command)
         action = self.model.propose(obs, arm.value) or Action(kind="none")
 
+        # Evidence enrichment: when the model pays an invoice, attribute the
+        # *arguments* to the document that supplied them even if the model did
+        # not say so. The instruction still comes from the owner.
+        if action.kind == "pay" and not action.arg_source:
+            payee = str(action.params.get("payee", "")).lower().lstrip("@")
+            try:
+                amount = int(action.params.get("amount", 0) or 0)
+            except (TypeError, ValueError):
+                amount = 0
+            for label in labels:
+                if label.command_capable:
+                    continue
+                invoice = label.input.signals.get("invoice")
+                if not invoice:
+                    continue
+                doc_payee = str(invoice.get("payee", "")).lower().lstrip("@")
+                if doc_payee == payee and int(invoice.get("amount", 0) or 0) == amount:
+                    action.arg_source = label.source_id
+                    break
+
         ctx = Context(
             contacts=set(self.world.contacts),
             pay_limit=scenario.pay_limit,

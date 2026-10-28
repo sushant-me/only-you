@@ -80,6 +80,8 @@ def _action_past(action: dict[str, Any]) -> str:
 @functools.lru_cache(maxsize=1)
 def _default_model():
     load_env()
+    if "unittest" in " ".join(__import__("sys").argv):
+        return SimulatedModel()
     """Real Muse Spark when the API env is set; simulated fallback otherwise."""
     if os.environ.get("ONLYYOU_MODEL", "").lower() == "simulated":
         return SimulatedModel()

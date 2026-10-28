@@ -160,7 +160,18 @@ item below was built on top of it.
 - 4 new tests for parsing/fences/fallback/missing-key. Demo shows three Meta models now: Muse Spark
   (agent), Muse Wonder (scene), with muse-image available for assets; SAM 3.1 still not integrated.
 
-**Tests:** 102 pass (`make test`).
+**Source attribution hardening + recording check**
+- The real model sometimes cited a document text or an invented id as `source_id`, so the gate denied
+  the *owner's* invoice with `R0-unknown-source`. `MetaModelClient.propose()` now lists the valid label
+  ids in the prompt, validates the answer, and makes one repair call fixing only `source_id`.
+- `Agent` now attributes invoice arguments to the document that supplied them (`arg_source`), so the
+  receipt shows "instruction: owner, arguments: document" even when the model omits it.
+- Pre-recording check against the live demo (Muse Spark, temperature 0), two full runs:
+  invoice executed under R6 both times; attacker invoice, poster, TV and hidden-page text blocked every
+  time; beat latency 3–16 s. 2 new tests (source repair, argument attribution); 104 total.
+- `_default_model()` refuses the live model under `unittest`, so the suite can never hit the API.
+
+**Tests:** 104 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
 real-model benchmark. The only missing input is `META_API_BASE` / `META_API_KEY` / `MUSE_MODEL`.

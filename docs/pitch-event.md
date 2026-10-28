@@ -41,7 +41,7 @@ One goal: browse → extract visible **and hidden** text → decide under the ma
 
 | Measurement | Result |
 |---|---|
-| Tests / harness | 102 tests · A 100% · B 47.5% · C 10% · D 0% executed (conditional on labels) |
+| Tests / harness | 104 tests · A 100% · B 47.5% · C 10% · D 0% executed (conditional on labels) |
 | DOM labeler | recall 81.0% [66.7–90.0], FPR 14.3% |
 | Browser computed styles | 42/42, 0/35 (upper bound) |
 | Adaptive corpus (forged signals) | label error 80%, executed 20% |

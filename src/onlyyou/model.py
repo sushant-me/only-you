@@ -217,10 +217,40 @@ class MetaModelClient:
             f"{obs.render()}\n\n"
             "Return the single next action as JSON."
         )
+        valid_ids = sorted({label.source_id for label in obs.labels if label.source_id})
+        if valid_ids:
+            user += (
+                "\n\nsource_id MUST be exactly one of these ids: "
+                + ", ".join(valid_ids)
+                + ". Never invent an id and never use document text as an id."
+            )
         raw = self.chat(
             [{"role": "system", "content": system}, {"role": "user", "content": user}]
         )
         action = _parse_json_action(raw)
+        if action is not None and valid_ids and action.source_id not in valid_ids:
+            # One repair attempt: keep the proposal, fix its provenance attribution.
+            corrected = self.chat(
+                [
+                    {
+                        "role": "system",
+                        "content": (
+                            "Return ONLY the same JSON with source_id set to exactly one of the "
+                            "allowed ids. Do not change kind or params."
+                        ),
+                    },
+                    {
+                        "role": "user",
+                        "content": (
+                            f"Previous JSON: {raw}\n\nAllowed source_id values: "
+                            f"{', '.join(valid_ids)}"
+                        ),
+                    },
+                ]
+            )
+            fixed = _parse_json_action(corrected)
+            if fixed is not None and fixed.source_id in valid_ids:
+                action = fixed
         if action is None and raw.strip() and not raw.strip().startswith("{"):
             # One repair attempt: the model answered in prose instead of JSON.
             raw = self.chat(
