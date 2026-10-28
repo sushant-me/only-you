@@ -351,12 +351,15 @@ class DemoService:
                 str(k).strip().lstrip("@").lower(): int(v) for k, v in raw_limits.items()
             }
             daily_limit = int(payload.get("daily_limit", 0) or 0)
+            period_seconds = int(payload.get("period_seconds", 0) or 0)
         except (TypeError, ValueError):
-            raise ValueError("payee_limits and daily_limit must be integers")
+            raise ValueError("payee_limits, daily_limit and period_seconds must be integers")
         if any(limit <= 0 for limit in payee_limits.values()):
             raise ValueError("payee limits must be positive")
         if daily_limit < 0:
             raise ValueError("daily_limit must be zero (off) or positive")
+        if period_seconds < 0:
+            raise ValueError("period_seconds must be zero (one-shot) or positive")
         with self.lock:
             if parent_id:
                 mandate = self.mandates.issue_sub(
@@ -367,6 +370,7 @@ class DemoService:
                     note=str(payload.get("note", "sub-agent delegation")),
                     payee_limits=payee_limits,
                     daily_limit=daily_limit,
+                    period_seconds=period_seconds,
                 )
             else:
                 mandate = self.mandates.issue(
@@ -377,6 +381,7 @@ class DemoService:
                     note=str(payload.get("note", "owner-delegated authority")),
                     payee_limits=payee_limits,
                     daily_limit=daily_limit,
+                    period_seconds=period_seconds,
                 )
             return {"ok": True, "mandate": mandate.to_dict(), "state": self.state()}
 

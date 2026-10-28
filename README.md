@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 154 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 157 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -119,6 +119,14 @@ labels it *sub of …*.
 enabled state) with the device public key; `POST /api/policy/import` verifies the signature against this
 device before applying anything, rejects unknown rules, receipts the import as `R7-policy-import` and
 raises an alert. That makes the policy a versioned, deployable artifact instead of clicks on a box.
+
+### Recurring mandates
+
+![A monthly mandate after one payment](docs/img/recurring.png)
+
+Set `period_seconds` and the cap becomes a **per-period allowance** that resets on its own anchor: at most
+2,000/month, with the card showing this period's spend and the next reset. Sub-mandates can only use a
+period at least as long as the parent's, so a child can never reset its budget faster than its principal.
 
 ### Operational alerts
 
@@ -311,7 +319,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 154 tests
+make gen test          # corpus + 157 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -324,7 +332,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           154 tests
+tests/           157 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

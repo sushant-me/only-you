@@ -255,6 +255,12 @@ function renderState(state) {
         if (m.daily_limit) {
           subParts.push(`daily ≤ ${m.daily_limit} · today ${m.spent_today || 0}`);
         }
+        if (m.period_seconds) {
+          subParts.push(
+            `recurring · this period ${m.spent_period || 0} of ${m.max_amount}` +
+              (m.resets_at ? ` · resets ${new Date(m.resets_at * 1000).toLocaleDateString()}` : "")
+          );
+        }
         const subLine = subParts.length
           ? `<div class="m-meta">sub-limits: ${subParts.join(" · ")}</div>` : "";
         return `<div class="mandate">
@@ -361,6 +367,22 @@ async function doBeat(name) {
     return;
   }
   setFakecam(name);
+  if (name === "grant-recurring") {
+    try {
+      const data = await post("/api/mandate", {
+        payees: ["electrician"],
+        max_amount: 2000,
+        ttl_seconds: 30 * 24 * 3600,
+        period_seconds: 30 * 24 * 3600,
+        note: "monthly allowance",
+      });
+      renderState(data.state);
+      toast(`monthly mandate ${data.mandate.id} · ≤ 2,000/month`);
+    } catch (err) {
+      toast(`monthly mandate failed: ${err.message}`);
+    }
+    return;
+  }
   if (name === "grant-sub") {
     try {
       const state = await (await fetch("/api/state")).json();

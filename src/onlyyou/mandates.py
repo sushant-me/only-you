@@ -47,6 +47,8 @@ class Mandate:
     # Optional sub-limits, signed with the rest of the mandate.
     payee_limits: dict[str, int] = field(default_factory=dict)
     daily_limit: int = 0
+    # Recurring delegation: max_amount is the allowance per period, resetting each period.
+    period_seconds: int = 0
     parent_id: str = ""
     signature: str = ""
 
@@ -119,6 +121,7 @@ class MandateLedger:
         self.spent: dict[str, int] = {}
         self.spent_payee: dict[str, int] = {}
         self.spent_by_day: dict[str, dict[str, int]] = {}
+        self.spent_by_period: dict[str, dict[int, int]] = {}
 
     @property
     def public_key_pem(self) -> str:
@@ -140,6 +143,7 @@ class MandateLedger:
         note: str = "",
         payee_limits: dict[str, int] | None = None,
         daily_limit: int = 0,
+        period_seconds: int = 0,
         parent_id: str = "",
         now: float | None = None,
     ) -> Mandate:
@@ -157,6 +161,7 @@ class MandateLedger:
             note=note,
             payee_limits={str(k).lower(): int(v) for k, v in (payee_limits or {}).items()},
             daily_limit=int(daily_limit),
+            period_seconds=int(period_seconds),
             parent_id=str(parent_id),
         )
         if self.device_key is not None:
@@ -212,7 +217,7 @@ class MandateLedger:
         ok, why = mandate.covers(
             action,
             now,
-            self.spent.get(mandate.id, 0),
+            self.consumed(mandate, now),
             self.consumed_payee(mandate, payee),
             self.consumed_today(mandate, now),
         )
@@ -234,6 +239,7 @@ class MandateLedger:
         note: str = "",
         payee_limits: dict[str, int] | None = None,
         daily_limit: int = 0,
+        period_seconds: int = 0,
     ) -> Mandate:
         """Issue a narrower mandate to a sub-agent; widening is refused."""
         parent = self.get(parent_id)
@@ -260,6 +266,10 @@ class MandateLedger:
         daily = int(daily_limit)
         if daily < 0 or daily > amount:
             raise ValueError("sub-mandate daily limit exceeds parent authority")
+        period = int(period_seconds)
+        if period:
+            if not parent.period_seconds or period > parent.period_seconds:
+                raise ValueError("sub-mandate period must fit inside the parent")
         return self.issue(
             scope=parent.scope,
             payees=child_payees,
@@ -269,6 +279,7 @@ class MandateLedger:
             note=note,
             payee_limits=limits,
             daily_limit=daily,
+            period_seconds=period,
             parent_id=parent.id,
         )
 
@@ -284,12 +295,27 @@ class MandateLedger:
         return None, "no covering mandate"
 
     # -- spend tracking (kept outside the signed payload) -------------------
-    def remaining(self, mandate: Mandate) -> int:
-        return max(0, mandate.max_amount - self.spent.get(mandate.id, 0))
+    def remaining(self, mandate: Mandate, now: float | None = None) -> int:
+        return max(0, mandate.max_amount - self.consumed(mandate, now))
 
     @staticmethod
     def _day(now: float | None = None) -> str:
         return datetime.fromtimestamp(now or time.time(), timezone.utc).date().isoformat()
+
+    def period_index(self, mandate: Mandate, now: float | None = None) -> int:
+        if not mandate.period_seconds:
+            return 0
+        now = time.time() if now is None else now
+        return max(0, int((now - mandate.issued_at) // mandate.period_seconds))
+
+    def consumed_period(self, mandate: Mandate, now: float | None = None) -> int:
+        return self.spent_by_period.get(mandate.id, {}).get(self.period_index(mandate, now), 0)
+
+    def consumed(self, mandate: Mandate, now: float | None = None) -> int:
+        """Period spend for recurring mandates, lifetime spend otherwise."""
+        if mandate.period_seconds:
+            return self.consumed_period(mandate, now)
+        return self.spent.get(mandate.id, 0)
 
     def consumed_payee(self, mandate: Mandate, payee: str) -> int:
         return self.spent_payee.get(f"{mandate.id}|{payee.lower().lstrip('@')}", 0)
@@ -309,6 +335,9 @@ class MandateLedger:
             day = self._day(now)
             bucket = self.spent_by_day.setdefault(node.id, {})
             bucket[day] = bucket.get(day, 0) + amount
+            index = self.period_index(node, now)
+            periods = self.spent_by_period.setdefault(node.id, {})
+            periods[index] = periods.get(index, 0) + amount
 
     def refund(
         self, mandate: Mandate, amount: int, payee: str = "", now: float | None = None
@@ -323,6 +352,9 @@ class MandateLedger:
             day = self._day(now)
             bucket = self.spent_by_day.setdefault(node.id, {})
             bucket[day] = max(0, bucket.get(day, 0) - amount)
+            index = self.period_index(node, now)
+            periods = self.spent_by_period.setdefault(node.id, {})
+            periods[index] = max(0, periods.get(index, 0) - amount)
 
     # -- merchant-side check (the commerce extension) ----------------------
     def verify_for_merchant(
@@ -344,6 +376,14 @@ class MandateLedger:
                 "revoked": m.id in self.revoked,
                 "consumed": self.spent.get(m.id, 0),
                 "remaining": self.remaining(m),
+                "recurring": bool(m.period_seconds),
+                "period_seconds": m.period_seconds,
+                "spent_period": self.consumed_period(m) if m.period_seconds else None,
+                "resets_at": (
+                    m.issued_at + (self.period_index(m) + 1) * m.period_seconds
+                    if m.period_seconds
+                    else None
+                ),
                 "spent_today": self.consumed_today(m),
                 "remaining_today": (
                     max(0, m.daily_limit - self.consumed_today(m)) if m.daily_limit else None
@@ -376,6 +416,7 @@ def merchant_verify(
         note=str(mandate.get("note", "")),
         payee_limits={str(k).lower(): int(v) for k, v in (mandate.get("payee_limits") or {}).items()},
         daily_limit=int(mandate.get("daily_limit", 0) or 0),
+        period_seconds=int(mandate.get("period_seconds", 0) or 0),
         parent_id=str(mandate.get("parent_id", "")),
         signature=str(mandate.get("signature", "")),
     )
