@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import html as html_lib
 import json
+import os
 import shutil
 import subprocess
 import tempfile
@@ -98,6 +99,8 @@ def _harness(cases: list[DomCase]) -> str:
 
 
 def run_browser_probe(cases: list[DomCase] | None = None, timeout: int = 60) -> list[dict] | None:
+    if os.environ.get("ONLYYOU_SKIP_BROWSER") == "1":
+        return None
     exe = chromium_path()
     if exe is None:
         return None
@@ -111,6 +114,7 @@ def run_browser_probe(cases: list[DomCase] | None = None, timeout: int = 60) -> 
             "--headless=new",
             "--no-sandbox",
             "--disable-gpu",
+            "--disable-dev-shm-usage",
             "--hide-scrollbars",
             "--window-size=1024,768",
             f"--user-data-dir={profile}",

@@ -39,7 +39,7 @@ audit:
 	ONLYYOU_MODEL=simulated PYTHONPATH=$(PYTHONPATH) python3 tools/audit.py
 
 test:
-	ONLYYOU_MODEL=simulated PYTHONPATH=$(PYTHONPATH) python3 -m unittest discover -s tests -v
+	ONLYYOU_MODEL=simulated ONLYYOU_SKIP_BROWSER=1 PYTHONPATH=$(PYTHONPATH) python3 -m unittest discover -s tests -v
 
 voice:
 	@test -n "$(VOICE)" || (echo "usage: make voice VOICE=narration.wav" && exit 1)

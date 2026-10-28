@@ -31,7 +31,7 @@ def main() -> int:
     proc = subprocess.run(
         [sys.executable, "-m", "unittest", "discover", "-s", "tests"],
         cwd=ROOT,
-        env={**__import__("os").environ, "PYTHONPATH": "src", "ONLYYOU_MODEL": "simulated"},
+        env={**__import__("os").environ, "PYTHONPATH": "src", "ONLYYOU_MODEL": "simulated", "ONLYYOU_SKIP_BROWSER": "1"},
         capture_output=True,
         text=True,
     )

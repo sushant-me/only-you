@@ -236,6 +236,13 @@ item below was built on top of it.
   button, and the merchant toast reports the remaining budget.
 - 3 new tests (undo refund, revoke-all, merchant remaining); 122 total.
 
+**CI flake fix: browser probe**
+- One CI run failed because the Chromium computed-style probe timed out on a slow runner (60 s) during
+  `test_bench_modes`. Unit tests do not need to re-measure the browser labeler — the committed benchmark
+  is the evidence — so `make test` and the audit's test subprocess now set `ONLYYOU_SKIP_BROWSER=1`.
+  Real `make bench` still runs Chromium, with `--disable-dev-shm-usage` added.
+- Test suite drops from ~75 s to ~10 s on CI and no longer depends on a browser.
+
 **Tests:** 129 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
