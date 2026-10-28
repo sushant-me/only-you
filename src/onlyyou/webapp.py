@@ -48,6 +48,12 @@ from .tools import MockWorld
 
 WEB_ROOT = Path(__file__).with_name("web")
 
+# The demo server is a local product surface, so it still bounds what a visitor
+# can send it: no multi-megabyte bodies, no dotfiles, no path escape, no
+# browser sniffing of served files.
+MAX_BODY = 8 * 1024 * 1024
+SAFE_SUFFIXES = {".html", ".js", ".css", ".png", ".jpg", ".jpeg", ".svg", ".ico", ".webp", ".json", ".txt", ".map", ".woff2"}
+
 
 def _action_label(action: dict[str, Any]) -> str:
     kind = action.get("kind")
@@ -453,6 +459,7 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
             self.send_header("Cache-Control", "no-store")
+            self.send_header("X-Content-Type-Options", "nosniff")
             self.end_headers()
             self.wfile.write(body)
 
@@ -462,6 +469,7 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
             self.send_header("Cache-Control", "no-store")
+            self.send_header("X-Content-Type-Options", "nosniff")
             self.end_headers()
             self.wfile.write(body)
 
@@ -477,6 +485,7 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
             self.send_header("Content-Type", f"{ctype}; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
             self.send_header("Cache-Control", "no-store")
+            self.send_header("X-Content-Type-Options", "nosniff")
             self.end_headers()
             self.wfile.write(body)
 
@@ -492,14 +501,33 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
             if path in ("/", "/index.html"):
                 self._file(root / "index.html")
                 return
-            target = (root / path.lstrip("/")).resolve()
+            rel = path.lstrip("/")
+            parts = Path(rel).parts
+            if rel.startswith(".") or ".." in parts:
+                self._json({"error": "forbidden"}, 403)
+                return
+            target = (root / rel).resolve()
             if root.resolve() not in target.parents and target != root.resolve():
+                self._json({"error": "forbidden"}, 403)
+                return
+            if target.suffix.lower() not in SAFE_SUFFIXES:
                 self._json({"error": "forbidden"}, 403)
                 return
             self._file(target)
 
         def do_POST(self) -> None:  # noqa: N802
-            length = int(self.headers.get("Content-Length", 0) or 0)
+            try:
+                length = int(self.headers.get("Content-Length", 0) or 0)
+            except (TypeError, ValueError):
+                self._json({"error": "bad content-length"}, 400)
+                return
+            if length < 0:
+                self._json({"error": "bad content-length"}, 400)
+                return
+            if length > MAX_BODY:
+                self.close_connection = True
+                self._json({"error": "payload too large", "max_bytes": MAX_BODY}, 413)
+                return
             raw = self.rfile.read(length) if length else b"{}"
             try:
                 payload = json.loads(raw or b"{}")

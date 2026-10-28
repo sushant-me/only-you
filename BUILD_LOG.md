@@ -190,7 +190,12 @@ item below was built on top of it.
   this proves the command a judge types actually serves the demo.
 - `make judge` now includes the smoke, so one command covers tests, server, and self-audit.
 
-**Tests:** 105 pass (`make test`).
+**Demo server hardening**
+- `MAX_BODY` 8 MB with 413, negative/bogus Content-Length 400, dotfile and path-traversal 403,
+  extension allowlist, `X-Content-Type-Options: nosniff` on every response.
+- 6 new tests (`tests/test_web_hardening.py`); 111 total. The demo is a product surface, not a toy server.
+
+**Tests:** 111 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
 real-model benchmark. The only missing input is `META_API_BASE` / `META_API_KEY` / `MUSE_MODEL`.
