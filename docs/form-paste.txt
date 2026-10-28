@@ -1,0 +1,59 @@
+ONLY YOU — CV submission fields (plain text)
+
+NAME
+Sushant Poudel
+
+ONE-LINE
+A wearable agent that knows who is allowed to command it — and can prove what it did.
+
+TRACK
+Indie developer
+
+THEME
+Build for Your World
+
+SHORT DESCRIPTION (~60 words)
+ONLY YOU is a provenance-gated authority layer for wearable agents. Before a token reaches the model,
+every input is labelled: only the enrolled owner's voice is a command; scene text, page text and documents
+are data. A user-written constitution and signed, expiring mandates gate irreversible actions, and every
+action and every refusal emits a signed receipt.
+
+LONG DESCRIPTION (~230 words)
+Meta's WebMCP documentation for Ray-Ban Display tells developers that untrustedContentHint is "not an
+enforced security boundary," and the assistant still cannot tell the wearer's voice from a stranger's.
+Once an agent has a camera, a microphone and a wallet, a TV ad, a poster, a webpage or an invoice can
+issue commands.
+
+ONLY YOU fixes the channel instead of asking the model to be robust. Before the model sees a token, every
+input is labelled by provenance: on-device speaker verification, scene reading with Muse Wonder, DOM
+origin, document trust. A deterministic constitution and signed, scoped, expiring mandates gate
+irreversible actions; every action and every refusal emits an HMAC hash-chained receipt with the rule, the
+evidence and an undo. Mandates are signed with an Ed25519 device key, so a merchant can verify the owner's
+delegation offline with only the public key.
+
+The demo is a success, not a block: the owner delegates one payee and a cap, the agent pays an invoice
+without interrupting, and a look-alike invoice with the same spoken command is refused because its payee
+came from a document. A poster, a TV ad and hidden page text are read but never obeyed.
+
+We publish the numbers that can be wrong — three real Muse Spark runs, the confused-deputy corpus where
+the undefended model pays 25% of the time and the full gate pays 0%, the label layer's recall and false
+positives, and the adaptive attacks that still get through.
+
+META PRODUCTS
+Muse Spark 1.3 (agent proposals, gated; three real runs), Muse Wonder 1.0 (scene reading, text + boxes),
+Muse Image 1.0 (demo poster, TV frame, invoice, article, hero). Not integrated: SAM 3.1 masks, Muse voice
+transcription — stated honestly, roadmap only.
+
+BONUS CATEGORIES
+Best Agentic Use-Case; Most Viral Project. (Open Weights not claimed — no deployment ran.)
+
+LINKS
+Repo: https://github.com/sushant-me/only-you
+Live page: https://sushant-me.github.io/only-you/
+3-minute demo: <YOUTUBE UNLISTED URL>
+Report: https://github.com/sushant-me/only-you/blob/main/docs/report.pdf
+Real runs: results-real/ · results-real-doc/ · results-real-doc-contributor/
+Hiring memo: https://github.com/sushant-me/only-you/blob/main/docs/for-meta.md
+
+TEAM
+Sushant Poudel (solo)

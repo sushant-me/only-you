@@ -72,3 +72,13 @@ Attach the vertical clip. Reply with the repo + 3-minute demo link.
 - [ ] Reply with repo + live page + 3-minute demo; pin the post
 - [ ] Do not claim SAM/voice integration; say "not yet" if asked
 - [ ] Keep replies technical: 0% with the gate, 0% false refusals, receipts verified
+
+
+## Character counts (X free tier: 280)
+
+- Variant A first tweet: ~292 chars — trim to: "Meta's docs call the untrusted-content flag 'not an
+  enforced security boundary.' So during their hackathon I built the layer that decides who your agent
+  obeys. Only your voice commands; everything else is data. 25% → 0% attack success. 🧵" (~250)
+- Variant B first tweet: ~255 — fits.
+- Variant C first tweet: ~180 — fits.
+- Put the repo link in the **reply**, not the first tweet (links suppress reach on X).
