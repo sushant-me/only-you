@@ -243,6 +243,11 @@ item below was built on top of it.
   Real `make bench` still runs Chromium, with `--disable-dev-shm-usage` added.
 - Test suite drops from ~75 s to ~10 s on CI and no longer depends on a browser.
 
+**Signed webhook deliveries + share cards**
+- Alerts now carry `X-OnlyYou-Signature: sha256=<hmac>` over the raw body and `X-OnlyYou-Event`; the existing
+  delivery test asserts both, so a SIEM can reject unsigned requests. Playground/landing now have
+  OpenGraph/Twitter metadata; the X clip's end card was refreshed to 172 tests.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

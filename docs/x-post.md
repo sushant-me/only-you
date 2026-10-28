@@ -13,7 +13,8 @@ Engagement closes before judging, so post early — **Nov 6–8**, tag @AIatMeta
 >
 > Real Muse Spark run: 25% → 37.5% → 50% → 0% executed as the gate is added. 🧵
 
-Attach the vertical clip. Reply with the repo + 3-minute demo link.
+Attach the vertical clip. Reply with the repo, the 3-minute demo, and the no-install playground
+(sushant-me.github.io/only-you/playground.html).
 
 ## Variant B — the demo-first post
 
@@ -23,6 +24,8 @@ Attach the vertical clip. Reply with the repo + 3-minute demo link.
 > provenance layer that makes only *your* voice a command, and receipts every refusal.
 >
 > Built during the Meta hackathon on Muse Spark, Muse Wonder and Muse Image. 45s demo 👇
+
+(Playable now, no install: sushant-me.github.io/only-you/playground.html)
 
 ## Variant C — the honest-numbers post
 
@@ -67,7 +70,7 @@ Attach the vertical clip. Reply with the repo + 3-minute demo link.
 ## Posting checklist
 
 - [ ] Post **6–8 Nov** (engagement closes **8 Nov 11:59 PM ET**)
-- [ ] Attach `docs/demo-x-vertical.mp4`; first frame must be readable without sound (it is)
+- [ ] Attach `docs/demo-x-vertical.mp4` (end card refreshed to 172 tests); first frame must be readable without sound (it is)
 - [ ] Tag **@AIatMeta**; reply to the hackathon announcement thread
 - [ ] Reply with repo + live page + 3-minute demo; pin the post
 - [ ] Do not claim SAM/voice integration; say "not yet" if asked

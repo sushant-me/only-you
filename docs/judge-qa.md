@@ -83,7 +83,8 @@ HMAC chain, mandates with Ed25519 signatures, the device public key, chain head 
 **Does it plug into a SIEM?**
 Yes — policy changes, mandate revocations and rejected checkouts raise structured alerts, exposed in the UI
 and in `GET /api/state`. Set `ONLYYOU_WEBHOOK_URL` and each alert is POSTed as JSON to your webhook/SIEM
-(delivery is queued with retries and a delivery log, and never blocks the action).
+(delivery is queued with retries and a delivery log, never blocks the action, and is signed with
+`X-OnlyYou-Signature` so the SIEM can verify it came from the device).
 
 **Can I review what a policy change actually does?**
 Yes — importing a bundle first calls `POST /api/policy/diff`, which verifies the signature and returns the

@@ -20,6 +20,8 @@ import base64
 import csv
 import functools
 import io
+import hashlib
+import hmac
 import html
 from datetime import datetime, timezone
 import json
@@ -646,8 +648,17 @@ class DemoService:
         for attempt in range(1, retries + 1):
             try:
                 payload = json.dumps(alert).encode()
+                # Signed delivery: a SIEM can verify the call came from this device, not just any POST.
+                signature = hmac.new(DEMO_SECRET, payload, hashlib.sha256).hexdigest()
                 req = urllib.request.Request(
-                    url, data=payload, headers={"Content-Type": "application/json"}, method="POST"
+                    url,
+                    data=payload,
+                    headers={
+                        "Content-Type": "application/json",
+                        "X-OnlyYou-Signature": f"sha256={signature}",
+                        "X-OnlyYou-Event": str(alert.get("kind", "alert")),
+                    },
+                    method="POST",
                 )
                 with urllib.request.urlopen(req, timeout=2):
                     pass

@@ -12,6 +12,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from onlyyou.webapp import DemoService
 
 RECEIVED: list[dict] = []
+RAW: list[bytes] = []
+HEADERS: list[dict] = []
 
 
 class FailingHandler(BaseHTTPRequestHandler):
@@ -38,7 +40,10 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):  # noqa: N802
         length = int(self.headers.get("Content-Length", 0) or 0)
-        RECEIVED.append(json.loads(self.rfile.read(length) or b"{}"))
+        body = self.rfile.read(length) or b"{}"
+        RAW.append(body)
+        HEADERS.append({k.lower(): v for k, v in self.headers.items()})
+        RECEIVED.append(json.loads(body))
         self.send_response(204)
         self.end_headers()
 
@@ -120,6 +125,8 @@ class TestAlerts(unittest.TestCase):
         server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
         threading.Thread(target=server.serve_forever, daemon=True).start()
         RECEIVED.clear()
+        RAW.clear()
+        HEADERS.clear()
         os.environ["ONLYYOU_WEBHOOK_URL"] = f"http://127.0.0.1:{server.server_address[1]}/hook"
         try:
             self.svc.set_rule_enabled({"rule_id": "R3-unlock-requires-confirmation", "enabled": False})
@@ -131,6 +138,15 @@ class TestAlerts(unittest.TestCase):
         self.assertTrue(RECEIVED, "webhook was not called")
         self.assertEqual(RECEIVED[0]["kind"], "policy_change")
         self.assertEqual(RECEIVED[0]["data"]["rule_id"], "R3-unlock-requires-confirmation")
+        # Delivery is signed so a SIEM can tell our alerts from any random POST.
+        import hashlib
+        import hmac
+
+        from onlyyou.receipts import DEMO_SECRET
+
+        expected = hmac.new(DEMO_SECRET, RAW[0], hashlib.sha256).hexdigest()
+        self.assertEqual(HEADERS[0]["x-onlyyou-signature"], f"sha256={expected}")
+        self.assertEqual(HEADERS[0]["x-onlyyou-event"], "policy_change")
 
 
 if __name__ == "__main__":

@@ -146,7 +146,9 @@ period at least as long as the parent's, so a child can never reset its budget f
 
 Policy changes, mandate revocations and rejected checkouts emit structured alerts (`state.alerts`). Set
 `ONLYYOU_WEBHOOK_URL` and each alert is queued and POSTed as JSON to a SIEM/webhook by a background worker
-with **retries and a delivery log** — the UI shows `delivered / queued / failed` and per-alert attempts:
+with **retries and a delivery log** — the UI shows `delivered / queued / failed` and per-alert attempts.
+Deliveries are signed: `X-OnlyYou-Signature: sha256=<hmac>` over the raw body plus `X-OnlyYou-Event`, so a
+SIEM can reject any POST that did not come from the device (verify with `hmac.new(DEMO_SECRET, body, sha256)`):
 
 ```bash
 ONLYYOU_WEBHOOK_URL=https://example.internal/hooks/only-you \
