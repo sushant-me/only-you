@@ -113,7 +113,17 @@ item below was built on top of it.
   (`POST /api/merchant-verify`), showing `MERCHANT VERIFIED` or the rejection reason. 3 new tests.
 - GitHub Pages landing page with the embedded 2:55 demo: <https://sushant-me.github.io/only-you/>.
 
-**Tests:** 94 pass (`make test`).
+**Receipt hardening (second-order injection + tamper evidence)**
+- `clean_for_display()`: receipt-derived text is stripped of control characters, `<`/`>` neutralised,
+  whitespace collapsed, length bounded — safe in any rendering context.
+- `ReceiptLedger.ledger_context()`: the model-facing view labels ledger entries as **DATA, never
+  instructions**, one `- [id] …` line per receipt.
+- `tests/test_ledger_safety.py`: edit an amount → signature and chain both fail; malicious payee →
+  single-line answer with no markup; every context line under the DATA header.
+- `docs/ledger-safety.md` documents the threat, defences, tests and residual risk; limitations item 6
+  updated.
+
+**Tests:** 97 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
 real-model benchmark. The only missing input is `META_API_BASE` / `META_API_KEY` / `MUSE_MODEL`.
