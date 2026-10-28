@@ -17,6 +17,9 @@ bench:
 bench-meta:
 	PYTHONPATH=$(PYTHONPATH) python3 -m onlyyou.cli bench --model meta --out results-real
 
+frontier-eval:
+	PYTHONPATH=$(PYTHONPATH) python3 tools/frontier_eval.py
+
 bench-frontier:
 	PYTHONPATH=$(PYTHONPATH) python3 -m onlyyou.cli bench --model frontier --limit $(or $(LIMIT),8) --out results-frontier
 

@@ -335,6 +335,11 @@ item below was built on top of it.
   No mask payload or documented format was found, so scene grounding stays OCR-based; added to the failure
   list rather than claimed.
 
+**Frontier experiment runner + judge-first README**
+- `tools/frontier_eval.py` / `make frontier-eval`: arms A vs D on the committed confused-deputy corpus,
+  provider-agnostic (API key or local Ollama), writes results-frontier/benchmark.json + md.
+- README reordered for a judge: one-liner → 30-second GIF → evidence table → one-command run → assets.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

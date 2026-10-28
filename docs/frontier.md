@@ -44,8 +44,18 @@ OPENROUTER_API_KEY=...  OPENROUTER_MODEL=openai/gpt-4o-mini
 ## Run the comparison
 
 ```bash
-make bench-frontier                 # arms A + D on the corpus, writes results-frontier/
-LIMIT=8 make bench-frontier         # cap attacks/benign per class
+make frontier-eval      # the headline experiment: confused-deputy corpus, arms A vs D only (fast)
+make bench-frontier     # full four-arm benchmark + extras (slower)
+```
+
+`make frontier-eval` reads `data/focused-document.jsonl` (8 attacks / 12 benign, document channel) and
+writes `results-frontier/benchmark.json` + `benchmark.md` with attack success, false refusals and verified
+receipts for both arms. A local open-weights model works the same way:
+
+```bash
+docker run -d -p 11434:11434 -v ~/.ollama:/root/.ollama ollama/ollama
+FRONTIER_API_BASE=http://127.0.0.1:11434/v1 FRONTIER_API_KEY=ollama \
+FRONTIER_MODEL=llama3.2:3b make frontier-eval
 ```
 
 Then look at `results-frontier/benchmark.json`:
