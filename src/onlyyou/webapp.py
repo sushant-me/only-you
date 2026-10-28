@@ -40,7 +40,7 @@ from .voice import verify as voice_verify
 from .model import MetaModelClient, SimulatedModel
 from .policy import Constitution
 from .provenance import Channel, Input, Origin, ProvenanceRouter, origin_label
-from .receipts import DEMO_SECRET, ReceiptLedger
+from .receipts import DEMO_SECRET, ReceiptLedger, clean_for_display
 from .scenarios import Scenario
 from .tools import MockWorld
 
@@ -237,7 +237,7 @@ class DemoService:
                 if executed:
                     bits = []
                     for r in executed:
-                        bits.append(f"{_action_past(r.action)} under {r.verdict.get('rule')}")
+                        bits.append(f"{clean_for_display(_action_past(r.action))} under {clean_for_display(r.verdict.get('rule'), 40)}")
                     answer += " I " + "; ".join(bits) + "."
                 if refused:
                     bits = []
@@ -247,7 +247,7 @@ class DemoService:
                         origin = arg.get("origin") or (ev.get("instruction") or {}).get(
                             "origin", "unknown"
                         )
-                        bits.append(f"{_action_label(r.action)} ({origin_label(origin)})")
+                        bits.append(f"{clean_for_display(_action_label(r.action))} ({clean_for_display(origin_label(origin), 40)})")
                     answer += " I refused: " + "; ".join(bits) + "."
                     answer += " In each case, the decisive input came from outside your own voice."
 
