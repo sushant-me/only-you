@@ -195,6 +195,14 @@ item below was built on top of it.
   extension allowlist, `X-Content-Type-Options: nosniff` on every response.
 - 6 new tests (`tests/test_web_hardening.py`); 111 total. The demo is a product surface, not a toy server.
 
+**Voice-over path + Omni-Video feasibility**
+- `make voice VOICE=…` normalises a narration track (loudnorm, 48 kHz) and muxes it onto the 2:55 captioned
+  cut, padded/trimmed to 175 s; output gitignored. Verified with a test tone: 175.000 s, AAC mono.
+- `docs/omni-video.md` records why Omni-Video 2 cannot run locally (6 GB RTX 4050 vs 80 GB recommendation,
+  no torch/pip, 14 GB RAM) and what it is safe to use it for (atmospheric B-roll, never diffusion-edited UI
+  footage, never voice).
+- Report corrected to three real runs (195/115/115 calls); open-weights category explicitly not claimed.
+
 **Tests:** 111 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

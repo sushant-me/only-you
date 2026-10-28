@@ -27,7 +27,7 @@ Deadline: **4 Nov 2026, 9:00 PM ET = 5 Nov, 7:45 AM NPT**. Do not start this on 
   - 60-word and 230-word descriptions
   - 3-minute video URL
   - public repo URL
-  - bonus categories: Best Agentic Use-Case; Most Viral; Best Build on Meta Open Weights (contributor-model run committed)
+  - bonus categories: Best Agentic Use-Case; Most Viral (Open Weights **not** claimed — no deployment ran)
 - [ ] Add every teammate (solo = yourself)
 - [ ] Screenshot the confirmation page; save the submission URL
 
@@ -50,7 +50,7 @@ Deadline: **4 Nov 2026, 9:00 PM ET = 5 Nov, 7:45 AM NPT**. Do not start this on 
 
 ```bash
 cd only-you-hackathon
-make audit          # must be 42/42, exit 0
+make judge          # tests + server smoke + self-audit, exit 0
 git status          # must be clean
 git log --oneline   # event commits visible
 ```

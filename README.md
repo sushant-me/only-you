@@ -20,6 +20,7 @@ from a document.
 
 - **3-minute demo (2:55, captioned):** [`docs/demo-3min.mp4` · recording steps in [`docs/recording-guide.md`](docs/recording-guide.md)](docs/demo-3min.mp4) — upload kit in [`docs/youtube-upload.md`](docs/youtube-upload.md)
 - 20-second agentic task clip: [`docs/demo-task-clip.mp4`](docs/demo-task-clip.mp4)
+- Voice-over mux: `make voice VOICE=narration.wav` · generative B-roll feasibility: [`docs/omni-video.md`](docs/omni-video.md)
 - 82-second silent walkthrough (fallback): [`docs/demo-fallback.mp4`](docs/demo-fallback.mp4)
 - 2-page report: [`docs/report.pdf`](docs/report.pdf) · benchmark: [`results/benchmark.md`](results/benchmark.md)
 - Honest failure list: [`docs/limitations.md`](docs/limitations.md)

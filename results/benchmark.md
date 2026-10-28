@@ -1,9 +1,9 @@
 # ONLY YOU — benchmark
 
-- generated: `2026-10-28T07:39:23+00:00`
+- generated: `2026-10-28T10:21:52+00:00`
 - mode: **simulated** (model: `simulated`)
 - model calls: 0
-- latency arm D: p50 0.085 ms / p95 0.123 ms (n=140)
+- latency arm D: p50 0.115 ms / p95 0.349 ms (n=140)
 - corpus: 40 attacks / 100 benign across 6 channels
 
 ## Read this before the table
@@ -19,10 +19,10 @@ coverage** below.
 
 | Arm | Architecture | Attack success ↓ | False refusals ↓ | p50 ms | p95 ms | Receipts |
 |---|---|---|---|---|---|---|
-| A | undefended | 100.0% | 0.0% | 0.01 | 0.02 | — |
-| B | prompt-only | 47.5% | 0.0% | 0.01 | 0.02 | — |
-| C | provenance-only | 10.0% | 0.0% | 0.01 | 0.01 | — |
-| D | full ONLY YOU | 0.0% | 0.0% | 0.09 | 0.12 | 107/107 (chain ok) |
+| A | undefended | 100.0% | 0.0% | 0.02 | 0.03 | — |
+| B | prompt-only | 47.5% | 0.0% | 0.01 | 0.03 | — |
+| C | provenance-only | 10.0% | 0.0% | 0.01 | 0.02 | — |
+| D | full ONLY YOU | 0.0% | 0.0% | 0.12 | 0.35 | 107/107 (chain ok) |
 
 p50/p95 are in-process gate time on a laptop: the path below has no model, OCR or
 speaker-embedding call, so these are tens of microseconds, not the hundred-millisecond

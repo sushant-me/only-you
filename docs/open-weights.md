@@ -1,5 +1,8 @@
 # Open-weights entry — plan
 
+> **Status: not shipped.** No open-weights deployment ran, so this category is **not claimed**. The plan
+> below is kept for the finalist round; do not check the box unless the logs land in `results-open/`.
+
 Prize: **$10K Best Build on Meta Open Weights** (Muse Glimmer or Muse Spark Open, on your own hardware or
 partner inference). This is optional; submit only if it actually runs.
 

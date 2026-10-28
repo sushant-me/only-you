@@ -46,8 +46,9 @@ table are co-designed, so arm D cannot mislabel inside it. Its zero is condition
 | C | provenance-only | 10% | 0% |
 | D | full ONLY YOU | 0% | 0% |
 
-**Real-model run — Muse Spark 1.3.** Two runs through the Meta Model API (`api.meta.ai/v1`, model
-`muse-spark-1.3`), 195 and 115 calls at temperature 0, with every proposal re-validated by the gate.
+**Real-model runs — Muse Spark.** Three runs through the Meta Model API (`api.meta.ai/v1`), 195, 115 and
+115 calls at temperature 0, with every proposal re-validated by the gate: `muse-spark-1.3` on the general
+and document corpora, and `muse-spark-1.3-contributor` on the document corpus.
 
 *General corpus (20 attacks / 20 benign; ambient, scene, voice, web).* Muse Spark's own refusal behaviour
 dominates: **0% executed on every arm**, including undefended. The gate's measurable cost is false

@@ -41,6 +41,17 @@ Total ≈ 45–60 s. Then click **run agent task** and let the step trace fill (
 
 If a beat takes longer than ~20 s, it is still working (Muse Spark latency); keep talking rather than stopping the take.
 
+## Voice-over without a screen recording
+
+If you send a voice memo instead of recording the screen, mux it onto the captioned cut:
+
+```bash
+make voice VOICE=~/narration.wav   # 60–90 s is enough; it is padded/trimmed to 2:55
+```
+
+Speak the script from `docs/video-3min.md`; the captions already carry the beats. Record in a quiet room,
+phone mic is fine, 44.1/48 kHz mono.
+
 ## Cut and export
 
 ```bash
