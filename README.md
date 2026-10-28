@@ -36,6 +36,7 @@ alignment is trying to help.
 | Second model build / final-code reproduction | **0%** executed; 16/16 receipts, chain intact |
 | Forged sensor signals | **6/6 → 0/6** with a signed bus |
 | Cross-model audit | same gate and verifier for Muse Spark + a local model → [`results-cross-model/`](results-cross-model/), browser-verified |
+| Latency (measured) | constitution **0.001 ms** · dry-run **4.3 ms** · HTTP command **12.8 ms** · OCR **156 ms** (`results/latency.json`) |
 | Engineering | **172 tests**, 67-check self-audit, CI (tests + Docker) |
 
 ## Judge checklist — one command

@@ -41,6 +41,7 @@ Chapters (match the rebuilt 175 s captioned cut)
 2:16 Real-model numbers
 2:36 Close
 
+20-second contrast clip (undefended vs gated): https://github.com/sushant-me/only-you/blob/main/docs/demo-contrast.mp4
 Play it yourself (no install): https://sushant-me.github.io/only-you/playground.html
 Repo: https://github.com/sushant-me/only-you
 Benchmark: https://github.com/sushant-me/only-you/blob/main/results/benchmark.md

@@ -361,6 +361,12 @@ item below was built on top of it.
 - Deck (10 slides) now carries the cross-model audit line and the voice-study + SAM honesty lines; the
   1-page brief adds the cross-model row.
 
+**Submission sheet + live QA refresh**
+- Submission links now include the playground, browser verifier, cross-model audit, latency artifacts and
+  the 20s contrast clip; "built during the event" lists the full current surface.
+- Incognito-style live QA: landing, playground auto-run (3 blocked), verifier cross-model
+  (`VERIFIED · CROSS-MODEL`), and all six assets return 200 on Pages.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

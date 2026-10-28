@@ -62,11 +62,16 @@ Both are in the roadmap in `for-meta.md`, not claimed as shipped.
 
 - Repo: https://github.com/sushant-me/only-you
 - Live page: https://sushant-me.github.io/only-you/
+- Try it (no install): https://sushant-me.github.io/only-you/playground.html
+- Verify evidence in the browser: https://sushant-me.github.io/only-you/verify.html (load cross-model bundle)
 - 3-minute demo: **<YouTube unlisted URL>** (file: `docs/demo-3min.mp4`, 2:55, narrated + captioned)
 - 20s contrast clip (undefended vs gated): `docs/demo-contrast.mp4`
 - Brief: https://github.com/sushant-me/only-you/blob/main/docs/brief.pdf
 - Report: https://github.com/sushant-me/only-you/blob/main/docs/report.pdf
-- Real runs: `results-real/`, `results-real-doc/`, `results-real-doc-contributor/`
+- Real runs: `results-real/`, `results-real-doc/`, `results-real-doc-contributor/`, `results-real-verify/`
+- Cross-model audit: `results-cross-model/` (Muse Spark + local model, browser-verified)
+- Latency: `results/latency.json`
+- Deck: https://github.com/sushant-me/only-you/blob/main/docs/pitch.pdf
 - Hiring memo: https://github.com/sushant-me/only-you/blob/main/docs/for-meta.md
 - WebMCP note: https://github.com/sushant-me/only-you/blob/main/docs/webmcp-note.md
 - Team: Sushant Poudel (solo)
@@ -74,10 +79,12 @@ Both are in the roadmap in `for-meta.md`, not claimed as shipped.
 ## Built during the event
 
 `BUILD_LOG.md` records it. One scaffold commit is labelled pre-event (provenance labels, gate,
-constitution, mandates, receipts, benchmark harness). During the event: real Muse Spark loop + prompt
-repair, Ed25519 device-key mandates with offline merchant verification, agentic task runner, Muse Wonder
-scene reader, tesseract OCR fallback, receipt display sanitising and DATA-labelled ledger context, real
-model benchmarks, Muse Image assets, the demo UI, captioned video package, CI, audit and report.
+constitution, mandates, receipts, benchmark harness). During the event: real Muse Spark loop + prompt repair, Ed25519 device-key mandates with offline merchant
+verification and sub-limits/recurring/sub-agents, merchant checkout, scheduled standing instructions,
+receipted policy changes with review diff, signed audit export + browser verifier, QR receipts, signed
+SIEM alerts, ledger search/CSV, agentic task runner, Muse Wonder scene reader, cross-model adapter,
+tesseract OCR fallback, receipt display sanitising and DATA-labelled ledger context, real-model
+benchmarks, Muse Image assets, demo UI + no-install playground, narrated video package, CI, audit and report.
 
 ## Pre-submit check
 
