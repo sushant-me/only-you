@@ -289,6 +289,11 @@ item below was built on top of it.
   30-second try path, honest line, and the ask. Linked from the landing page, README and submission
   sheet; `make brief` regenerates it.
 
+**Press / viral kit**
+- `docs/press.md`: boilerplate at 1/50/150 words, four headline options, committed stats, image table with
+  alt text, links. Three 1200×675 share cards (`img/x-stat.png`, `x-quote.png`, `x-try.png`) generated for
+  the viral category; X post updated with attachments, alt text and cross-post guidance.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

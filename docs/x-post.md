@@ -13,8 +13,9 @@ Engagement closes before judging, so post early — **Nov 6–8**, tag @AIatMeta
 >
 > Real Muse Spark run: 25% → 37.5% → 50% → 0% executed as the gate is added. 🧵
 
-Attach the vertical clip. Reply with the repo, the 3-minute demo, and the no-install playground
-(sushant-me.github.io/only-you/playground.html).
+Attach the vertical clip and/or `img/x-stat.png`. Reply with the repo, the 3-minute demo, the no-install
+playground (sushant-me.github.io/only-you/playground.html) and the browser verifier
+(sushant-me.github.io/only-you/verify.html).
 
 ## Variant B — the demo-first post
 
@@ -57,7 +58,8 @@ Attach the vertical clip. Reply with the repo, the 3-minute demo, and the no-ins
 - [ ] Pin the post
 - [ ] Ask 10 people to **comment** (a question in the post drives comments: "what would you let your
       agent do unattended?")
-- [ ] Cross-post to LinkedIn (not counted, but drives X traffic)
+- [ ] Cross-post to LinkedIn / Instagram Reels / TikTok with the same vertical clip (not counted, but drives X traffic)
+- [ ] Press kit ready: `docs/press.md` (boilerplate, headlines, stats, images, alt text)
 - [ ] Reply to every comment for the first 48 h
 
 ## Do not
@@ -70,7 +72,8 @@ Attach the vertical clip. Reply with the repo, the 3-minute demo, and the no-ins
 ## Posting checklist
 
 - [ ] Post **6–8 Nov** (engagement closes **8 Nov 11:59 PM ET**)
-- [ ] Attach `docs/demo-x-vertical.mp4` (end card refreshed to 172 tests); first frame must be readable without sound (it is)
+- [ ] Attach `docs/demo-x-vertical.mp4` (end card refreshed to 172 tests) and/or `docs/img/x-stat.png`
+- [ ] Alt text on every image (see `docs/press.md`); first frame readable without sound (it is)
 - [ ] Tag **@AIatMeta**; reply to the hackathon announcement thread
 - [ ] Reply with repo + live page + 3-minute demo; pin the post
 - [ ] Do not claim SAM/voice integration; say "not yet" if asked
