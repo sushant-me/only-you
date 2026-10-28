@@ -1,6 +1,6 @@
 # YouTube upload — the 3-minute demo
 
-File: [`demo-3min.mp4`](demo-3min.mp4) · 2:55 · 1600×900 · silent, captioned · thumbnail: [`img/youtube-thumb.jpg`](img/youtube-thumb.jpg) · captions: [`demo-3min.srt`](demo-3min.srt)
+File: [`demo-3min.mp4`](demo-3min.mp4) · 2:55 · 1600×900 · narrated (synthetic draft) + captioned · thumbnail: [`img/youtube-thumb.jpg`](img/youtube-thumb.jpg) · captions: [`demo-3min.srt`](demo-3min.srt)
 Thumbnail: [`img/thumb.png`](img/thumb.png) (1280×720)
 
 ## Settings

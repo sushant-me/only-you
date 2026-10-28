@@ -43,6 +43,8 @@ If a beat takes longer than ~20 s, it is still working (Muse Spark latency); kee
 
 ## Voice-over without a screen recording
 
+The submitted cut already has a **synthetic narration draft** (Edge neural voice, aligned to the
+captions) so it is not silent. Your own voice is better; replace it with:
 If you send a voice memo instead of recording the screen, mux it onto the captioned cut:
 
 ```bash

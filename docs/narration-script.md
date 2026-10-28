@@ -1,5 +1,10 @@
 # Narration script — 2:55 captioned cut
 
+> **Synthetic draft is already in the video.** `docs/demo-3min.mp4` now carries this narration read by
+> Edge's `en-US-AndrewNeural` voice, aligned to the timestamps below. Replacing it with your own voice is
+> still preferred — record this script, then `make voice VOICE=your-recording.wav` and the mix replaces the
+> synthetic track. The synthetic track exists so the submission is never silent.
+
 Record in one take over `docs/demo-3min.mp4` playing silently. Aim for ~145 words per minute; the
 timestamps match the burned-in captions. Pause at line breaks; do not rush the numbers.
 

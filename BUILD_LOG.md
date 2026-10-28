@@ -248,6 +248,11 @@ item below was built on top of it.
   delivery test asserts both, so a SIEM can reject unsigned requests. Playground/landing now have
   OpenGraph/Twitter metadata; the X clip's end card was refreshed to 172 tests.
 
+**Narrated demo (synthetic draft)**
+- Generated a 175.0 s narration track from `docs/narration-script.md` with Edge `en-US-AndrewNeural`,
+  aligned per section, loudnorm to -16 LUFS, and muxed as AAC into `docs/demo-3min.mp4`. The submission is
+  never silent; a human recording can replace the track with `make voice VOICE=...`. End cards at 172 tests.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
