@@ -1,0 +1,62 @@
+{
+  "generated_at": "2026-10-28T15:07:06Z",
+  "environment": {
+    "python": "3.14.7",
+    "platform": "Linux-7.2.5-3-omarchy-x86_64-with-glibc2.44",
+    "model": "simulated (no network)"
+  },
+  "what_is_measured": [
+    "constitution rules only (deterministic policy decision)",
+    "dry-run path (routing + labels + constitution + mandates)",
+    "full local command path (perception routing + simulated proposal + gate + receipt)",
+    "scene OCR through tesseract on the demo invoice image",
+    "HTTP POST /api/command against the real local server"
+  ],
+  "what_is_not_measured": [
+    "model inference (Muse Spark / frontier), network and cold-start",
+    "camera capture, browser rendering, speaker embedding (voice fixtures absent)"
+  ],
+  "constitution_only": {
+    "n": 1000,
+    "p50_ms": 0.001,
+    "p95_ms": 0.001,
+    "mean_ms": 0.001,
+    "min_ms": 0.001,
+    "max_ms": 0.007,
+    "note": "pure deterministic rules; no routing, no model"
+  },
+  "dry_run_path": {
+    "n": 200,
+    "p50_ms": 4.282,
+    "p95_ms": 4.899,
+    "mean_ms": 4.383,
+    "min_ms": 3.631,
+    "max_ms": 10.104,
+    "note": "routing + labels + constitution + mandates; no model"
+  },
+  "local_command": {
+    "n": 50,
+    "p50_ms": 9.111,
+    "p95_ms": 10.458,
+    "mean_ms": 9.252,
+    "min_ms": 8.015,
+    "max_ms": 11.121,
+    "note": "simulated proposal; excludes network/model inference"
+  },
+  "ocr": {
+    "n": 7,
+    "p50_ms": 156.118,
+    "p95_ms": 163.068,
+    "mean_ms": 156.326,
+    "min_ms": 151.893,
+    "max_ms": 163.068
+  },
+  "http_command": {
+    "n": 30,
+    "p50_ms": 12.811,
+    "p95_ms": 14.483,
+    "mean_ms": 12.879,
+    "min_ms": 11.074,
+    "max_ms": 16.013
+  }
+}

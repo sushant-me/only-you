@@ -91,6 +91,40 @@ class TestMetaClient(unittest.TestCase):
         self.client.chat([{"role": "user", "content": "ping"}])
         self.assertEqual(MockState.auth, "Bearer test-key")
 
+        # Frontier adapter resolves provider credentials without touching the gate.
+        import os
+
+        from onlyyou.frontier import FrontierModel
+
+        saved = {k: os.environ.pop(k, None) for k in (
+            "FRONTIER_API_KEY", "FRONTIER_API_BASE", "FRONTIER_MODEL", "FRONTIER_PROVIDER",
+            "OPENAI_API_KEY", "OPENAI_MODEL", "OPENAI_API_BASE",
+        )}
+        try:
+            os.environ["OPENAI_API_KEY"] = "k"
+            os.environ["OPENAI_MODEL"] = "gpt-test"
+            spec = FrontierModel.resolve()
+            self.assertEqual(spec["provider"], "openai")
+            self.assertEqual(spec["model"], "gpt-test")
+            self.assertEqual(spec["base"], "https://api.openai.com/v1")
+            os.environ["FRONTIER_API_KEY"] = "explicit"
+            os.environ["FRONTIER_API_BASE"] = "http://localhost:11434/v1"
+            os.environ["FRONTIER_MODEL"] = "local-model"
+            os.environ["FRONTIER_PROVIDER"] = "ollama"
+            explicit = FrontierModel.resolve()
+            self.assertEqual(explicit["provider"], "ollama")
+            self.assertEqual(explicit["model"], "local-model")
+            self.assertEqual(explicit["base"], "http://localhost:11434/v1")
+        finally:
+            for key in (
+                "FRONTIER_API_KEY", "FRONTIER_API_BASE", "FRONTIER_MODEL", "FRONTIER_PROVIDER",
+                "OPENAI_API_KEY", "OPENAI_MODEL", "OPENAI_API_BASE",
+            ):
+                os.environ.pop(key, None)
+            for key, value in saved.items():
+                if value is not None:
+                    os.environ[key] = value
+
     def test_repairs_prose_answer(self):
         MockState.mode = "prose"
         obs = Observation(mode="labeled", labels=[], owner_command="pay this invoice")

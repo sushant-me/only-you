@@ -1,4 +1,4 @@
-.PHONY: gen demo demo-text scenes brief report pitch audit links web bench bench-meta bench-open smoke test verify all
+.PHONY: gen demo demo-text scenes brief report pitch audit latency links web bench bench-meta bench-frontier bench-open smoke test verify all
 
 PYTHONPATH := src
 
@@ -17,6 +17,9 @@ bench:
 bench-meta:
 	PYTHONPATH=$(PYTHONPATH) python3 -m onlyyou.cli bench --model meta --out results-real
 
+bench-frontier:
+	PYTHONPATH=$(PYTHONPATH) python3 -m onlyyou.cli bench --model frontier --limit $(or $(LIMIT),8) --out results-frontier
+
 bench-open:
 	PYTHONPATH=$(PYTHONPATH) python3 -m onlyyou.cli bench --model open --limit $(or $(LIMIT),10) --out results-open
 
@@ -34,6 +37,9 @@ scenes:
 
 demo-text:
 	PYTHONPATH=$(PYTHONPATH) python3 examples/mandate_demo.py
+
+latency:
+	PYTHONPATH=src python3 tools/latency.py
 
 links:
 	python3 tools/check_links.py

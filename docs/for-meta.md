@@ -49,7 +49,7 @@ the audit verifier and a Docker image make the whole thing tryable in 30 seconds
 
 \* Muse Spark's own alignment refuses obvious injections even undefended; the authority layer earns its
 place on the attacks alignment is trained to be helpful about. 195 + 115 real calls, 36/36 and 18/18
-receipts verified; in-process gate ≈0.1 ms; p50 6.8 s / 10.7 s end-to-end, dominated by the model call.
+receipts verified; constitution rules 0.001 ms p50; full dry-run path 4.3 ms; local HTTP command 12.8 ms; OCR 156 ms; end-to-end p50 6.8–11.9 s is dominated by the model call (results/latency.json).
 Receipts and raw results are committed: `results-real/`, `results-real-doc/`.
 
 ## What I would build next with Meta

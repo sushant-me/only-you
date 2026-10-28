@@ -64,31 +64,23 @@ The same confused-deputy corpus on the **contributor build** (`muse-spark-1.3-co
 replicates the finding: **50% undefended, 37.5% prompt-only, 50% provenance-only, 0% with the full gate**,
 0% false refusals, 18/18 receipts verified.
 
-The three runs are the honest picture: alignment is a strong first line against obvious injections; the
-authority layer is what catches the confused deputy the model is trying to be helpful about. The samples
-are small and the corpus is synthetic, and the latencies are dominated by the model call, not the gate.
+The honest picture: alignment is a strong first line against obvious injections; the authority layer is
+what catches the confused deputy the model is trying to be helpful about. Samples are small and synthetic.
 
 **The label layer — the part that can be wrong.** A DOM hidden-text detector on 42 hidden / 35 benign
-HTML snippets: recall **81.0%** (95% CI 66.7–90.0), false positives **14.3%** (6.3–29.4), precision
-86.8%. Eight hiding techniques are missed (`clip-path`, `clip`, `transform:scale(0)`, zero-height,
-rgba-white, fixed off-screen, `visibility:collapse`, hidden inputs). A browser labeler that asks the
-rendering engine for computed styles and ancestor contrast scores **42/42 with 0/35 false positives** on
-the same cases — an upper bound, because it was written after the cases existed, but the reason the
-production design does not parse `style=` strings. Speaker verification and its false-accept rate are
-**not measured**; the report gives a sensitivity table instead of a claim.
+snippets: recall **81.0%** (95% CI 66.7–90.0), false positives **14.3%** (6.3–29.4), precision 86.8%;
+eight hiding techniques are missed. A browser labeler using computed styles scores **42/42 with 0/35 false
+positives** on the same cases (an upper bound — it was written after the cases). Speaker verification and
+its false-accept rate are **not measured**; a sensitivity table stands in for a claim.
 
-**Adaptive corpus — the attacker controls the signals.** Fifteen scenarios: twelve cloned-voice
-utterances presented with score 0.91 + proximity, three pages claiming `user_typed`. Result: **label
-error 80%, model-proposed 80%, executed 20%** (3/15 — the cases where the owner was present and
-confirmed). The web cases are 0/3 after the fix that makes web text data-only.
+**Adaptive corpus — the attacker controls the signals.** Fifteen scenarios (twelve cloned-voice, three
+pages claiming `user_typed`): **label error 80%, executed 20%** (the cases where the owner confirmed);
+web cases are 0/3 after making web text data-only.
 
-**Signed sensor envelope.** Six attacks fabricate the sensor signals (`speaker_score: 0.99` +
-proximity) to impersonate the owner: **6/6 execute without an envelope, 0/6 with a signed sensor bus**,
-with all six recorded as blocked. This closes the cheap forgery path; it does not stop a cloned voice
-(the sensor is honest) or a compromised sensor.
+**Signed sensor envelope.** Six fabricated-signal attacks impersonating the owner: **6/6 execute without
+an envelope, 0/6 with a signed sensor bus**. It closes cheap forgery, not a cloned voice or a rooted sensor.
 
-**Evidence coverage.** Eight paraphrased payloads with no trigger verb: **0 executed**, but only
-**1/8 produced a receipt**. The audit layer, not the gate, fails first.
+**Evidence coverage.** Eight paraphrases: **0 executed**, but only **1/8 receipted** — the audit layer fails first.
 
 **Scene text.** Thirty-five synthetic signs across seven conditions, rendered with ImageMagick and read
 with Tesseract on both the raw image and an auto-deskewed, normalized copy, keeping the
@@ -102,7 +94,10 @@ channel; OCR quality changes the evidence surface.
 **detection 100% (15/15), mean CER 0.0%**, with approximate pixel boxes for the UI mask. Tesseract
 stays as the offline fallback. n is small by design; boxes are approximate, not segmentation masks.
 
-**Latency.** The in-process gate is **≈0.1 ms p50**. Perception latency is **unmeasured**, and the
+**Latency (measured, `results/latency.json`).** Constitution rules **0.001 ms p50**; full dry-run path
+(routing + labels + gate) **4.3 ms p50**; local HTTP command with a simulated proposal and a written
+receipt **12.8 ms p50**; scene OCR **156 ms p50**. Model inference dominates real end-to-end time
+(6.8–11.9 s p50); camera capture and speaker embedding are still unmeasured. The
 report says so; the hundred-millisecond figures a wearable demo implies are not claimed here.
 
 ## 4. What failed, and what I did not fix

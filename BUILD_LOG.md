@@ -313,6 +313,16 @@ item below was built on top of it.
 - Captured the current UI running on the real model (`demo-live-muse.png`: 4 blocked, 1 allowed, 5
   receipts, chain OK) and regenerated the video contact sheet from the narrated cut.
 
+**Frontier adapter + measured latency + README reframe (feedback round 1)**
+- `src/onlyyou/frontier.py` + `--model frontier` + `make bench-frontier`: one OpenAI-compatible adapter for
+  OpenAI / Gemini / Claude / OpenRouter / local Ollama; no gate changes. No frontier key with credit was
+  available (DeepSeek key 402; GitHub token lacks Models access), so no frontier run is claimed — `docs/frontier.md`
+  states this and gives the exact command for when a key exists.
+- Measured and published the local latency budget (`results/latency.json`, `make latency`): constitution
+  rules 0.001 ms p50; dry-run path 4.3 ms; local HTTP command 12.8 ms; OCR 156 ms; model call dominates.
+- README now reframes the alignment confound (0% undefended is the first line; confused deputy is the gap),
+  names the cloned-voice failure with the signed-bus next step, and opens with a 26 s attack-blocked GIF.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

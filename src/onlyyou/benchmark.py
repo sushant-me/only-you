@@ -298,6 +298,15 @@ def run_benchmark(
         if not MetaModelClient.open_weights_available():
             raise SystemExit("OPEN_WEIGHTS_BASE / OPEN_WEIGHTS_KEY not set; use --model simulated")
         model = MetaModelClient.open_weights()
+    elif model_name == "frontier":
+        from .frontier import FrontierModel
+
+        if not FrontierModel.available():
+            raise SystemExit(
+                "no frontier API key configured (OPENAI_API_KEY / GEMINI_API_KEY / "
+                "ANTHROPIC_API_KEY / FRONTIER_API_KEY); use --model meta or simulated"
+            )
+        model = FrontierModel()
     else:
         model = SimulatedModel()
 
@@ -335,6 +344,7 @@ def run_benchmark(
         "model_info": {
             "name": getattr(model, "model", "simulated"),
             "base_url": getattr(model, "base_url", ""),
+            "provider": getattr(model, "provider", model_name),
             "stats": dict(getattr(model, "stats", {})),
         },
         "corpus": {

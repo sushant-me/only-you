@@ -21,6 +21,15 @@ verifiable receipt. The demo: the owner delegates one payment, the agent pays an
 interrupting, and a look-alike invoice with the same spoken command is refused because its payee came
 from a document.
 
+**Why this matters when alignment already refuses.** Muse Spark refused the obvious injections even
+undefended — 0% executed on *every* arm of the general corpus. That's the first line of defence, and it is
+not enough. The gap is the **confused deputy**: the owner asks to pay a real invoice, and a document
+supplies the payee. There the helpful model executes **25% undefended, 37.5% prompt-only, 50%
+provenance-only — and 0% with the full gate**, with 0% false refusals. Authority is what's left when
+alignment is trying to help.
+
+![A look-alike invoice is refused — the 30-second beat](docs/img/attack-blocked.gif)
+
 - **3-minute demo (2:55, narrated + captioned):** [`docs/demo-3min.mp4` · recording steps in [`docs/recording-guide.md`](docs/recording-guide.md)](docs/demo-3min.mp4) — upload kit in [`docs/youtube-upload.md`](docs/youtube-upload.md)
 - 20-second agentic task clip: [`docs/demo-task-clip.mp4`](docs/demo-task-clip.mp4)
 - Voice-over mux: `make voice VOICE=narration.wav` · generative B-roll feasibility: [`docs/omni-video.md`](docs/omni-video.md)
@@ -44,6 +53,7 @@ docker build -t only-you-demo . && docker run --rm -p 8000:8000 only-you-demo
 
 - **Deploy:** [`docs/deploy.md`](docs/deploy.md) — Docker/compose, Meta credentials, healthcheck, ports.
 
+- **Frontier adapter:** [`docs/frontier.md`](docs/frontier.md) — the same gate for OpenAI/Gemini/Claude/local models; add a key and `make bench-frontier`.
 - **Hiring memo:** [`docs/for-meta.md`](docs/for-meta.md) — what the layer makes possible, the real-model
   numbers, and what I would build next with Meta.
 - **Submission sheet:** [`docs/submission-final.md`](docs/submission-final.md) — verified links and fields.

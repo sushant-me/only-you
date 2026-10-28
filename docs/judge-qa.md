@@ -138,8 +138,11 @@ corpus), 1/8 evidence coverage on paraphrased payloads, label-layer recall 81% /
 synthetic samples. The gate holds; the perception and evidence layers are the weak parts.
 
 **Does it slow the agent down?**
-The in-process gate is ≈0.1 ms. End-to-end p50 is dominated by the model call: 6.8 s general, 10.7 s
-document, 11.9 s contributor build. Perception latency is not claimed.
+Measured locally (`results/latency.json`): constitution rules **0.001 ms p50**; full dry-run path
+(routing + labels + gate) **4.3 ms p50**; local HTTP command with a simulated proposal and a written
+receipt **12.8 ms p50**; scene OCR **156 ms p50**. The model call dominates real end-to-end time (6.8 s
+general, 10.7 s document, 11.9 s contributor build). Camera capture and speaker embedding are not
+measured.
 
 **Can a third party verify what happened?**
 Mandates are Ed25519-signed; a merchant verifies signature, payee, cap and expiry offline with the public
