@@ -294,6 +294,10 @@ item below was built on top of it.
   alt text, links. Three 1200×675 share cards (`img/x-stat.png`, `x-quote.png`, `x-try.png`) generated for
   the viral category; X post updated with attachments, alt text and cross-post guidance.
 
+**Legal / credits + outreach links**
+- `NOTICE.md`: model and asset provenance, optional system tools and licences, data statement, attribution.
+- Outreach message updated with the playground, browser verifier and one-page brief; README links NOTICE.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

@@ -37,6 +37,7 @@ LOCAL = [
     "docs/playground.html",
     "docs/verify.html",
     "docs/audit-sample.json",
+    "NOTICE.md",
     "Dockerfile",
     "docker-compose.yml",
     "docs/deploy.md",
