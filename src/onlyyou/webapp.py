@@ -41,7 +41,7 @@ from .tasks import run_task
 from .voice import enroll as voice_enroll
 from .voice import verify as voice_verify
 from .model import MetaModelClient, SimulatedModel
-from .policy import Constitution, Context
+from .policy import Constitution, Context, Decision, Verdict
 from .provenance import Channel, Input, Origin, ProvenanceRouter, origin_label
 from .receipts import DEMO_SECRET, ReceiptLedger, clean_for_display
 from .scene_muse import muse_read
@@ -69,6 +69,9 @@ def _action_label(action: dict[str, Any]) -> str:
         return f"delete {params.get('path')}"
     if kind == "send_file":
         return f"send {params.get('path')}"
+    if kind == "policy_change":
+        state = "enable" if params.get("enabled") else "disable"
+        return f"{state} rule {params.get('rule_id')}"
     return str(kind or "nothing")
 
 
@@ -590,8 +593,29 @@ class DemoService:
     def set_rule_enabled(self, payload: dict[str, Any]) -> dict[str, Any]:
         rule_id = str(payload.get("rule_id", ""))
         enabled = bool(payload.get("enabled", True))
-        self.agent.constitution.set_enabled(rule_id, enabled)
-        return {"ok": True, "rule_id": rule_id, "enabled": enabled, "state": self.state()}
+        with self.lock:
+            self.agent.constitution.set_enabled(rule_id, enabled)
+            action = {"kind": "policy_change", "params": {"rule_id": rule_id, "enabled": enabled}}
+            verdict = Verdict(
+                Decision.ALLOW,
+                "R7-policy-change",
+                f"owner {'enabled' if enabled else 'disabled'} {rule_id}",
+                {"rule_id": rule_id, "enabled": enabled},
+            )
+            receipt = self.ledger.append(
+                action=action,
+                verdict=verdict.to_dict(),
+                evidence={"changed_by": "owner", "source": "/api/policy"},
+                result={"outcome": "executed", "detail": "policy updated"},
+            )
+            return {
+                "ok": True,
+                "rule_id": rule_id,
+                "enabled": enabled,
+                "receipt": asdict(receipt),
+                "receipt_ok": self.ledger.verify(receipt),
+                "state": self.state(),
+            }
 
     def revoke_all_mandates(self) -> dict[str, Any]:
         """Panic button: kill every delegation at once, keep the receipts."""

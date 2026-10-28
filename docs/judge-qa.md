@@ -40,6 +40,11 @@ Yes — `GET /api/export` (or **export audit** in the UI) returns a single JSON 
 HMAC chain, mandates with Ed25519 signatures, the device public key, chain head and instructions.
 `python3 tools/verify_audit.py audit.json` re-checks everything offline and fails if one byte is changed.
 
+**Are policy changes auditable?**
+Yes — every enable/disable appends a signed `R7-policy-change` receipt (rule id, new state, source) to the
+same hash chain, and it appears in the audit export and receipt verification pages. Changing the rules is
+an auditable act, not a silent config edit.
+
 **Can I change the policy itself?**
 Yes — the constitution is editable at runtime (enable/disable any rule from the UI, `POST /api/policy`).
 Pair it with the dry run: disable `R1-payee-not-contact` and the same payment proposal moves from DENY to
@@ -80,7 +85,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (136 tests + live-server smoke + audit) then `make web` →
+`make judge` (138 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 

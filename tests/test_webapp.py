@@ -98,6 +98,28 @@ class TestDemoService(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.svc.set_rule_enabled({"rule_id": "R99-nope", "enabled": False})
 
+
+    def test_policy_change_is_receipted(self):
+        before = self.svc.state()["summary"]["count"]
+        result = self.svc.set_rule_enabled({"rule_id": "R3-unlock-requires-confirmation", "enabled": False})
+        self.assertTrue(result["receipt_ok"])
+        state = result["state"]
+        self.assertEqual(state["summary"]["count"], before + 1)
+        self.assertTrue(state["summary"]["chain_ok"])
+        receipt = state["receipts"][-1]
+        self.assertEqual(receipt["action"]["kind"], "policy_change")
+        self.assertEqual(receipt["action"]["params"]["rule_id"], "R3-unlock-requires-confirmation")
+        self.assertFalse(receipt["action"]["params"]["enabled"])
+        self.assertEqual(receipt["verdict"]["rule"], "R7-policy-change")
+
+    def test_policy_change_in_audit_export(self):
+        from tools.verify_audit import verify_bundle
+
+        self.svc.set_rule_enabled({"rule_id": "R2-payment-over-limit", "enabled": False})
+        bundle = self.svc.export_audit()
+        self.assertEqual(bundle["receipts"][-1]["action"]["kind"], "policy_change")
+        self.assertTrue(verify_bundle(bundle)["receipts_ok"])
+
     def test_state_reports_model_mode(self):
         state = self.svc.state()
         self.assertEqual(state["model"], "simulated")

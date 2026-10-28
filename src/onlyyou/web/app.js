@@ -144,6 +144,9 @@ function actionLabel(a) {
   if (a.kind === "unlock") return "unlock the door";
   if (a.kind === "delete_file") return `delete ${a.params.path}`;
   if (a.kind === "send_file") return `send ${a.params.path}`;
+  if (a.kind === "policy_change") {
+    return `${a.params.enabled ? "enable" : "disable"} rule ${a.params.rule_id}`;
+  }
   return a.kind;
 }
 

@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 136 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 138 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -125,6 +125,12 @@ The constitution is editable at runtime: enable/disable any rule, then immediate
 against the new policy. Above, `R1-payee-not-contact` is disabled, so the same `pay 4500` proposal moves
 from **DENY** to **ASK** (`R2-payment-over-limit`) — visible before anything executes. `reset` restores
 the defaults.
+
+Policy changes are themselves **receipted**: each enable/disable appends a signed `R7-policy-change`
+receipt, so a compliance reviewer can see *who changed the rules and when*, and the audit export verifies
+it byte-for-byte.
+
+![Policy change receipt](docs/img/policy-change-receipt.png)
 
 ### Policy dry run
 
@@ -268,7 +274,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 136 tests
+make gen test          # corpus + 138 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -281,7 +287,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           136 tests
+tests/           138 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script
