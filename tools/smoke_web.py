@@ -82,6 +82,11 @@ def main() -> int:
         assert merchant["ok"] is True and merchant["algorithm"] == "ed25519"
         assert merchant["remaining"] == 500, merchant
 
+        checkout = post("/api/checkout", {
+            "id": state["mandate"]["id"], "payee": "electrician", "amount": 100,
+        })
+        assert checkout["ok"] and checkout["payment"]["outcome"] == "executed", checkout
+
         revoked = post("/api/mandate/revoke-all", {})
         assert revoked["ok"] is True and revoked["revoked"], revoked
         assert all(not m["valid"] for m in revoked["state"]["mandates"])

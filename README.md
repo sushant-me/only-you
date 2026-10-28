@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 129 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 134 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -89,6 +89,14 @@ may issue them, what they may authorise, and what can be proven afterwards.
 The mandate card is a live budget: `spent / remaining of cap`, a progress bar, and one click to
 **revoke every delegation** while keeping the receipts. Undo refunds the budget, so an accidental
 payment does not silently consume authority. Merchant verification returns the remaining budget too.
+
+### Merchant checkout
+
+![Merchant checkout](docs/img/merchant-checkout.png)
+
+`/merchant-page` is a merchant terminal: select the agent-presented mandate, verify it (Ed25519, scope,
+payee, cap, remaining budget) and charge. The merchant check runs **before** the payment; the agent then
+pays through the provenance gate and the receipt links straight to its verification page.
 
 ### Receipt verification page
 
@@ -251,7 +259,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 129 tests
+make gen test          # corpus + 134 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -264,7 +272,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           129 tests
+tests/           134 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

@@ -24,6 +24,12 @@ bar, the receipt records `remaining_after`, undo refunds the budget, and one cli
 delegation while keeping the receipts. A payment beyond the remaining budget is no longer covered by the
 mandate — it falls back to the constitution's ask/confirm path.
 
+**How does an actual merchant checkout work?**
+`/merchant-page` (and `/api/checkout`) runs the two steps in order: the merchant verifies the presented
+mandate — principal signature, scope, payee, cap, remaining budget — and only then does the agent pay
+through the gate. The merchant gets the rule that authorised it, the remaining budget and a link to the
+receipt's verification page.
+
 **Can a merchant check a single receipt?**
 Yes — every receipt has a `/verify/<id>` page (and `/api/receipt/<id>` JSON): action, decision, rule,
 reason, signature validity, chain position, mandate spend. Fields are escaped because receipt text is
@@ -69,7 +75,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (129 tests + live-server smoke + audit) then `make web` →
+`make judge` (134 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 

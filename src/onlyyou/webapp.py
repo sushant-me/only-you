@@ -486,6 +486,57 @@ class DemoService:
             },
         }
 
+    def _mandate_view(self, mandate: Any) -> dict[str, Any]:
+        return {
+            "id": mandate.id,
+            "max_amount": mandate.max_amount,
+            "consumed": self.mandates.spent.get(mandate.id, 0),
+            "remaining": self.mandates.remaining(mandate),
+            "expires_at": mandate.expires_at,
+        }
+
+    def checkout(self, payload: dict[str, Any]) -> dict[str, Any]:
+        """Merchant checkout: verify an agent-presented mandate, then let the gate pay.
+
+        Two independent steps, in the order a real merchant runs them:
+          1. merchant check — Ed25519 signature, scope, payee, cap, remaining budget;
+          2. payment — through the agent, provenance and receipts, as usual.
+        """
+        mandate_id = str(payload.get("id", ""))
+        mandate = next((m for m in self.mandates.mandates if m.id == mandate_id), None)
+        if mandate is None:
+            return {"ok": False, "stage": "merchant", "reason": "mandate not found"}
+        payee = str(payload.get("payee") or (mandate.payees[0] if mandate.payees else ""))
+        try:
+            amount = int(payload.get("amount", 0) or 0)
+        except (TypeError, ValueError):
+            return {"ok": False, "stage": "merchant", "reason": "amount must be an integer"}
+        action = {"kind": "pay", "params": {"payee": payee, "amount": amount}}
+        valid = self.mandates.verify(mandate)
+        covered, why = mandate.covers(action, None, self.mandates.spent.get(mandate.id, 0))
+        if not (valid and covered):
+            return {
+                "ok": False,
+                "stage": "merchant",
+                "reason": "mandate invalid (revoked or expired)" if not valid else why,
+                "mandate": self._mandate_view(mandate),
+            }
+        payment = self.command({
+            "speaker": "owner",
+            "channel": "document",
+            "text": "pay this invoice",
+            "payload": f"INVOICE #{mandate.id[:6]} - {payee.upper()} - {amount}",
+            "invoice": {"payee": payee, "amount": amount},
+            "confirms": True,
+        })
+        return {
+            "ok": payment.get("outcome") == "executed",
+            "stage": "paid" if payment.get("outcome") == "executed" else "blocked",
+            "merchant_verified": True,
+            "mandate": self._mandate_view(mandate),
+            "payment": payment,
+        }
+
     def simulate(self, payload: dict[str, Any]) -> dict[str, Any]:
         """Policy dry run: resolve a proposed action to a verdict without executing it."""
         action_dict = payload.get("action") or {}
@@ -632,6 +683,73 @@ Receipt fields are attacker-influenced display data; they are escaped here and n
 </body></html>"""
 
 
+MERCHANT_PAGE = """<!doctype html><html><head><meta charset="utf-8"><title>ONLY YOU — merchant checkout</title>
+<style>
+body{font-family:ui-sans-serif,system-ui,sans-serif;background:#070a10;color:#e6ebf5;max-width:720px;margin:36px auto;padding:0 20px}
+h1{letter-spacing:.06em;font-size:22px} .sub{color:#8b95a8;font-size:13px}
+.card{border:1px solid #232b3d;border-radius:12px;padding:16px 18px;background:#0b0e15;margin:16px 0}
+label{display:block;color:#8b95a8;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin:10px 0 4px}
+input,select{width:100%;box-sizing:border-box;background:#101522;border:1px solid #2a3448;color:#e6ebf5;border-radius:7px;padding:9px 10px;font-size:14px}
+button{margin-top:14px;background:linear-gradient(180deg,#2a3550,#1b2338);border:1px solid #3a4a6b;color:white;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer}
+.badge{display:inline-block;padding:4px 10px;border-radius:6px;font-weight:800;font-size:12px;letter-spacing:.06em}
+.ok{background:#0f2a1e;color:#2fd18c;border:1px solid #2fd18c55}.bad{background:#2a0f14;color:#ff5a68;border:1px solid #ff5a6855}
+.warn{background:#2a2410;color:#f5b544;border:1px solid #f5b54455}
+.row{display:flex;gap:12px}.row>div{flex:1}
+.mono{font-family:ui-monospace,monospace;font-size:11.5px;color:#c7cedb;word-break:break-all}
+a{color:#7c9cff}.hidden{display:none}
+</style></head><body>
+<h1>MERCHANT TERMINAL</h1>
+<p class="sub">electrician invoice #7781 · amount due <b>4,500</b> · pay to <b>@electrician</b></p>
+<div class="card">
+  <label>agent presents mandate</label>
+  <select id="mandate"><option value="">loading…</option></select>
+  <div class="row"><div><label>payee</label><input id="payee" value="electrician"></div>
+  <div><label>amount</label><input id="amount" type="number" value="4500"></div></div>
+  <button id="charge">Verify mandate &amp; charge</button>
+</div>
+<div id="out" class="card hidden"></div>
+<div class="card"><div class="sub">The merchant verifies the principal's Ed25519 signature, scope, payee, cap and
+remaining budget <b>before</b> the payment; the agent then pays through the provenance gate and the receipt
+is chained. <a href="/">← back to the demo</a> · <a href="/api/export">audit bundle</a></div></div>
+<script>
+const $ = (s) => document.querySelector(s);
+async function load() {
+  const state = await (await fetch("/api/state")).json();
+  const valid = (state.mandates || []).filter((m) => m.valid);
+  const sel = $("#mandate");
+  sel.innerHTML = valid.length
+    ? valid.map((m) => `<option value="${m.id}">${m.id} · ${m.payees.join(", ")} · ≤ ${m.max_amount} · remaining ${m.remaining}</option>`).join("")
+    : `<option value="">no valid mandate — grant one in the demo first</option>`;
+}
+$("#charge").addEventListener("click", async () => {
+  const id = $("#mandate").value;
+  const out = $("#out");
+  out.classList.remove("hidden");
+  out.innerHTML = "checking…";
+  if (!id) { out.innerHTML = '<span class="badge bad">NO MANDATE</span>'; return; }
+  const res = await fetch("/api/checkout", {
+    method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ id, payee: $("#payee").value, amount: Number($("#amount").value) }),
+  });
+  const data = await res.json();
+  const m = data.mandate || {};
+  if (!data.ok) {
+    out.innerHTML = `<span class="badge bad">REJECTED</span><p>${data.reason || "checkout failed"}</p>
+      <div class="mono">remaining ${m.remaining ?? "?"} of ${m.max_amount ?? "?"}</div>`;
+    return;
+  }
+  const receipt = data.payment.receipt;
+  out.innerHTML = `<span class="badge ok">MERCHANT VERIFIED · PAID</span>
+    <p>rule <b>${data.payment.verdict.rule}</b> · mandate ${m.id}</p>
+    <div class="mono">remaining after ${m.remaining} of ${m.max_amount}</div>
+    <div class="mono">receipt ${receipt.id}</div>
+    <p><a href="/verify/${receipt.id}" target="_blank">open receipt verification →</a></p>`;
+});
+load();
+if (new URLSearchParams(location.search).get("auto") === "1") setTimeout(() => $("#charge").click(), 500);
+</script></body></html>"""
+
+
 def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRequestHandler]:
     class Handler(BaseHTTPRequestHandler):
         server_version = "OnlyYou/0.1"
@@ -698,6 +816,9 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
                     })
                 else:
                     self._html(_verify_page(service, receipt))
+                return
+            if path == "/merchant-page":
+                self._html(MERCHANT_PAGE)
                 return
             if path == "/api/export":
                 self._json(service.export_audit(), filename="only-you-audit.json")
@@ -768,6 +889,8 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
                 self._json(service.revoke_all_mandates())
             elif path == "/api/simulate":
                 self._json(service.simulate(payload))
+            elif path == "/api/checkout":
+                self._json(service.checkout(payload))
             elif path == "/api/frame":
                 self._json(service.frame(payload))
             elif path == "/api/task":

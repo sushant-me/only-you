@@ -39,6 +39,13 @@ class TestVerifyPage(unittest.TestCase):
         self.assertIn("chain</th><td>OK", page)
         self.assertIn(self.receipt["id"], page)
 
+    def test_merchant_page_served(self):
+        with urllib.request.urlopen(self.base + "/merchant-page", timeout=5) as resp:
+            page = resp.read().decode()
+        self.assertEqual(resp.status, 200)
+        self.assertIn("MERCHANT TERMINAL", page)
+        self.assertIn("/api/checkout", page)
+
     def test_json_endpoint_and_unknown_id(self):
         with urllib.request.urlopen(self.base + f"/api/receipt/{self.receipt['id']}", timeout=5) as resp:
             body = resp.read().decode()
