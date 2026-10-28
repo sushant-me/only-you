@@ -142,6 +142,9 @@ def main() -> int:
             m = re.search(r"Pages:\s+(\d+)", info)
             check(f"{rel} has {pages} pages", bool(m) and int(m.group(1)) == pages, m.group(1) if m else "?")
 
+    for extra in ("docs/demo-3min.srt", "docs/img/youtube-thumb.jpg"):
+        check(f"artifact {extra}", (ROOT / extra).exists())
+
     for rel, expected in (("docs/demo-task-clip.mp4", 20.0), ("docs/demo-fallback.mp4", 82.0), ("docs/demo-3min.mp4", 175.0)):
         path = ROOT / rel
         if path.exists():
