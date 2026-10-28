@@ -6,12 +6,14 @@ the final is decided by the demo and the answers.
 
 ## Before you present (60 minutes out)
 
-- [ ] `make web` running; browser at 1600×900; `?fakecam=1` ready
+- [ ] `make preflight` green; `make web` running; header badge reads `muse-spark-1.3` (green)
+- [ ] Browser at 1600×900; `?fakecam=1` ready
 - [ ] `/api/reset` called; header counts at 0
 - [ ] A pre-recorded 90-second screen capture open in a second tab (fallback)
 - [ ] The 3-minute video open in a third tab (if screen share fails)
 - [ ] Report and benchmark open in a PDF/editor
 - [ ] Phone hotspot ready; microphone tested; notifications off
+- [ ] Optional: if the mic works, demo **Speak a command (Muse Wonder)** once (+10 s; cut the evidence slide)
 - [ ] This doc open on a second screen, scrolled to the Q&A
 
 ## 5-minute run of show
@@ -29,7 +31,7 @@ the final is decided by the demo and the answers.
 | 1:50 | "TV, hidden page text — same result." | Click **2 · TV ad**, **4 · hidden page text** |
 | 2:05 | "And it can run a whole task: browse, read, decide, pay, file a receipt." | Click **run agent task**; let the step trace fill |
 | 2:35 | "Ask it what it did." | Click **9 · what did you do today?** |
-| 2:50 | Evidence: label layer 81%/14.3%, adaptive 20% still gets through, forged 6/6→0/6 | Benchmark table |
+| 2:50 | Evidence: Muse Spark real run — 25% → 37.5% → 50% → **0%** with the full gate, 0% false refusals; label layer 81%/14.3%; forged 6/6→0/6 | Benchmark table / report |
 | 3:20 | "Merchant-verifiable mandates: Ed25519, offline check." | `tools/mandate_demo.py` output |
 | 3:40 | "What breaks it: cloned voice, forged sensor, compromised device." | limitations page |
 | 4:00 | "With ten engineers: WebMCP provenance, Muse client voice+DOM, device-key mandates." | Roadmap card |
@@ -72,8 +74,9 @@ look-alike invoice beat is the one that must survive).
    Because agentic commerce needs a merchant-verifiable authorisation and glasses need a trust story.
    The WebMCP `authority` field is a small change with a large effect.
 7. **Does it work offline?**
-   The gate does; the policy evaluator can run on Muse Glimmer open weights. That's the open-weights
-   bonus entry.
+   The gate, policy, mandates and receipts are local and deterministic. The evaluator can point at an
+   open-weights endpoint, but no open-weights deployment was run for this submission — so we do not
+   claim that bonus category.
 8. **Latency?**
    Gate ≈0.1 ms in-process; OCR ~200 ms; model call dominates. The report separates them.
 9. **Privacy?**
@@ -86,8 +89,8 @@ look-alike invoice beat is the one that must survive).
     The Ed25519 mandates, the agentic task runner, scene OCR, the UI, the real-model benchmark
     plumbing and the video. The repo labels the pre-event scaffold commit.
 12. **What would you do with 10 engineers?**
-    WebMCP provenance envelope, voice+DOM provenance in the Muse client, device-key mandates with an
-    offline merchant verifier, scene provenance behind a flag.
+    WebMCP provenance propagation, SAM 3.1 masks for authority regions, device-rooted keys with
+    attestation, an authority-failure eval across Muse models, and the ledger summariser with DATA labels.
 13. **What's the business model?**
     Start as the trust layer for agentic checkout (merchant-side verification SaaS), then licence the
     provenance envelope to device makers. The hackathon ask is the pilot, not the business.

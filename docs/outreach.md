@@ -22,7 +22,11 @@ seeing it**. Thirty minutes a day. Quality over volume: one personalized line be
 > receipt for every refusal. It starts from your own WebMCP note that `untrustedContentHint` "is not an
 > enforced security boundary."
 >
-> 3-minute demo: <link> · repo: <link> · 2-page report: <link>
+> 3-minute demo: <YouTube link once uploaded> · repo: https://github.com/sushant-me/only-you
+> live page: https://sushant-me.github.io/only-you/ · 2-page report: https://github.com/sushant-me/only-you/blob/main/docs/report.pdf
+>
+> Real Muse Spark run: 25% → 37.5% → 50% → **0%** as the gate is added, 0% false refusals. Three model
+> builds, receipts verified. 45-second cut: docs/demo-x-vertical.mp4
 >
 > I'd value 15 minutes of feedback — especially on whether the authority field belongs in WebMCP.
 > Happy to send the benchmark first if that's easier.
