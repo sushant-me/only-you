@@ -264,6 +264,11 @@ item below was built on top of it.
 - Added `SECURITY.md` (private advisory path, demo-only list, defensive details) and compressed the
   landing gallery to 720px JPEGs (~1.7 MB → ~350 KB total). 172 tests.
 
+**Browser audit verifier**
+- `docs/verify.html`: paste an audit export (or load the committed sample) and re-check the HMAC chain and
+  Ed25519 mandate signatures with WebCrypto — no server, no Python. The Python verifier and the browser
+  verifier are cross-checked: the export test now also verifies `docs/audit-sample.json`. 172 tests.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

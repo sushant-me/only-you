@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ONLY YOU — verify an audit bundle in your browser</title>
+<meta name="description" content="Re-check an ONLY YOU audit export offline: HMAC receipt chain and Ed25519 mandate signatures, computed in this page." />
+<meta property="og:title" content="ONLY YOU — verify an audit bundle in your browser" />
+<meta property="og:description" content="Don't trust the dashboard. Paste the export and verify the chain and mandate signatures client-side." />
+<meta name="twitter:card" content="summary_large_image" />
+<style>
+:root{--bg:#070a10;--panel:#0b0e15;--line:#232b3d;--text:#e6ebf5;--muted:#8b95a8;--dim:#5f6b80;
+--green:#2fd18c;--red:#ff5a68;--amber:#f5b544;--blue:#7c9cff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;max-width:980px;margin:34px auto;padding:0 20px 50px}
+h1{font-size:20px;letter-spacing:.12em;margin-bottom:6px}
+h1 span{color:var(--red)}
+.sub{color:var(--muted);font-size:12.5px;line-height:1.55;margin-bottom:16px}
+a{color:var(--blue)}
+textarea{width:100%;height:150px;background:#0b0e15;border:1px solid var(--line);border-radius:9px;color:#c7cedb;font-family:ui-monospace,monospace;font-size:11px;padding:10px;resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px}
+button{background:linear-gradient(180deg,#20283b,#171d2b);border:1px solid #2f3a52;color:var(--text);border-radius:8px;padding:8px 13px;font-size:12px;cursor:pointer}
+button:hover{border-color:#4a5a7d}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.badge{display:inline-block;padding:4px 10px;border-radius:6px;font-weight:800;font-size:12px;letter-spacing:.06em}
+.ok{background:#0f2a1e;color:var(--green);border:1px solid #2fd18c55}
+.bad{background:#2a0f14;color:var(--red);border:1px solid #ff5a6855}
+.warn{background:#2a2410;color:var(--amber);border:1px solid #f5b54455}
+ul{margin:8px 0 0 18px;font-size:12.5px;color:var(--muted);line-height:1.7}
+code{font-family:ui-monospace,monospace;color:#c7cedb;font-size:11.5px;word-break:break-all}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:12.5px;margin-top:8px}
+.kv span:nth-child(odd){color:var(--dim)}
+.tiny{font-size:11px;color:var(--dim);line-height:1.6;margin-top:10px}
+</style>
+</head>
+<body>
+<h1>ONLY YOU · <span>verify it yourself</span></h1>
+<div class="sub">Paste an <code>only-you-audit.json</code> bundle (or load the sample). This page re-computes the
+receipt HMAC chain and verifies every mandate signature with the embedded public key — <b>entirely in your browser</b>.
+It is the same check as <code>tools/verify_audit.py</code>, no server involved. The demo HMAC secret is public by design.</div>
+
+<textarea id="input" spellcheck="false" placeholder="paste only-you-audit.json here…"></textarea>
+<div class="row">
+  <button id="verify">verify bundle</button>
+  <button id="sample">load sample bundle</button>
+  <button id="clear">clear</button>
+  <a href="audit-sample.json" download><button>download sample JSON</button></a>
+</div>
+
+<div class="card" id="out"><span class="badge warn">WAITING</span> <span class="sub">nothing verified yet</span></div>
+
+<div class="tiny">What is demo-only: the receipt HMAC secret is public in this demo (production roots it in the device
+secure element); mandate signatures are real Ed25519 but the demo's private key lives on disk. Ed25519 verification
+needs a browser with WebCrypto Ed25519 support (current Chrome/Edge/Firefox); otherwise use
+<code>python3 tools/verify_audit.py</code>. Full honesty list: <a href="https://github.com/sushant-me/only-you/blob/main/SECURITY.md">SECURITY.md</a>.</div>
+
+<script>
+(() => {
+  "use strict";
+  const SECRET = "only-you-demo-secret-do-not-ship-in-production";
+  const ZERO = "0".repeat(64);
+  const $ = (s) => document.querySelector(s);
+  const enc = (t) => new TextEncoder().encode(t);
+  const hex = (buf) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+
+  function stable(value) {
+    if (Array.isArray(value)) return "[" + value.map(stable).join(",") + "]";
+    if (value && typeof value === "object") {
+      return "{" + Object.keys(value).sort().map((k) => JSON.stringify(k) + ":" + stable(value[k])).join(",") + "}";
+    }
+    return JSON.stringify(value);
+  }
+
+  async function hmacHex(text) {
+    const key = await crypto.subtle.importKey("raw", enc(SECRET), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+    return hex(await crypto.subtle.sign("HMAC", key, enc(text)));
+  }
+
+  function pemToDer(pem) {
+    const b64 = pem.replace(/-----[^-]+-----/g, "").replace(/\s+/g, "");
+    return Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+  }
+
+  const MANDATE_FIELDS = ["id", "principal", "scope", "payees", "max_amount", "issued_at", "expires_at",
+    "nonce", "note", "payee_limits", "daily_limit", "period_seconds", "parent_id"];
+
+  function mandatePayload(m) {
+    const payload = {};
+    for (const field of MANDATE_FIELDS) payload[field] = m[field];
+    return payload;
+  }
+
+  function signatureBytes(sig) {
+    const raw = String(sig).replace(/^ed25519:/, "");
+    return Uint8Array.from(atob(raw), (c) => c.charCodeAt(0));
+  }
+
+  function render(html, cls) {
+    $("#out").innerHTML = html;
+    $("#out").className = "card " + (cls || "");
+  }
+
+  async function verify() {
+    let bundle;
+    try { bundle = JSON.parse($("#input").value); }
+    catch (e) { return render('<span class="badge bad">INVALID JSON</span><ul><li>' + escapeHtml(e.message) + "</li></ul>"); }
+    if (!bundle || bundle.format !== "only-you-audit/1") {
+      return render('<span class="badge bad">NOT AN AUDIT BUNDLE</span><ul><li>expected format "only-you-audit/1"</li></ul>');
+    }
+
+    const receipts = bundle.receipts || [];
+    const receiptErrors = [];
+    let prev = ZERO;
+    for (const r of receipts) {
+      const payload = { ...r };
+      delete payload.signature;
+      const expected = await hmacHex(stable(payload));
+      if (expected !== r.signature) receiptErrors.push(`receipt ${r.id}: signature mismatch`);
+      if (r.prev_hash !== prev) receiptErrors.push(`receipt ${r.id}: chain link mismatch`);
+      prev = r.signature || "";
+    }
+
+    const mandates = bundle.mandates || [];
+    const mandateRows = [];
+    let edSupported = true;
+    let key = null;
+    try {
+      key = await crypto.subtle.importKey("spki", pemToDer(bundle.device_public_key || ""), { name: "Ed25519" }, false, ["verify"]);
+    } catch (e) { edSupported = false; }
+    for (const m of mandates) {
+      let ok = false;
+      if (edSupported && key) {
+        // Only the signed fields: the export adds reporting fields (consumed, remaining, …).
+        const payload = mandatePayload(m);
+        try { ok = await crypto.subtle.verify({ name: "Ed25519" }, key, signatureBytes(m.signature), enc(stable(payload))); }
+        catch (e) { ok = false; }
+      }
+      mandateRows.push({ id: m.id, ok });
+    }
+
+    const chainOk = receipts.length === 0 ? true : receiptErrors.length === 0;
+    const mandatesOk = edSupported && mandateRows.every((m) => m.ok);
+    const passed = chainOk && mandatesOk;
+    const badge = passed ? '<span class="badge ok">VERIFIED</span>' : '<span class="badge bad">FAILED</span>';
+    const edNote = edSupported ? "" : "<li>this browser cannot verify Ed25519 in WebCrypto — use tools/verify_audit.py</li>";
+    render(
+      badge +
+      `<div class="kv">
+        <span>format</span><span><code>${escapeHtml(bundle.format)}</code></span>
+        <span>receipts</span><span>${receipts.length} · ${chainOk ? '<b class="ok">chain OK</b>' : '<b class="bad">chain broken</b>'}</span>
+        <span>chain head</span><span><code>${escapeHtml(prev.slice(0, 32))}…</code></span>
+        <span>mandates</span><span>${mandates.length} · ${mandatesOk ? '<b class="ok">signatures valid</b>' : '<b class="bad">signature check failed</b>'}</span>
+        <span>generated</span><span>${escapeHtml(bundle.generated_at || "?")}</span>
+      </div>` +
+      (receiptErrors.length ? "<ul>" + receiptErrors.map((e) => `<li>${escapeHtml(e)}</li>`).join("") + "</ul>" : "") +
+      (mandateRows.length ? "<ul>" + mandateRows.map((m) => `<li>mandate <code>${escapeHtml(m.id)}</code>: ${m.ok ? "signature valid" : "INVALID"}</li>`).join("") + "</ul>" : "") +
+      (edNote ? "<ul>" + edNote + "</ul>" : ""),
+      passed ? "ok" : "bad"
+    );
+    return passed;
+  }
+
+  function escapeHtml(text) {
+    return String(text).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  $("#verify").addEventListener("click", verify);
+  $("#clear").addEventListener("click", () => { $("#input").value = ""; render('<span class="badge warn">WAITING</span> <span class="sub">nothing verified yet</span>'); });
+  $("#sample").addEventListener("click", loadSample);
+
+  async function loadSample() {
+    try {
+      const response = await fetch("audit-sample.json");
+      $("#input").value = await response.text();
+      await verify();
+    } catch (e) {
+      render('<span class="badge bad">SAMPLE UNAVAILABLE</span><ul><li>' + escapeHtml(e.message) + "</li></ul>");
+    }
+  }
+
+  if (new URLSearchParams(location.search).get("auto") === "1") loadSample();
+})();
+</script>
+</body>
+</html>

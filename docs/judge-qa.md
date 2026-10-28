@@ -75,6 +75,11 @@ Yes — filter by decision/rule/text in the UI, or `GET /api/receipts?decision=d
 filtered set exports as CSV (`/api/receipts.csv`) with the signature and mandate on each row, which is what
 an auditor or SIEM ingestion job consumes.
 
+**Is there a verifier that doesn't need Python?**
+Yes — https://sushant-me.github.io/only-you/verify.html re-computes the receipt HMAC chain and checks every
+mandate's Ed25519 signature in your browser with WebCrypto, using the public key embedded in the bundle.
+A committed sample bundle is one click away; `tools/verify_audit.py` does the same in CI.
+
 **Can I take the evidence away and verify it myself?**
 Yes — `GET /api/export` (or **export audit** in the UI) returns a single JSON bundle: receipts with their
 HMAC chain, mandates with Ed25519 signatures, the device public key, chain head and instructions.

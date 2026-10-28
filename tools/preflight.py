@@ -34,6 +34,8 @@ LOCAL = [
     "docs/demo-3min.mp4",
     "docs/demo-3min.srt",
     "docs/playground.html",
+    "docs/verify.html",
+    "docs/audit-sample.json",
     "Dockerfile",
     "docker-compose.yml",
     "docs/deploy.md",

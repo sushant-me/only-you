@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import copy
+import json
 import unittest
+from pathlib import Path
 
 from onlyyou.webapp import DemoService
 from tools.verify_audit import verify_bundle
@@ -34,6 +36,12 @@ class TestAuditExport(unittest.TestCase):
         self.assertTrue(result["mandates_ok"], result)
         self.assertTrue(result["bundle_chain_ok"])
         self.assertEqual(result["chain_head"], bundle["chain"]["head"])
+
+        # The committed sample used by the browser verifier must verify offline too.
+        sample = json.loads((Path(__file__).resolve().parents[1] / "docs" / "audit-sample.json").read_text())
+        sample_result = verify_bundle(sample)
+        self.assertTrue(sample_result["receipts_ok"], sample_result)
+        self.assertTrue(sample_result["mandates_ok"], sample_result)
 
     def test_tampered_receipt_fails(self):
         bundle = _paid_service().export_audit()

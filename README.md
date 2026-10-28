@@ -190,6 +190,15 @@ available as JSON (`GET /api/receipts?decision=deny&q=electrician`) and as a CSV
 (`GET /api/receipts.csv`) with id, time, decision, rule, action, reason, mandate and signature — the shape an
 auditor or SIEM ingestion job expects.
 
+### Verify it yourself — in the browser
+
+![Browser audit verifier](docs/img/browser-verify.png)
+
+[`verify.html`](https://sushant-me.github.io/only-you/verify.html) re-checks an exported `only-you-audit.json`
+with no server and no Python: the receipt HMAC chain and every mandate's Ed25519 signature are recomputed
+with WebCrypto. Load the committed sample or paste your own bundle. The same check exists as
+`tools/verify_audit.py` for CI and SIEM pipelines.
+
 ### Scannable receipt verification
 
 ![Receipt verification page with QR](docs/img/verify-qr.png)
