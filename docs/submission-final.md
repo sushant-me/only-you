@@ -1,3 +1,6 @@
+> **HOLD — do not submit until Sushant explicitly says "finalize".** Everything below is staged and
+> verified; the form is only pasted after his go-ahead.
+
 # Submission — final copy-paste sheet
 
 Deadline **4 Nov 2026, 9:00 PM ET = 5 Nov 2026, 7:45 AM NPT**. Video: upload unlisted, then paste the
