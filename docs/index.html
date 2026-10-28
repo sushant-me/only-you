@@ -70,6 +70,14 @@ a{color:#9ecbff}
   <h2>What the demo shows</h2>
   <img class="shot" src="img/task-panel.png" alt="Agent task trace: browse, extract, decide, pay, receipt, explain">
 
+  <h2>How it works</h2>
+  <div class="grid" style="grid-template-columns:repeat(4,1fr)">
+    <div class="card"><h3>1 · Inputs</h3><p>Mic, camera, page, document — each tagged by where it came from.</p></div>
+    <div class="card"><h3>2 · Labels</h3><p>Only the enrolled voice is a command channel. Everything else is data.</p></div>
+    <div class="card"><h3>3 · Gate</h3><p>Constitution rules, an Ed25519 mandate, or an explicit ask. The model only proposes.</p></div>
+    <div class="card"><h3>4 · Receipts</h3><p>Every action and refusal is signed and chained. Evidence, never instructions.</p></div>
+  </div>
+
   <h2>Three primitives</h2>
   <div class="grid">
     <div class="card"><h3>Identity</h3><p>An enrolled local voice check is the only command channel. Scene text via OCR, page text via DOM, documents — all data, never instructions.</p></div>
@@ -85,13 +93,13 @@ a{color:#9ecbff}
     <tr><td>Adaptive corpus with forged signals</td><td class="bad">label error 80% · executed 20% — published</td></tr>
     <tr><td>Signed sensor envelope</td><td class="ok">6/6 executed without → 0/6 with</td></tr>
     <tr><td>Scene text: render → OCR → gate</td><td class="ok">94.3% detection · 0/35 executed</td></tr>
-    <tr><td>Tests</td><td class="ok">97 passing · audit 44/44</td></tr>
+    <tr><td>Tests</td><td class="ok">98 passing · audit 44/44</td></tr>
   </table>
 
   <h2>Run it</h2>
   <pre><code>git clone https://github.com/sushant-me/only-you
 cd only-you
-make test     # 97 tests
+make test     # 98 tests
 make demo     # benign invoice executed; look-alike invoice blocked
 make web      # http://127.0.0.1:8000</code></pre>
 

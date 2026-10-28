@@ -123,7 +123,14 @@ item below was built on top of it.
 - `docs/ledger-safety.md` documents the threat, defences, tests and residual risk; limitations item 6
   updated.
 
-**Tests:** 97 pass (`make test`).
+**End-to-end HTTP test + architecture**
+- `tests/test_web_e2e.py`: drives the actual demo server over HTTP — reset → mandate → invoice paid →
+  look-alike invoice refused → poster blocked → ledger answer → agentic task → merchant verification.
+  Proves the judge's path works, not just the objects (0.5 s).
+- README and the landing page now show the architecture (inputs → provenance labels → gate → receipts)
+  with one diagram; the model-never-executes line is explicit.
+
+**Tests:** 98 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
 real-model benchmark. The only missing input is `META_API_BASE` / `META_API_KEY` / `MUSE_MODEL`.
