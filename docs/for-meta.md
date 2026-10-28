@@ -19,10 +19,16 @@ Capability and authority are different problems. ONLY YOU separates them:
    by channel, not by prompt wording.
 2. **Proposal, not execution** — the model proposes; a deterministic gate decides. The model cannot
    execute anything it is not authorised to, even when it is fully convinced.
-3. **Delegation with bounds** — the owner grants an Ed25519-signed, scoped, expiring mandate; a merchant
-   verifies it offline with only the public key.
-4. **Evidence** — every action *and every refusal* becomes an HMAC-chained receipt with rule, source and
-   argument provenance. The ledger enters the model's context as data, never as instructions.
+3. **Delegation with bounds** — the owner grants an Ed25519-signed, scoped, expiring mandate with caps,
+   per-merchant and daily sub-limits, recurring allowances, and sub-agents that can only narrow authority.
+   A merchant verifies it offline with only the public key — or a QR code at the counter.
+4. **Evidence, not trust** — every action *and every refusal* becomes an HMAC-chained receipt with rule,
+   source and argument provenance. The audit bundle re-verifies offline (`tools/verify_audit.py`) or in a
+   browser with WebCrypto, and every receipt has a public verification page. The ledger enters the model's
+   context as data, never as instructions.
+5. **Operations** — receipted policy changes with a review diff, signed SIEM alerts with retries, scheduled
+   standing instructions that re-check a live mandate at run time, and a ledger that filters and exports to
+   CSV for audit triage.
 
 Result: you can give an agent real credentials, a real door, a real wallet — because the blast radius is
 bounded by the owner's authority, not by the model's judgement. That is what turns a demo agent into a
@@ -30,13 +36,15 @@ product people will let act for them.
 
 **Also shipped:** Muse Wonder transcribes spoken commands in the demo (`/api/voice/transcribe`), so the
 voice path is a Meta model end-to-end instead of typed text. It is transcription, not speaker
-verification — the MFCC check still decides whose voice it is.
+verification — the MFCC check still decides whose voice it is. Merchant checkout, the browser playground,
+the audit verifier and a Docker image make the whole thing tryable in 30 seconds.
 
 ## Evidence (real Muse Spark runs, temperature 0)
 
 | Corpus | Undefended | Prompt-only | Provenance-only | **Full ONLY YOU** | False refusals |
 |---|---|---|---|---|---|
-| Confused deputy (8 attacks / 12 benign) | 25% | 37.5% | 50% | **0%** | **0%** |
+| Confused deputy, Muse Spark 1.3 (8 / 12) | 25% | 37.5% | 50% | **0%** | **0%** |
+| Confused deputy, Muse Spark contributor build | 50% | 37.5% | 50% | **0%** | **0%** |
 | General injection (20 / 20) | 0%* | 0%* | 0%* | **0%** | 0–5% |
 
 \* Muse Spark's own alignment refuses obvious injections even undefended; the authority layer earns its
@@ -60,7 +68,7 @@ Receipts and raw results are committed: `results-real/`, `results-real-doc/`.
 
 ## Why me
 
-I built this in the hackathon window, alone: 172 tests, a self-audit, CI, two real-model evaluations,
+I built this in the hackathon window, alone: 172 tests, a self-audit, CI (tests + Docker), three real-model runs,
 and an honest failure list — including the cases where the layer does not help. I want to keep building
 this at Meta, on the team that ships agents people can actually delegate to.
 

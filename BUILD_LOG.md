@@ -269,6 +269,11 @@ item below was built on top of it.
   Ed25519 mandate signatures with WebCrypto — no server, no Python. The Python verifier and the browser
   verifier are cross-checked: the export test now also verifies `docs/audit-sample.json`. 172 tests.
 
+**Judge-experience polish**
+- Landing video now has a WebVTT captions track (`docs/demo-3min.vtt`, generated from the SRT); acceptance
+  doc count fixed; hiring memo updated to three real runs and the full current feature surface; pitch deck
+  refreshed to 10 slides, adding "it doesn't just block — it proves" and merchant checkout.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

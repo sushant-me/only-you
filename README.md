@@ -319,7 +319,7 @@ false refusals. Raw results: [`results-real/`](results-real/benchmark.md),
 
 ## Demo
 
-- **Pitch deck:** [`docs/pitch.pdf`](docs/pitch.pdf) — 9 slides, event-built features
+- **Pitch deck:** [`docs/pitch.pdf`](docs/pitch.pdf) — 10 slides, event-built features
 - **Task clip:** [`docs/demo-task-clip.mp4`](docs/demo-task-clip.mp4) — 20 s captioned walkthrough
 - **Fallback video:** [`docs/demo-fallback.mp4`](docs/demo-fallback.mp4) — 82 s silent, captioned, screen-only
 - **Vertical X clip:** [`docs/demo-x-vertical.mp4`](docs/demo-x-vertical.mp4) — 45 s, 1080×1920, captioned (viral prize)

@@ -20,7 +20,7 @@ Meta Global AI Developer Hackathon 2026 · Indie track · Build for Your World
 ## Three primitives
 
 - **Identity** — enrolled voice is the only command channel (MFCC check, live in the demo); scene text via OCR and page text via DOM are data; documents are arguments, not instructions.
-- **Mandates** — **Ed25519**-signed, scoped, expiring delegation. A merchant verifies it **offline with the public key**: signature, payee, cap, expiry.
+- **Mandates** — **Ed25519**-signed, scoped, expiring delegation with caps, per-merchant/daily sub-limits, recurring allowances and sub-agents that can only narrow authority. A merchant verifies it **offline with the public key**: signature, payee, cap, expiry.
 - **Receipts** — every action **and every refusal**: rule, evidence, undo, hash chain.
 
 ## Agentic task
@@ -34,8 +34,17 @@ One goal: browse → extract visible **and hidden** text → decide under the ma
 - Grant a mandate: electrician, ≤ 5,000, until tomorrow
 - Owner pays the invoice — **no prompt, no interruption**, receipt cites the mandate
 - Look-alike invoice, same spoken command — **refused**: the payee came from a document
+- Merchant terminal verifies the mandate before charging — **no call to the platform**
 - Poster, TV ad, hidden page text — **read, never obeyed**
 - "What did you do today?" — answered from the ledger
+
+## It doesn't just block — it proves
+
+- Every action **and refusal**: signed, hash-chained receipt with rule, source, evidence
+- Public `verify/<id>` page + **QR code**; audit bundle re-verified **offline in Python or in the browser**
+- **Merchant checkout** verifies the delegation before charging; a scheduler re-checks it at run time
+- Policy edits are receipted; policy import shows a **review diff** before applying
+- Signed SIEM alerts; ledger filters + CSV export for audit triage
 
 ## Evidence
 

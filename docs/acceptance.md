@@ -57,7 +57,7 @@ blocking any of them.
 
 ```bash
 git clone https://github.com/sushant-me/only-you && cd only-you
-make judge        # 119 tests + smoke + 67-check audit
+make judge        # 172 tests + smoke + 67-check audit
 make preflight    # live links + repo public + submission files
 make web          # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
