@@ -122,7 +122,7 @@ def main() -> int:
     # artifacts
     artifacts = {
         "docs/report.pdf": 2,
-        "docs/pitch.pdf": 9,
+        "docs/pitch.pdf": 10,
         "docs/demo-task-clip.mp4": None,
         "docs/demo-fallback.mp4": None,
         "docs/demo-x-vertical.mp4": None,
