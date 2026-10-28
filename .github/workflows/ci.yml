@@ -23,5 +23,7 @@ jobs:
         run: |
           make gen
           PYTHONPATH=src python3 -m onlyyou.cli demo > /dev/null
+      - name: demo server smoke (the judge path)
+        run: make smoke-web
       - name: self-audit
         run: python3 tools/audit.py

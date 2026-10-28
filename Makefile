@@ -41,10 +41,14 @@ audit:
 test:
 	ONLYYOU_MODEL=simulated PYTHONPATH=$(PYTHONPATH) python3 -m unittest discover -s tests -v
 
+smoke-web:
+	PYTHONPATH=$(PYTHONPATH) python3 tools/smoke_web.py
+
 judge:
 	@echo "ONLY YOU - judge check"
 	@python3 --version
 	@ONLYYOU_MODEL=simulated PYTHONPATH=$(PYTHONPATH) python3 -m unittest discover -s tests -q
+	@PYTHONPATH=$(PYTHONPATH) python3 tools/smoke_web.py
 	@AUDIT_SKIP_GIT_CLEAN=1 PYTHONPATH=$(PYTHONPATH) python3 tools/audit.py
 	@echo ""
 	@echo "Demo:  make web   then open  http://127.0.0.1:8000/?script=full&fakecam=1"

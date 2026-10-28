@@ -2,8 +2,9 @@
 
 **Your glasses can hear the world. Who do they obey?**
 
-A provenance-gated authority layer for wearable agents — designed for **Muse Spark** and **SAM 3.1**
-through the Meta Model API, built during the Meta Global AI Developer Hackathon 2026.
+A provenance-gated authority layer for wearable agents — built on **Muse Spark** and **Muse Wonder**
+through the Meta Model API (SAM 3.1 masks are on the roadmap, not integrated); built during the Meta
+Global AI Developer Hackathon 2026.
 
 **Repository:** <https://github.com/sushant-me/only-you> · **Live page:** <https://sushant-me.github.io/only-you/>
 
@@ -22,6 +23,17 @@ from a document.
 - 82-second silent walkthrough (fallback): [`docs/demo-fallback.mp4`](docs/demo-fallback.mp4)
 - 2-page report: [`docs/report.pdf`](docs/report.pdf) · benchmark: [`results/benchmark.md`](results/benchmark.md)
 - Honest failure list: [`docs/limitations.md`](docs/limitations.md)
+
+## Judge checklist — one command
+
+```bash
+make judge     # 105 tests + self-audit + a live-server smoke, about 25 seconds
+make web       # http://127.0.0.1:8000/?script=full&fakecam=1
+```
+
+- **Hiring memo:** [`docs/for-meta.md`](docs/for-meta.md) — what the layer makes possible, the real-model
+  numbers, and what I would build next with Meta.
+- **Submission sheet:** [`docs/submission-final.md`](docs/submission-final.md) — verified links and fields.
 
 > "Set `untrustedContentHint` honestly, since **it's not an enforced security boundary**."
 > "Your tool's result text goes into the assistant's context, so returning unmarked untrusted content

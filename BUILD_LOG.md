@@ -183,6 +183,13 @@ item below was built on top of it.
   verified**; p50 11.9 s. The gate's result replicates on a second build; committed as
   `results-real-doc-contributor/`. Not claimed as an open-weights entry (no open-weights deployment ran).
 
+**Judge-path smoke in CI**
+- `tools/smoke_web.py` starts the real `onlyyou web` server, waits for `/api/state`, then drives reset →
+  mandate → invoice (executed) → look-alike invoice (refused) → ledger answer → merchant verification,
+  asserting each. `make smoke-web` runs it locally; CI runs it after the demo. Unit tests import objects;
+  this proves the command a judge types actually serves the demo.
+- `make judge` now includes the smoke, so one command covers tests, server, and self-audit.
+
 **Tests:** 105 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
