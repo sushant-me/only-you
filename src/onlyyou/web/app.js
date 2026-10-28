@@ -653,19 +653,56 @@ async function speakFromFile(event) {
   }
 }
 
+let pendingPolicyBundle = null;
+
 async function importPolicyFile(event) {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
   try {
     const bundle = JSON.parse(await file.text());
-    const data = await post("/api/policy/import", { bundle });
-    renderState(data.state);
-    toast(`policy imported · ${data.rules} rules · receipt ${data.receipt.id}`);
+    const diff = await post("/api/policy/diff", { bundle });
+    renderPolicyDiff(diff, bundle);
   } catch (err) {
-    toast(`policy import failed: ${err.message}`);
+    toast(`policy review failed: ${err.message}`);
   } finally {
     event.target.value = "";
   }
+}
+
+function renderPolicyDiff(diff, bundle) {
+  const panel = $("#policy-diff");
+  if (!panel) return;
+  panel.classList.remove("hidden");
+  if (diff.same) {
+    panel.innerHTML = `<div class="diff-head">policy bundle</div>
+      <div class="diff-note">no changes — this bundle matches the current policy</div>
+      <button id="diff-cancel" class="mini">close</button>`;
+    pendingPolicyBundle = null;
+  } else {
+    panel.innerHTML = `<div class="diff-head">review before applying</div>
+      <ul class="diff-list">${diff.changes
+        .map((c) => `<li><b>${c.id}</b>: ${c.before ? "on" : "off"} → <b>${c.after ? "on" : "off"}</b></li>`)
+        .join("")}</ul>
+      <button id="diff-apply" class="mini">apply ${diff.changes.length} change${diff.changes.length === 1 ? "" : "s"}</button>
+      <button id="diff-cancel" class="mini">cancel</button>`;
+    pendingPolicyBundle = bundle;
+  }
+  const cancel = $("#diff-cancel");
+  if (cancel) cancel.onclick = () => { panel.classList.add("hidden"); panel.innerHTML = ""; pendingPolicyBundle = null; };
+  const apply = $("#diff-apply");
+  if (apply) apply.onclick = async () => {
+    try {
+      const data = await post("/api/policy/import", { bundle: pendingPolicyBundle });
+      renderState(data.state);
+      toast(`policy applied · ${data.rules} rules · receipt ${data.receipt.id}`);
+    } catch (err) {
+      toast(`policy import failed: ${err.message}`);
+    } finally {
+      pendingPolicyBundle = null;
+      panel.classList.add("hidden");
+      panel.innerHTML = "";
+    }
+  };
 }
 
 async function simulateAction() {

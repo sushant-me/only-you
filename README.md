@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 160 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 162 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -118,7 +118,9 @@ labels it *sub of …*.
 `GET /api/policy/export` returns a **signed snapshot** of the constitution (rule ids, descriptions and
 enabled state) with the device public key; `POST /api/policy/import` verifies the signature against this
 device before applying anything, rejects unknown rules, receipts the import as `R7-policy-import` and
-raises an alert. That makes the policy a versioned, deployable artifact instead of clicks on a box.
+raises an alert. The UI first calls `POST /api/policy/diff`, shows exactly which rules would flip
+(`on → off`) and applies only after confirmation. That makes the policy a versioned, reviewable,
+deployable artifact instead of clicks on a box.
 
 ### Recurring mandates
 
@@ -327,7 +329,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 160 tests
+make gen test          # corpus + 162 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -340,7 +342,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           160 tests
+tests/           162 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

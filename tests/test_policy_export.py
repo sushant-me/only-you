@@ -48,6 +48,36 @@ class TestPolicyExport(unittest.TestCase):
         export = target.export_audit()
         self.assertTrue(verify_bundle(export)["receipts_ok"])
 
+
+    def test_diff_lists_changes_without_applying(self):
+        bundle = self.svc.export_policy()
+        target = DemoService()
+        target.device_key = self.svc.device_key
+        target.reset()
+        diff = target.diff_policy({"bundle": bundle})
+        self.assertTrue(diff["valid"])
+        self.assertFalse(diff["same"])
+        self.assertEqual(len(diff["changes"]), 1)
+        change = diff["changes"][0]
+        self.assertEqual(change["id"], "R1-payee-not-contact")
+        self.assertTrue(change["before"])
+        self.assertFalse(change["after"])
+        self.assertEqual(change["action"], "disable")
+        rules = {r["id"]: r["enabled"] for r in target.state()["rules"]}
+        self.assertTrue(rules["R1-payee-not-contact"], "diff must not apply the change")
+
+    def test_diff_rejects_tampered_or_unknown(self):
+        bundle = self.svc.export_policy()
+        tampered = dict(bundle)
+        tampered["rules"] = [{**r, "enabled": True} for r in bundle["rules"]]
+        with self.assertRaises(ValueError):
+            self.svc.diff_policy({"bundle": tampered})
+        unknown = dict(bundle)
+        unknown["rules"] = [{"id": "R99-unknown", "enabled": True, "description": "x"}]
+        unknown["signature"] = self.svc.device_key.sign(canonical(unknown))
+        with self.assertRaises(ValueError):
+            self.svc.diff_policy({"bundle": unknown})
+
     def test_tampered_or_unknown_bundle_rejected(self):
         bundle = self.svc.export_policy()
         tampered = dict(bundle)

@@ -102,6 +102,8 @@ def main() -> int:
         policy = get("/api/policy/export")
         assert policy["format"] == "only-you-policy/1"
         post("/api/policy", {"rule_id": "R3-unlock-requires-confirmation", "enabled": False})
+        diff = post("/api/policy/diff", {"bundle": policy})
+        assert diff["changes"] and diff["changes"][0]["action"] == "enable", diff
         restored = post("/api/policy/import", {"bundle": policy})
         assert restored["ok"] and all(r["enabled"] for r in restored["state"]["rules"]), restored
 

@@ -748,8 +748,8 @@ class DemoService:
             "note": "Signed by the device key. Import verifies this signature before applying any state.",
         }
 
-    def import_policy(self, payload: dict[str, Any]) -> dict[str, Any]:
-        """Apply a signed policy snapshot; refuses anything not signed by this device."""
+    def _policy_rule_map(self, payload: dict[str, Any]) -> dict[str, bool]:
+        """Verify a signed policy bundle and return {rule_id: enabled}; never applies it."""
         bundle = payload.get("bundle") if isinstance(payload.get("bundle"), dict) else payload
         if not isinstance(bundle, dict) or bundle.get("format") != "only-you-policy/1":
             raise ValueError("not an only-you policy bundle")
@@ -777,6 +777,33 @@ class DemoService:
             if rule_id not in known:
                 raise ValueError(f"unknown rule in policy bundle: {rule_id}")
             state_map[rule_id] = bool((row or {}).get("enabled", True))
+        return state_map
+
+    def diff_policy(self, payload: dict[str, Any]) -> dict[str, Any]:
+        """Show what a signed bundle would change, without applying it."""
+        state_map = self._policy_rule_map(payload)
+        current = {rule.id: rule.id not in self.agent.constitution.disabled for rule in self.agent.constitution.rules}
+        changes = [
+            {
+                "id": rule_id,
+                "before": current[rule_id],
+                "after": enabled,
+                "action": "enable" if enabled else "disable",
+            }
+            for rule_id, enabled in state_map.items()
+            if current[rule_id] != enabled
+        ]
+        return {
+            "ok": True,
+            "valid": True,
+            "same": not changes,
+            "changes": changes,
+            "rules": len(state_map),
+        }
+
+    def import_policy(self, payload: dict[str, Any]) -> dict[str, Any]:
+        """Apply a signed policy snapshot; refuses anything not signed by this device."""
+        state_map = self._policy_rule_map(payload)
         with self.lock:
             for rule_id, enabled in state_map.items():
                 self.agent.constitution.set_enabled(rule_id, enabled)
@@ -1198,6 +1225,8 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
                 self._json(service.set_rule_enabled(payload))
             elif path == "/api/policy/import":
                 self._json(service.import_policy(payload))
+            elif path == "/api/policy/diff":
+                self._json(service.diff_policy(payload))
             elif path == "/api/frame":
                 self._json(service.frame(payload))
             elif path == "/api/task":
