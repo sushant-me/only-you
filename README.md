@@ -6,12 +6,14 @@ A provenance-gated authority layer for wearable agents — built on **Muse Spark
 through the Meta Model API (SAM 3.1 masks are on the roadmap, not integrated); built during the Meta
 Global AI Developer Hackathon 2026.
 
-**Repository:** <https://github.com/sushant-me/only-you> · **Live page:** <https://sushant-me.github.io/only-you/>
-- **Try it in the browser:** https://sushant-me.github.io/only-you/playground.html — same gate, no install (static page)
-
-![ONLY YOU](docs/img/hero.jpg)
+**▶ Start here:** [2:55 narrated demo](docs/demo-3min.mp4) · [try the playground](https://sushant-me.github.io/only-you/playground.html) · [1-page brief](docs/brief.pdf) · [repo](https://github.com/sushant-me/only-you) · [live page](https://sushant-me.github.io/only-you/)
 
 [![tests](https://github.com/sushant-me/only-you/actions/workflows/ci.yml/badge.svg)](https://github.com/sushant-me/only-you/actions/workflows/ci.yml)
+[![audit](https://img.shields.io/badge/self--audit-67%2F67-2fd18c)](AUDIT.md)
+[![docker](https://img.shields.io/badge/docker-CI--verified-7c9cff)](docs/deploy.md)
+[![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
+![ONLY YOU](docs/img/hero.jpg)
 
 **In 30 seconds.** Only the enrolled owner's voice is a command (spoken commands are transcribed by Muse
 Wonder); camera text, page text and documents are data; irreversible actions need a signed, scoped mandate; every action *and every refusal* leaves a

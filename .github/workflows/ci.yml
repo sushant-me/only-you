@@ -27,6 +27,8 @@ jobs:
         run: make smoke-web
       - name: self-audit
         run: python3 tools/audit.py
+      - name: static link check
+        run: make links
 
   docker:
     runs-on: ubuntu-latest

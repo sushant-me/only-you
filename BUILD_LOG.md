@@ -298,6 +298,12 @@ item below was built on top of it.
 - `NOTICE.md`: model and asset provenance, optional system tools and licences, data statement, attribution.
 - Outreach message updated with the playground, browser verifier and one-page brief; README links NOTICE.
 
+**Judge-first README + link guard**
+- README opens with a "Start here" row (narrated demo, playground, brief, repo, live page) and badges for
+  tests, self-audit, Docker and licence.
+- `tools/check_links.py` + `make links` + a CI step fail the build if a local href/src in the static pages
+  points at a missing file (25 references checked).
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

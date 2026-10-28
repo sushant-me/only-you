@@ -1,4 +1,4 @@
-.PHONY: gen demo demo-text scenes brief report pitch audit web bench bench-meta bench-open smoke test verify all
+.PHONY: gen demo demo-text scenes brief report pitch audit links web bench bench-meta bench-open smoke test verify all
 
 PYTHONPATH := src
 
@@ -34,6 +34,9 @@ scenes:
 
 demo-text:
 	PYTHONPATH=$(PYTHONPATH) python3 examples/mandate_demo.py
+
+links:
+	python3 tools/check_links.py
 
 smoke:
 	python3 tools/smoke_meta.py
