@@ -1,5 +1,10 @@
 # 3-minute demo video — shot list, script, and production notes
 
+> **Current build:** `docs/demo-3min.mp4` — 175 s, silent, burned-in captions, frames from the current UI
+> (Muse Image scene assets). It is the fallback if the live voice-over take is not ready. Rebuild recipe:
+> capture the UI at 1600×900, add title/quote/benchmark/end cards, 11 segments with gentle push-in and a
+> caption bar, concat. The script below is for the spoken take.
+
 Deadline: **Nov 4, 9:00 PM ET** (Nov 5, 7:45 AM NPT). The video is scored directly; the repo and the
 video are what judges see. Record at **1920×1080, 30 fps**, H.264 MP4, under 300 MB.
 

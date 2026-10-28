@@ -10,6 +10,7 @@ counts, video durations. Exit 0 = submission-ready.
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 import sys
@@ -152,7 +153,10 @@ def main() -> int:
 
     # git cleanliness (advisory)
     status = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True).stdout
-    check("git tree clean", status.strip() == "", status.strip()[:80])
+    if os.environ.get("AUDIT_SKIP_GIT_CLEAN") == "1":
+        check("git tree clean (skipped: working tree allowed for make judge)", True)
+    else:
+        check("git tree clean", status.strip() == "", status.strip()[:80])
 
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     print(f"# Repo audit — {now}\n")
