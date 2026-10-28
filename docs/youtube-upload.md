@@ -28,19 +28,18 @@ refusal leaves a verifiable receipt.
 Built during the Meta Global AI Developer Hackathon 2026. 105 tests, a four-arm benchmark,
 and a published failure list — including the 20% of adaptive attacks that still get through.
 
-Chapters
-0:00 The problem
-0:22 The gap
-0:34 A mandate
-0:43 The owner pays
-0:52 The look-alike invoice is refused
-1:01 Poster, TV, hidden page text
-1:28 The ledger
-1:37 The agentic task
-1:57 What we measured
-2:15 What breaks it
-2:31 Why Meta / with ten engineers
-2:47 Close
+Chapters (match the rebuilt 175 s captioned cut)
+0:00 Who does your agent answer to
+0:12 The gap
+0:28 Meta's own warning
+0:44 A mandate, then paid without a prompt
+1:02 The look-alike invoice is refused
+1:18 A poster is scene data
+1:32 A TV ad is not your voice
+1:46 Hidden page text
+2:00 The record
+2:16 Real-model numbers
+2:36 Close
 
 Repo: https://github.com/sushant-me/only-you
 Benchmark: https://github.com/sushant-me/only-you/blob/main/results/benchmark.md
