@@ -1,4 +1,4 @@
-.PHONY: gen demo demo-text scenes brief report pitch audit latency links web bench bench-meta bench-frontier bench-open smoke test verify all
+.PHONY: gen demo demo-text scenes brief report pitch audit voice-study latency links web bench bench-meta bench-frontier bench-open smoke test verify all
 
 PYTHONPATH := src
 
@@ -37,6 +37,9 @@ scenes:
 
 demo-text:
 	PYTHONPATH=$(PYTHONPATH) python3 examples/mandate_demo.py
+
+voice-study:
+	PYTHONPATH=$(PYTHONPATH) python3 tools/voice_study.py --owner data/voice-study/owner --impostors data/voice-study/impostors
 
 latency:
 	PYTHONPATH=src python3 tools/latency.py

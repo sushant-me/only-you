@@ -44,6 +44,7 @@ LOCAL = [
     "docs/img/invoice-scene.jpg",
     "docs/brief.pdf",
     "docs/frontier.md",
+    "docs/voice-study.md",
     "docs/press.md",
     "docs/img/x-stat.png",
     "docs/img/x-quote.png",

@@ -70,8 +70,8 @@ what catches the confused deputy the model is trying to be helpful about. Sample
 **The label layer — the part that can be wrong.** A DOM hidden-text detector on 42 hidden / 35 benign
 snippets: recall **81.0%** (95% CI 66.7–90.0), false positives **14.3%** (6.3–29.4), precision 86.8%;
 eight hiding techniques are missed. A browser labeler using computed styles scores **42/42 with 0/35 false
-positives** on the same cases (an upper bound — it was written after the cases). Speaker verification and
-its false-accept rate are **not measured**; a sensitivity table stands in for a claim.
+positives** on the same cases (an upper bound — it was written after the cases). Speaker verification's human false-accept rate is **not measured**; a sensitivity table stands in, and a
+synthetic TTS study (`results/voice-study.json`) rejects 6/6 TTS impostors with 3/3 owner accepts.
 
 **Adaptive corpus — the attacker controls the signals.** Fifteen scenarios (twelve cloned-voice, three
 pages claiming `user_typed`): **label error 80%, executed 20%** (the cases where the owner confirmed);

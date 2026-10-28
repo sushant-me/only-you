@@ -323,6 +323,12 @@ item below was built on top of it.
 - README now reframes the alignment confound (0% undefended is the first line; confused deputy is the gap),
   names the cloned-voice failure with the signed-bus next step, and opens with a 26 s attack-blocked GIF.
 
+**Voice study harness + synthetic result (feedback round 2)**
+- `tools/voice_study.py` / `make voice-study`: owner vs impostor folders → threshold, owner accept rate,
+  impostor false-accept rate, per-clip distances (`results/voice-study.json`).
+- Ran a synthetic TTS study: owner 3/3 accepted, **6/6 TTS impostors rejected** (0% false accept). Honest
+  scope: synthetic voices, not humans; `docs/voice-study.md` gives the consented human protocol.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
