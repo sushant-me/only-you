@@ -1,0 +1,53 @@
+1
+00:00:00,000 --> 00:00:11,800
+Your glasses can hear the world. Who do they obey?
+This is ONLY YOU — the layer that decides who a wearable agent answers to.
+
+2
+00:00:12,000 --> 00:00:27,800
+Meta's own docs say the untrusted-content flag is not an enforced security boundary.
+The agent can't tell an instruction from content, or you from a stranger.
+
+3
+00:00:28,000 --> 00:00:43,800
+So a TV ad, a poster, a look-alike invoice — all reach the same context window as your voice.
+I fixed the channel, not the model.
+
+4
+00:00:44,000 --> 00:01:01,800
+Only your enrolled voice is a command. Everything else is data: read, summarised, never obeyed.
+You write a constitution, and hand out signed, scoped, expiring mandates.
+
+5
+00:01:02,000 --> 00:01:17,800
+Pay the electrician up to five thousand until tomorrow.
+A merchant can verify that mandate offline with only the public key. Then the agent can act without interrupting you.
+
+6
+00:01:18,000 --> 00:01:31,800
+Paid. The receipt cites the mandate.
+Now the same spoken command, with a different invoice — refused, because the payee came from a document, not from you.
+
+7
+00:01:32,000 --> 00:01:45,800
+A poster in the scene: masked as data, read, never obeyed. A TV ad: not your voice, not a command.
+
+8
+00:01:46,000 --> 00:01:59,800
+Hidden page text: same result. Then ask it what it did today.
+Every action and every refusal is on the record: rule, evidence, source, hash chain.
+
+9
+00:02:00,000 --> 00:02:15,800
+We measured the part that can be wrong.
+Muse Spark executed 25% of confused-deputy attacks undefended, 50% with provenance only — and zero with the full gate, zero false refusals.
+
+10
+00:02:16,000 --> 00:02:35,800
+Label layer: 81% recall, 14% false positives. Forged sensor signals: 6/6 without a signed sensor bus, 0 with it.
+Adaptive corpus: 20% still get through. We publish that too.
+
+11
+00:02:36,000 --> 00:02:55,000
+With ten engineers: tool-result provenance in WebMCP, SAM masks and voice provenance in the Muse client, device-key mandates merchants can verify.
+Superintelligence is useless if it isn't yours. Repo and benchmark in the description.

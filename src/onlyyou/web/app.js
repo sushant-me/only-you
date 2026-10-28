@@ -525,10 +525,39 @@ async function speakCommand() {
   if (data.error) return toast(data.error);
   const text = (data.text || "").trim();
   if (!text) return toast("no speech detected");
+  applyTranscript(text);
+  toast(`Muse Wonder: “${text.slice(0, 80)}” — press Send to agent`);
+}
+
+function applyTranscript(text) {
   $("#command").value = text;
   $("#speaker").value = "owner";
   $("#channel").value = "voice";
-  toast(`Muse Wonder: “${text.slice(0, 80)}” — press Send to agent`);
+}
+
+async function speakFromFile(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  toast("decoding audio…");
+  try {
+    const buffer = await file.arrayBuffer();
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioCtx();
+    const audio = await ctx.decodeAudioData(buffer);
+    const clip = encodeWav(audio.getChannelData(0), audio.sampleRate);
+    await ctx.close();
+    toast("Muse Wonder is transcribing…");
+    const data = await post("/api/voice/transcribe", { clip });
+    if (data.error) return toast(data.error);
+    const text = (data.text || "").trim();
+    if (!text) return toast("no speech detected");
+    applyTranscript(text);
+    toast(`Muse Wonder: “${text.slice(0, 80)}” — press Send to agent`);
+  } catch (err) {
+    toast("could not decode that audio file");
+  } finally {
+    event.target.value = "";
+  }
 }
 
 async function refreshState() {
