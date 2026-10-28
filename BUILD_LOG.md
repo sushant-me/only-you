@@ -347,6 +347,13 @@ item below was built on top of it.
   in `docs/frontier.md`; artifacts in `results-local-llama/`. A frontier key is still needed for the
   actual headline experiment.
 
+**Cross-model audit bundle**
+- `tools/cross_model_bundle.py` / `make cross-model`: same constitution and gate run under Muse Spark and a
+  local Llama 3.2 3B, one bundle per model sharing a device key; verifier extended to `only-you-cross-model/1`
+  and the browser page verifies both in one pass (`VERIFIED · CROSS-MODEL`). Muse: benign executed + attack
+  blocked; local model: attack blocked, benign blocked due to provenance misattribution (documented).
+- Artifacts in `results-cross-model/`; `docs/cross-model.md`; landing link.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

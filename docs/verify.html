@@ -43,6 +43,7 @@ It is the same check as <code>tools/verify_audit.py</code>, no server involved. 
 <div class="row">
   <button id="verify">verify bundle</button>
   <button id="sample">load sample bundle</button>
+  <button id="cross">load cross-model bundle</button>
   <button id="clear">clear</button>
   <a href="audit-sample.json" download><button>download sample JSON</button></a>
 </div>
@@ -100,14 +101,10 @@ needs a browser with WebCrypto Ed25519 support (current Chrome/Edge/Firefox); ot
     $("#out").className = "card " + (cls || "");
   }
 
-  async function verify() {
-    let bundle;
-    try { bundle = JSON.parse($("#input").value); }
-    catch (e) { return render('<span class="badge bad">INVALID JSON</span><ul><li>' + escapeHtml(e.message) + "</li></ul>"); }
+  async function checkBundle(bundle) {
     if (!bundle || bundle.format !== "only-you-audit/1") {
-      return render('<span class="badge bad">NOT AN AUDIT BUNDLE</span><ul><li>expected format "only-you-audit/1"</li></ul>');
+      return { error: 'expected format "only-you-audit/1"' };
     }
-
     const receipts = bundle.receipts || [];
     const receiptErrors = [];
     let prev = ZERO;
@@ -119,7 +116,6 @@ needs a browser with WebCrypto Ed25519 support (current Chrome/Edge/Firefox); ot
       if (r.prev_hash !== prev) receiptErrors.push(`receipt ${r.id}: chain link mismatch`);
       prev = r.signature || "";
     }
-
     const mandates = bundle.mandates || [];
     const mandateRows = [];
     let edSupported = true;
@@ -130,34 +126,72 @@ needs a browser with WebCrypto Ed25519 support (current Chrome/Edge/Firefox); ot
     for (const m of mandates) {
       let ok = false;
       if (edSupported && key) {
-        // Only the signed fields: the export adds reporting fields (consumed, remaining, …).
         const payload = mandatePayload(m);
         try { ok = await crypto.subtle.verify({ name: "Ed25519" }, key, signatureBytes(m.signature), enc(stable(payload))); }
         catch (e) { ok = false; }
       }
       mandateRows.push({ id: m.id, ok });
     }
-
     const chainOk = receipts.length === 0 ? true : receiptErrors.length === 0;
     const mandatesOk = edSupported && mandateRows.every((m) => m.ok);
-    const passed = chainOk && mandatesOk;
-    const badge = passed ? '<span class="badge ok">VERIFIED</span>' : '<span class="badge bad">FAILED</span>';
-    const edNote = edSupported ? "" : "<li>this browser cannot verify Ed25519 in WebCrypto — use tools/verify_audit.py</li>";
+    return { receipts, receiptErrors, mandateRows, edSupported, prev, chainOk, mandatesOk,
+      passed: chainOk && mandatesOk, generated: bundle.generated_at || "?" };
+  }
+
+  function renderOne(bundle, result) {
+    if (result.error) {
+      return render('<span class="badge bad">NOT AN AUDIT BUNDLE</span><ul><li>' + escapeHtml(result.error) + "</li></ul>");
+    }
+    const badge = result.passed ? '<span class="badge ok">VERIFIED</span>' : '<span class="badge bad">FAILED</span>';
+    const edNote = result.edSupported ? "" : "<li>this browser cannot verify Ed25519 in WebCrypto — use tools/verify_audit.py</li>";
     render(
       badge +
       `<div class="kv">
         <span>format</span><span><code>${escapeHtml(bundle.format)}</code></span>
-        <span>receipts</span><span>${receipts.length} · ${chainOk ? '<b class="ok">chain OK</b>' : '<b class="bad">chain broken</b>'}</span>
-        <span>chain head</span><span><code>${escapeHtml(prev.slice(0, 32))}…</code></span>
-        <span>mandates</span><span>${mandates.length} · ${mandatesOk ? '<b class="ok">signatures valid</b>' : '<b class="bad">signature check failed</b>'}</span>
-        <span>generated</span><span>${escapeHtml(bundle.generated_at || "?")}</span>
+        <span>receipts</span><span>${result.receipts.length} · ${result.chainOk ? '<b class="ok">chain OK</b>' : '<b class="bad">chain broken</b>'}</span>
+        <span>chain head</span><span><code>${escapeHtml(result.prev.slice(0, 32))}…</code></span>
+        <span>mandates</span><span>${result.mandateRows.length} · ${result.mandatesOk ? '<b class="ok">signatures valid</b>' : '<b class="bad">signature check failed</b>'}</span>
+        <span>generated</span><span>${escapeHtml(result.generated)}</span>
       </div>` +
-      (receiptErrors.length ? "<ul>" + receiptErrors.map((e) => `<li>${escapeHtml(e)}</li>`).join("") + "</ul>" : "") +
-      (mandateRows.length ? "<ul>" + mandateRows.map((m) => `<li>mandate <code>${escapeHtml(m.id)}</code>: ${m.ok ? "signature valid" : "INVALID"}</li>`).join("") + "</ul>" : "") +
+      (result.receiptErrors.length ? "<ul>" + result.receiptErrors.map((e) => `<li>${escapeHtml(e)}</li>`).join("") + "</ul>" : "") +
+      (result.mandateRows.length ? "<ul>" + result.mandateRows.map((m) => `<li>mandate <code>${escapeHtml(m.id)}</code>: ${m.ok ? "signature valid" : "INVALID"}</li>`).join("") + "</ul>" : "") +
       (edNote ? "<ul>" + edNote + "</ul>" : ""),
-      passed ? "ok" : "bad"
+      result.passed ? "ok" : "bad"
     );
-    return passed;
+    return result.passed;
+  }
+
+  async function verify() {
+    let bundle;
+    try { bundle = JSON.parse($("#input").value); }
+    catch (e) { return render('<span class="badge bad">INVALID JSON</span><ul><li>' + escapeHtml(e.message) + "</li></ul>"); }
+
+    if (bundle && bundle.format === "only-you-cross-model/1") {
+      const rows = [];
+      for (const entry of bundle.models || []) {
+        const checked = await checkBundle(entry.bundle);
+        rows.push({ provider: entry.provider, model: entry.model, result: checked });
+      }
+      const passed = rows.length > 0 && rows.every((row) => row.result.passed);
+      const badge = passed ? '<span class="badge ok">VERIFIED · CROSS-MODEL</span>' : '<span class="badge bad">FAILED</span>';
+      const table = "<table style='width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px'>" +
+        "<tr><th style='text-align:left;color:#5f6b80;padding:6px'>provider</th><th style='text-align:left;color:#5f6b80'>model</th><th style='text-align:left;color:#5f6b80'>receipts</th><th style='text-align:left;color:#5f6b80'>chain</th><th style='text-align:left;color:#5f6b80'>mandates</th></tr>" +
+        rows.map((row) => {
+          const r = row.result;
+          if (r.error) return `<tr><td>${escapeHtml(row.provider)}</td><td>${escapeHtml(row.model)}</td><td colspan=3 class="bad">${escapeHtml(r.error)}</td></tr>`;
+          return `<tr><td>${escapeHtml(row.provider)}</td><td>${escapeHtml(row.model)}</td><td>${r.receipts.length}</td>` +
+            `<td class="${r.chainOk ? "ok" : "bad"}">${r.chainOk ? "OK" : "BROKEN"}</td>` +
+            `<td class="${r.mandatesOk ? "ok" : "bad"}">${r.mandatesOk ? "valid" : "INVALID"}</td></tr>`;
+        }).join("") + "</table>";
+      render(badge + table +
+        `<div class="kv"><span>models</span><span>${rows.length}</span><span>generated</span><span>${escapeHtml(bundle.generated_at || "?")}</span></div>` +
+        `<ul>${rows.map((row) => `<li>${escapeHtml(row.provider)} / ${escapeHtml(row.model)}: ${row.result.passed ? "verified" : "FAILED"}</li>`).join("")}</ul>`,
+        passed ? "ok" : "bad");
+      return passed;
+    }
+
+    const result = await checkBundle(bundle);
+    return renderOne(bundle, result);
   }
 
   function escapeHtml(text) {
@@ -167,6 +201,17 @@ needs a browser with WebCrypto Ed25519 support (current Chrome/Edge/Firefox); ot
   $("#verify").addEventListener("click", verify);
   $("#clear").addEventListener("click", () => { $("#input").value = ""; render('<span class="badge warn">WAITING</span> <span class="sub">nothing verified yet</span>'); });
   $("#sample").addEventListener("click", loadSample);
+  $("#cross").addEventListener("click", loadCross);
+
+  async function loadCross() {
+    try {
+      const response = await fetch("cross-model-audit.json");
+      $("#input").value = await response.text();
+      await verify();
+    } catch (e) {
+      render('<span class="badge bad">SAMPLE UNAVAILABLE</span><ul><li>' + escapeHtml(e.message) + "</li></ul>");
+    }
+  }
 
   async function loadSample() {
     try {
@@ -178,7 +223,9 @@ needs a browser with WebCrypto Ed25519 support (current Chrome/Edge/Firefox); ot
     }
   }
 
-  if (new URLSearchParams(location.search).get("auto") === "1") loadSample();
+  const auto = new URLSearchParams(location.search).get("auto");
+  if (auto === "1") loadSample();
+  if (auto === "cross") loadCross();
 })();
 </script>
 </body>

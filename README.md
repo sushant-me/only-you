@@ -35,6 +35,7 @@ alignment is trying to help.
 | Confused-deputy corpus, Muse Spark 1.3 | **25% → 37.5% → 50% → 0%** with the full gate, 0% false refusals |
 | Second model build / final-code reproduction | **0%** executed; 16/16 receipts, chain intact |
 | Forged sensor signals | **6/6 → 0/6** with a signed bus |
+| Cross-model audit | same gate and verifier for Muse Spark + a local model → [`results-cross-model/`](results-cross-model/), browser-verified |
 | Engineering | **172 tests**, 67-check self-audit, CI (tests + Docker) |
 
 ## Judge checklist — one command
@@ -60,7 +61,8 @@ docker build -t only-you-demo . && docker run --rm -p 8000:8000 only-you-demo
 - Honest failure list: [`docs/limitations.md`](docs/limitations.md)
 - Post-build reproduction on the final code (live Muse Spark, 8 attacks / 8 benign): all arms 0%, **16/16 receipts, chain ok**, 99 calls — [`results-real-verify/`](results-real-verify/)
 
-- **Frontier adapter:** [`docs/frontier.md`](docs/frontier.md) — the same gate for OpenAI/Gemini/Claude/local models; add a key and `make bench-frontier`.
+- **Cross-model audit:** [`docs/cross-model.md`](docs/cross-model.md) — one constitution, per-model bundles, one verifier; `make cross-model`.
+- **Frontier adapter:** [`docs/frontier.md`](docs/frontier.md) — the same gate for OpenAI/Gemini/Claude/local models; add a key and `make frontier-eval`.
 - **Hiring memo:** [`docs/for-meta.md`](docs/for-meta.md) — what the layer makes possible, the real-model
   numbers, and what I would build next with Meta.
 - **Submission sheet:** [`docs/submission-final.md`](docs/submission-final.md) — verified links and fields.

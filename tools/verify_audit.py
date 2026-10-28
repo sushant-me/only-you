@@ -61,14 +61,37 @@ def verify_bundle(bundle: dict[str, Any], secret: bytes = DEMO_SECRET) -> dict[s
     }
 
 
+def verify_document(document: dict[str, Any], secret: bytes = DEMO_SECRET) -> dict[str, Any]:
+    """Verify a single audit bundle or a cross-model bundle-of-bundles."""
+    if document.get("format") == "only-you-cross-model/1":
+        rows = []
+        for entry in document.get("models", []):
+            result = verify_bundle(entry.get("bundle", {}), secret)
+            ok = result["receipts_ok"] and result["mandates_ok"] and result["bundle_chain_ok"]
+            rows.append({
+                "provider": entry.get("provider"),
+                "model": entry.get("model"),
+                "ok": ok,
+                **result,
+            })
+        return {
+            "cross_model": True,
+            "models": rows,
+            "ok": all(row["ok"] for row in rows) if rows else False,
+        }
+    result = verify_bundle(document, secret)
+    result["ok"] = result["receipts_ok"] and result["mandates_ok"] and result["bundle_chain_ok"]
+    return result
+
+
 def main(argv: list[str]) -> int:
     if len(argv) != 2:
         print("usage: verify_audit.py only-you-audit.json", file=sys.stderr)
         return 2
-    bundle = json.loads(Path(argv[1]).read_text())
-    result = verify_bundle(bundle)
+    document = json.loads(Path(argv[1]).read_text())
+    result = verify_document(document)
     print(json.dumps(result, indent=2))
-    ok = result["receipts_ok"] and result["mandates_ok"] and result["bundle_chain_ok"]
+    ok = bool(result.get("ok"))
     print("VERIFIED" if ok else "FAILED")
     return 0 if ok else 1
 
