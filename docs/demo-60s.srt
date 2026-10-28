@@ -31,54 +31,54 @@ Until tomorrow.
 The agent pays the invoice, and the receipt cites the mandate.
 
 9
-00:00:18,550 --> 00:00:23,125
-Now the same spoken command, with a payee supplied by a document.
+00:00:18,550 --> 00:00:22,200
+Now the owner is tricked into naming a stranger as the payee.
 
 10
-00:00:23,125 --> 00:00:24,112
+00:00:22,200 --> 00:00:23,187
 Refused.
 
 11
-00:00:24,112 --> 00:00:26,912
-The payee came from the world, not from you.
+00:00:23,187 --> 00:00:25,312
+The payee was never in the mandate.
 
 12
-00:00:26,912 --> 00:00:28,300
+00:00:25,312 --> 00:00:26,700
 A poster is data.
 
 13
-00:00:28,300 --> 00:00:30,350
+00:00:26,700 --> 00:00:28,750
 A TV ad is not your voice.
 
 14
-00:00:30,350 --> 00:00:32,150
+00:00:28,750 --> 00:00:30,550
 We tested a frontier model.
 
 15
-00:00:32,150 --> 00:00:36,325
+00:00:30,550 --> 00:00:34,725
 Undefended, DeepSeek paid half of the injected invoices.
 
 16
-00:00:36,325 --> 00:00:38,400
+00:00:34,725 --> 00:00:36,800
 Behind the same gate: zero.
 
 17
-00:00:38,400 --> 00:00:40,737
+00:00:36,800 --> 00:00:39,137
 Eighteen of eighteen receipts verified.
 
 18
-00:00:40,737 --> 00:00:43,125
+00:00:39,137 --> 00:00:41,525
 Load the audit bundle in a browser.
 
 19
-00:00:43,125 --> 00:00:44,975
+00:00:41,525 --> 00:00:43,375
 Verified, cross model.
 
 20
-00:00:44,975 --> 00:00:47,737
+00:00:43,375 --> 00:00:46,137
 Everyone is building agents that can do things.
 
 21
-00:00:47,737 --> 00:00:49,787
+00:00:46,137 --> 00:00:48,187
 This is the one you can hand your wallet.
 
