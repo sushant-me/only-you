@@ -171,7 +171,13 @@ item below was built on top of it.
   time; beat latency 3–16 s. 2 new tests (source repair, argument attribution); 104 total.
 - `_default_model()` refuses the live model under `unittest`, so the suite can never hit the API.
 
-**Tests:** 104 pass (`make test`).
+**Recording kit + model badge**
+- Header badge shows which proposer is live: green `muse-spark-1.3` or amber `simulated` (with a tooltip
+  saying the gate is unchanged). One state test; 105 total.
+- `docs/recording-guide.md`: setup, exact beat timings measured against the live model (invoice 6–7 s,
+  look-alike invoice 10–16 s, total 45–60 s), capture commands, export, failure modes.
+
+**Tests:** 105 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
 real-model benchmark. The only missing input is `META_API_BASE` / `META_API_KEY` / `MUSE_MODEL`.

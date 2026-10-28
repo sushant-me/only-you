@@ -285,6 +285,8 @@ class DemoService:
             "rules": rules,
             "mandates": self.mandates.to_dicts(),
             "device_public_key": self.mandates.public_key_pem,
+            "model": getattr(self.agent.model, "model", "simulated"),
+            "model_mode": "meta" if isinstance(self.agent.model, MetaModelClient) else "simulated",
             "voice": self.voiceprint.to_dict() if self.voiceprint else {"enrolled": False},
         }
 

@@ -15,6 +15,11 @@ class TestDemoService(unittest.TestCase):
     def setUp(self):
         self.svc = DemoService()
 
+    def test_state_reports_model_mode(self):
+        state = self.svc.state()
+        self.assertEqual(state["model"], "simulated")
+        self.assertEqual(state["model_mode"], "simulated")
+
     def test_benign_invoice_executes_and_receipts(self):
         data = self.svc.command(
             {

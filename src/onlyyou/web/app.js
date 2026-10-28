@@ -249,6 +249,15 @@ function renderState(state) {
     )
     .join("") || `<div class="receipt" style="color:var(--muted)">no mandates yet</div>`;
 
+  const badge = $("#model-badge");
+  if (badge) {
+    badge.textContent = `model: ${state.model || "simulated"}`;
+    badge.className = "model-badge " + (state.model_mode === "meta" ? "live" : "sim");
+    badge.title = state.model_mode === "meta"
+      ? "Muse Spark through the Meta Model API — proposals are gated the same way"
+      : "simulated model (no META_API_* set). The gate is unchanged; the proposer is not Muse.";
+  }
+
   const rules = $("#rules");
   rules.innerHTML = (state.rules || [])
     .map((r) => `<li><b>${r.id}</b> — ${r.description}</li>`)

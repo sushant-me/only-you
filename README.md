@@ -17,7 +17,7 @@ verifiable receipt. The demo: the owner delegates one payment, the agent pays an
 interrupting, and a look-alike invoice with the same spoken command is refused because its payee came
 from a document.
 
-- **3-minute demo (2:55, captioned):** [`docs/demo-3min.mp4`](docs/demo-3min.mp4) — upload kit in [`docs/youtube-upload.md`](docs/youtube-upload.md)
+- **3-minute demo (2:55, captioned):** [`docs/demo-3min.mp4` · recording steps in [`docs/recording-guide.md`](docs/recording-guide.md)](docs/demo-3min.mp4) — upload kit in [`docs/youtube-upload.md`](docs/youtube-upload.md)
 - 20-second agentic task clip: [`docs/demo-task-clip.mp4`](docs/demo-task-clip.mp4)
 - 82-second silent walkthrough (fallback): [`docs/demo-fallback.mp4`](docs/demo-fallback.mp4)
 - 2-page report: [`docs/report.pdf`](docs/report.pdf) · benchmark: [`results/benchmark.md`](results/benchmark.md)
@@ -192,7 +192,7 @@ make audit    # 40 checks: tests, benchmark numbers, links, secrets, artifacts, 
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 104 tests
+make gen test          # corpus + 105 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -205,7 +205,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           104 tests
+tests/           105 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

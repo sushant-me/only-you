@@ -237,3 +237,8 @@ textarea { resize: vertical; min-height: 44px; }
 
 button.mini{margin-top:6px;padding:5px 9px;font-size:11px;border-radius:7px;background:transparent;
 border:1px solid #2a3448;color:#9ecbff;cursor:pointer}button.mini:hover{border-color:#9ecbff}
+
+.model-badge{display:inline-block;vertical-align:middle;margin-left:12px;font:600 10px ui-monospace,monospace;
+letter-spacing:.06em;padding:3px 7px;border-radius:6px;border:1px solid #2a3448;color:#8b95a8}
+.model-badge.live{color:#2fd18c;border-color:#2fd18c55}
+.model-badge.sim{color:#f5b544;border-color:#f5b54455}
