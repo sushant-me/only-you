@@ -71,6 +71,7 @@ ship (`results-sam/`); text-region masks are roadmap in `for-meta.md`, not claim
 - Report: https://github.com/sushant-me/only-you/blob/main/docs/report.pdf
 - Real runs: `results-real/`, `results-real-doc/`, `results-real-doc-contributor/`, `results-real-verify/`
 - Cross-model audit: `results-cross-model/` (Muse Spark + local model, browser-verified)
+- Human voice study (LibriSpeech, real voices): `results/voice-study-human.json` (2/12 FAR at demo threshold)
 - Latency: `results/latency.json`
 - Deck: https://github.com/sushant-me/only-you/blob/main/docs/pitch.pdf
 - Hiring memo: https://github.com/sushant-me/only-you/blob/main/docs/for-meta.md

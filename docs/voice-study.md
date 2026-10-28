@@ -74,3 +74,20 @@ only *text* — it must pass the voice check and the gate like typed input.
 
 The transcript is imperfect and still only *text*: it must pass the voice check and the gate, exactly like
 typed input. Artifact: `results/voice-e2e.json`.
+
+
+## Human study (public corpus) — real voices, not synthetic
+
+**LibriSpeech dev-clean** (CC BY 4.0), fetched through the Hugging Face dataset server:
+one speaker enrolled from three clips, twelve different human speakers tested one clip each, different
+sentences. Artifact: `results/voice-study-human.json`.
+
+| Metric | Demo threshold 0.1825 |
+|---|---|
+| Owner accepted | **3/3** |
+| Impostor false accepts | **2/12 = 16.7%** (distances 0.127, 0.140) |
+
+At a fixed 0.10 threshold the same clips give 3/3 owner and **0/12** impostors, but that threshold was
+chosen after seeing the clips (exploratory, not a held-out claim). Caveats: single owner, cross-content
+(not the same phrase), MFCC channel demonstrator, not anti-spoofing. The honest conclusion is that the
+channel is real and its human FAR needs a trained embedding (ECAPA) plus liveness — see `docs/voice.md`.

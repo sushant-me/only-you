@@ -406,6 +406,13 @@ item below was built on top of it.
 - Artifact `results/voice-e2e.json`; README/report/submission/voice-study updated. The ASR error is the point:
   text from a model still has to clear the authority layer.
 
+**Human speaker study on a public corpus (real voices)**
+- Fetched LibriSpeech dev-clean via the Hugging Face dataset server (no audio committed; CC BY 4.0 credited
+  in NOTICE): one speaker enrolled from 3 clips, 12 different human speakers tested (different sentences).
+- Result: owner 3/3, **human FAR 2/12 = 16.7%** at the demo's self-calibrated threshold; a fixed 0.10 would
+  give 0/12 but was chosen after seeing the clips, so it is labelled exploratory. Synthetic TTS remains 0/6.
+- Artifact `results/voice-study-human.json`; voice.md/voice-study/limitations/report/README/submission updated.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

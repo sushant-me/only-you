@@ -342,7 +342,7 @@ false refusals. Raw results: [`results-real/`](results-real/benchmark.md),
 | Provenance routing, constitution, action gate | implemented, tested |
 | Signed mandates + offline merchant verification | implemented (Ed25519), tested |
 | Receipts + hash chain + undo | implemented, tested |
-| Local voice check (MFCC, distance threshold) | implemented; **not anti-spoofing** — a cloned voice passes |
+| Local voice check (MFCC) | implemented; **not anti-spoofing** — a cloned voice passes; human FAR **2/12 (16.7%)** in the public-corpus study |
 | Voice transcription | **Muse Voice Transcribe** when a key is set (`results/voice-asr.json`); the spoken command then passes the voice check and gate (`results/voice-e2e.json`) |
 | Scene reading | **Muse Wonder** when a key is set (text + approximate boxes; 15/15, 0.0% CER on a synthetic sample); **tesseract** fallback offline |
 | Page extraction (visible + hidden) | implemented (regex DOM classifier) |

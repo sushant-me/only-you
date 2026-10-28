@@ -37,6 +37,10 @@ from Debian packages.
 The demo enrols a single author's voice locally; no audio is retained. The camera scenes are synthetic or
 consenting footage. No third-party personal data is included in the repository or the videos.
 
+The human speaker study uses **LibriSpeech dev-clean** (OpenSLR 12), © Vassil Panayotov et al., licensed
+**CC BY 4.0** (<https://www.openslr.org/12>). No LibriSpeech audio is committed — only measured distances
+and the results JSON — and the dataset's attribution is retained here.
+
 ## Attribution
 
 Please credit **ONLY YOU — Sushant Poudel** with a link to <https://github.com/sushant-me/only-you> when
