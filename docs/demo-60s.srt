@@ -1,0 +1,84 @@
+1
+00:00:00,350 --> 00:00:02,162
+Your glasses can hear the world.
+
+2
+00:00:02,162 --> 00:00:03,312
+Who do they obey?
+
+3
+00:00:03,312 --> 00:00:09,425
+Meta's own documentation says the untrusted content hint is not an enforced security boundary.
+
+4
+00:00:09,425 --> 00:00:11,287
+So the owner writes a mandate.
+
+5
+00:00:11,287 --> 00:00:12,300
+Electrician.
+
+6
+00:00:12,300 --> 00:00:13,425
+Five thousand.
+
+7
+00:00:13,425 --> 00:00:14,587
+Until tomorrow.
+
+8
+00:00:14,587 --> 00:00:18,550
+The agent pays the invoice, and the receipt cites the mandate.
+
+9
+00:00:18,550 --> 00:00:23,125
+Now the same spoken command, with a payee supplied by a document.
+
+10
+00:00:23,125 --> 00:00:24,112
+Refused.
+
+11
+00:00:24,112 --> 00:00:26,912
+The payee came from the world, not from you.
+
+12
+00:00:26,912 --> 00:00:28,300
+A poster is data.
+
+13
+00:00:28,300 --> 00:00:30,350
+A TV ad is not your voice.
+
+14
+00:00:30,350 --> 00:00:32,150
+We tested a frontier model.
+
+15
+00:00:32,150 --> 00:00:36,325
+Undefended, DeepSeek paid half of the injected invoices.
+
+16
+00:00:36,325 --> 00:00:38,400
+Behind the same gate: zero.
+
+17
+00:00:38,400 --> 00:00:40,737
+Eighteen of eighteen receipts verified.
+
+18
+00:00:40,737 --> 00:00:43,125
+Load the audit bundle in a browser.
+
+19
+00:00:43,125 --> 00:00:44,975
+Verified, cross model.
+
+20
+00:00:44,975 --> 00:00:47,737
+Everyone is building agents that can do things.
+
+21
+00:00:47,737 --> 00:00:49,787
+This is the one you can hand your wallet.
+

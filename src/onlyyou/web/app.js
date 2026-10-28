@@ -950,10 +950,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const params = new URLSearchParams(location.search);
-  fakecamOn = params.get("fakecam") === "1";
+  const fakeParam = params.get("fakecam") || "";
+  fakecamOn = fakeParam === "1" || Boolean(FAKECAM[fakeParam]);
   if (fakecamOn) {
     $("#cam-status").textContent = "scene feed";
-    setFakecam("invoice");
+    setFakecam(fakeParam === "1" ? "invoice" : fakeParam);
   }
   if (params.get("script") === "full") setTimeout(runScript, 400);
   if (params.get("task") === "1") {

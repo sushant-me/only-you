@@ -440,6 +440,12 @@ item below was built on top of it.
 - `docs/demo-live-60s.mp4`: mandate → payment → look-alike refusal → ledger from the final film, for the 9 Nov
   live finals if the network or API fails. Preflight updated.
 
+**60-second motion cut (judge/social version)**
+- Replaced the static 60 s extraction with an 8-beat motion piece: hook → quote → cursor-driven mandate/pay/attack
+  over the real Muse Spark UI → poster mask → DeepSeek 50%→0% frontier cards → browser `VERIFIED · CROSS-MODEL`
+  → close/CTA. Nothing static beyond a beat; captions burned for UI beats; full SRT at `docs/demo-60s.srt`.
+- 1920×1080, 60.000 s, narrated, 11 MB. Source assets kept in `docs/assets/youtube-thumb.html` and the repo.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
