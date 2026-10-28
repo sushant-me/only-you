@@ -436,6 +436,10 @@ item below was built on top of it.
 - Cross-model bundle rebuilt as **Muse Spark + DeepSeek**, browser-verified; docs/report/brief/deck/handbook
   updated. Report 2 pages, brief 1, deck 10, handbook 18.
 
+**60-second live-finals fallback**
+- `docs/demo-live-60s.mp4`: mandate → payment → look-alike refusal → ledger from the final film, for the 9 Nov
+  live finals if the network or API fails. Preflight updated.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
