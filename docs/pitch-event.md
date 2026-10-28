@@ -62,9 +62,9 @@ One goal: browse → extract visible **and hidden** text → decide under the ma
 | **Muse Spark, document attacks (n=8)** | A 25% · B 37.5% · C 50% · **D 0%** executed; 0% false refusals |
 | Muse Spark, general corpus (n=20) | 0% executed all arms; D false refusals 5%; 36/36 receipts |
 | Muse Spark contributor build (n=8) | A 50% · B 37.5% · C 50% · **D 0%** executed |
-| Voice channel (synthetic) | same 0.004 vs limit 0.06 accepted; different 0.339 rejected |
+| Voice channel (human study) | owner 3/3; **2/12 impostors accepted (16.7% FAR)** at the demo threshold |
 
-The zero is conditional on correct labels. Cloned voice passes; human speaker accuracy is unmeasured. We publish the 20%.
+The zero is conditional on correct labels. Cloned voice passes; human FAR is **2/12** in our public study. We publish the 20%.
 
 ## What breaks it
 
@@ -72,7 +72,7 @@ The zero is conditional on correct labels. Cloned voice passes; human speaker ac
 - **Compromised sensor** — the signed envelope stops forged dicts, not a rooted device
 - **Mandate replay** — bounded by cap/expiry/nonce; replay protection is next
 - **Biometric consent** — voiceprints are special-category data; consent flow not built
-- **Voice study** — synthetic TTS impostors rejected 6/6; human speakers unmeasured (harness shipped)
+- **Voice study** — human FAR **2/12 (16.7%)** on public speakers; synthetic TTS 0/6; ECAPA + liveness next
 - **SAM 3.1 masks** — object boxes are drawn on the frame; text-region masks are not decoded (roadmap)
 
 ## Why Meta
