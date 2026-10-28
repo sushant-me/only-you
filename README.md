@@ -44,6 +44,8 @@ make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 > is how a prompt injection reaches the model."
 > — Meta Wearables Developers, WebMCP agent tools
 
+![ONLY YOU running on Muse Spark](docs/img/screenshot-live.png)
+
 ## The problem
 
 A wearable agent sees through a camera, hears through a microphone, reads pages and holds a wallet.
