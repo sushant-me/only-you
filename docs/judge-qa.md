@@ -23,6 +23,11 @@ Yes — recursive delegation with attenuation: a sub-mandate's payees must be a 
 cap cannot exceed the parent's remaining budget, its expiry cannot outlive the parent, and its sub-limits
 must fit inside. Spend through the child also consumes the parent, and undo restores both.
 
+**Can the agent pay something on a schedule?**
+Yes — standing instructions run under a mandate and re-check it at execution time: revoked or expired means
+the run is blocked and alerted, not paid. A successful run appends an `R8-scheduled` receipt (with the
+schedule id), consumes the mandate, advances the next run, and can be undone.
+
 **Can a mandate recur, like a monthly allowance?**
 Yes — `period_seconds` turns the cap into a per-period allowance (e.g. ≤ 2,000/month) that resets on the
 mandate's anchor. The card shows this period's spend and the reset date; a sub-mandate's period can never be
@@ -121,7 +126,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (162 tests + live-server smoke + audit) then `make web` →
+`make judge` (166 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 

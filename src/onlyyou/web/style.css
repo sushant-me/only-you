@@ -272,3 +272,5 @@ a.mini{color:#7c9cff;text-decoration:none;border-bottom:1px dotted #7c9cff}
 #policy-diff .diff-head{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
 #policy-diff .diff-list{margin:0 0 10px;padding-left:18px;font-size:12px;line-height:1.7}
 #policy-diff .diff-note{font-size:12px;color:var(--muted);margin-bottom:8px}
+
+.r-top button.mini{margin-left:auto}

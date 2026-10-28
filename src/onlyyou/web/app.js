@@ -240,6 +240,18 @@ function renderState(state) {
     })
     .join("");
 
+  const scheduleList = $("#schedule-list");
+  if (scheduleList) {
+    const schedules = state.schedules || [];
+    scheduleList.innerHTML = schedules.length
+      ? schedules.map((s) => `<div class="receipt allow">
+          <div class="r-top"><span class="r-act">@${s.payee} ${s.amount} · every ${Math.round(s.every_seconds / 86400)}d</span>
+          <button class="mini" data-run-schedule="${s.id}">run now</button></div>
+          <div class="r-meta">next ${new Date(s.next_run * 1000).toLocaleString()} · runs ${s.runs}${s.last_run ? ` · last ${new Date(s.last_run * 1000).toLocaleTimeString()}` : ""}</div>
+        </div>`).join("")
+      : `<div class="receipt" style="color:var(--muted)">no standing instructions</div>`;
+  }
+
   const mandateList = $("#mandate-list");
   mandateList.innerHTML = (state.mandates || [])
     .map(
@@ -367,6 +379,24 @@ async function doBeat(name) {
     return;
   }
   setFakecam(name);
+  if (name === "schedule") {
+    try {
+      const state = await (await fetch("/api/state")).json();
+      const mandate = (state.mandates || []).find((m) => m.valid && m.period_seconds);
+      if (!mandate) return toast("grant a monthly mandate first");
+      const data = await post("/api/schedule", {
+        payee: "electrician",
+        amount: Math.min(500, mandate.remaining),
+        every_seconds: 30 * 24 * 3600,
+        mandate_id: mandate.id,
+      });
+      renderState(data.state);
+      toast(`scheduled @electrician ${data.schedule.amount} every 30d`);
+    } catch (err) {
+      toast(`schedule failed: ${err.message}`);
+    }
+    return;
+  }
   if (name === "grant-recurring") {
     try {
       const data = await post("/api/mandate", {

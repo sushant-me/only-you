@@ -25,6 +25,7 @@ import os
 import tempfile
 import mimetypes
 import queue
+import secrets
 import shutil
 import subprocess
 import urllib.request
@@ -116,6 +117,7 @@ class DemoService:
         self.lock = threading.Lock()
         self.voiceprint = None
         self.alerts: list[dict[str, Any]] = []
+        self.schedules: list[dict[str, Any]] = []
         self.delivery_log: list[dict[str, Any]] = []
         self._alert_queue: queue.Queue | None = None
         self._alert_lock = threading.Lock()
@@ -141,6 +143,7 @@ class DemoService:
             )
             self.counter = 0
             self.alerts = []
+            self.schedules = []
             self.delivery_log = []
             if self._alert_queue is not None:
                 try:
@@ -322,6 +325,7 @@ class DemoService:
             "model_mode": "meta" if isinstance(self.agent.model, MetaModelClient) else "simulated",
             "voice": self.voiceprint.to_dict() if self.voiceprint else {"enrolled": False},
             "alerts": self.alerts[-20:],
+            "schedules": self.schedules[-20:],
             "webhook": self._webhook_state(),
         }
 
@@ -618,6 +622,101 @@ class DemoService:
                 self._alert_queue.put(alert)
         self.alerts.append(alert)
         self.alerts = self.alerts[-50:]
+
+    def create_schedule(self, payload: dict[str, Any]) -> dict[str, Any]:
+        """Owner creates a standing instruction that spends only under a mandate."""
+        payee = str(payload.get("payee", "")).strip().lower().lstrip("@")
+        if not payee:
+            raise ValueError("payee is required")
+        try:
+            amount = int(payload.get("amount", 0) or 0)
+            every_seconds = int(payload.get("every_seconds", 30 * 24 * 3600) or 0)
+        except (TypeError, ValueError):
+            raise ValueError("amount and every_seconds must be integers")
+        if amount <= 0:
+            raise ValueError("amount must be positive")
+        if every_seconds < 60:
+            raise ValueError("every_seconds must be at least 60")
+        mandate_id = str(payload.get("mandate_id", "") or "")
+        with self.lock:
+            mandate = next((m for m in self.mandates.mandates if m.id == mandate_id), None)
+            if mandate is None:
+                raise ValueError("mandate not found")
+            if not self.mandates.verify(mandate):
+                raise ValueError("mandate is invalid")
+            action = {"kind": "pay", "params": {"payee": payee, "amount": amount}}
+            if not self.mandates._covers_chain(mandate, action)[0]:
+                raise ValueError("mandate does not cover this scheduled payment")
+            now = time.time()
+            schedule = {
+                "id": secrets.token_hex(4),
+                "payee": payee,
+                "amount": amount,
+                "every_seconds": every_seconds,
+                "mandate_id": mandate.id,
+                "created_at": now,
+                "next_run": now + every_seconds,
+                "last_run": None,
+                "runs": 0,
+            }
+            self.schedules.append(schedule)
+            self._alert("schedule_created", f"standing instruction @{payee} {amount}", {"schedule_id": schedule["id"]})
+            return {"ok": True, "schedule": schedule, "state": self.state()}
+
+    def run_schedule(self, payload: dict[str, Any]) -> dict[str, Any]:
+        """Run a standing instruction now; a live mandate is still required at run time."""
+        schedule_id = str(payload.get("id", ""))
+        with self.lock:
+            schedule = next((s for s in self.schedules if s["id"] == schedule_id), None)
+            if schedule is None:
+                raise ValueError("schedule not found")
+            mandate = next((m for m in self.mandates.mandates if m.id == schedule["mandate_id"]), None)
+            action = {"kind": "pay", "params": {"payee": schedule["payee"], "amount": schedule["amount"]}}
+            reason = ""
+            if mandate is None:
+                reason = "mandate not found"
+            elif not self.mandates.verify(mandate):
+                reason = "mandate invalid (revoked or expired)"
+            else:
+                covered, why = self.mandates._covers_chain(mandate, action)
+                if not covered:
+                    reason = why
+            if reason:
+                self._alert("scheduled_payment_blocked", reason, {"schedule_id": schedule_id})
+                return {"ok": False, "reason": reason, "state": self.state()}
+            tool = self.world.pay(schedule["payee"], schedule["amount"])
+            if not tool.ok:
+                self._alert("scheduled_payment_blocked", tool.message, {"schedule_id": schedule_id})
+                return {"ok": False, "reason": tool.detail, "state": self.state()}
+            verdict = Verdict(
+                Decision.ALLOW,
+                "R8-scheduled",
+                f"standing instruction under mandate {mandate.id}",
+                {"schedule_id": schedule_id, "mandate_id": mandate.id, "scheduled": True},
+            )
+            receipt = self.ledger.append(
+                action=action,
+                verdict=verdict.to_dict(),
+                evidence={"source": "scheduler", "schedule_id": schedule_id, "mandate_id": mandate.id},
+                result={"outcome": "executed", "detail": tool.detail},
+            )
+            self.mandates.consume(mandate, schedule["amount"], payee=schedule["payee"])
+            now = time.time()
+            schedule["last_run"] = now
+            schedule["runs"] += 1
+            schedule["next_run"] = max(now, schedule["next_run"]) + schedule["every_seconds"]
+            self._alert(
+                "scheduled_payment",
+                f"paid @{schedule['payee']} {schedule['amount']} from schedule {schedule_id}",
+                {"schedule_id": schedule_id, "receipt": receipt.id},
+            )
+            return {
+                "ok": True,
+                "receipt": asdict(receipt),
+                "receipt_ok": self.ledger.verify(receipt),
+                "schedule": schedule,
+                "state": self.state(),
+            }
 
     def _mandate_view(self, mandate: Any) -> dict[str, Any]:
         return {
@@ -1227,6 +1326,10 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
                 self._json(service.import_policy(payload))
             elif path == "/api/policy/diff":
                 self._json(service.diff_policy(payload))
+            elif path == "/api/schedule":
+                self._json(service.create_schedule(payload))
+            elif path == "/api/schedule/run":
+                self._json(service.run_schedule(payload))
             elif path == "/api/frame":
                 self._json(service.frame(payload))
             elif path == "/api/task":

@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 162 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 166 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -121,6 +121,15 @@ device before applying anything, rejects unknown rules, receipts the import as `
 raises an alert. The UI first calls `POST /api/policy/diff`, shows exactly which rules would flip
 (`on → off`) and applies only after confirmation. That makes the policy a versioned, reviewable,
 deployable artifact instead of clicks on a box.
+
+### Scheduled standing instructions
+
+![A scheduled electrician payment under a monthly mandate](docs/img/scheduled.png)
+
+A standing instruction (`POST /api/schedule`) records "pay @electrician 500 every 30 days" against a
+mandate. Every run re-checks the **live** mandate: revoked or expired, it is blocked and alerted; valid, it
+pays, consumes the mandate, appends an `R8-scheduled` receipt and advances the next run. Undo refunds it like
+any other payment. `run now` in the UI drives the same path the scheduler would.
 
 ### Recurring mandates
 
@@ -329,7 +338,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 162 tests
+make gen test          # corpus + 166 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -342,7 +351,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           162 tests
+tests/           166 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

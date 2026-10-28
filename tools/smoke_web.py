@@ -107,6 +107,13 @@ def main() -> int:
         restored = post("/api/policy/import", {"bundle": policy})
         assert restored["ok"] and all(r["enabled"] for r in restored["state"]["rules"]), restored
 
+        scheduled = post("/api/schedule", {
+            "payee": "electrician", "amount": 100, "every_seconds": 86400,
+            "mandate_id": state["mandate"]["id"],
+        })
+        run = post("/api/schedule/run", {"id": scheduled["schedule"]["id"]})
+        assert run["ok"] and run["receipt"]["verdict"]["rule"] == "R8-scheduled", run
+
         revoked = post("/api/mandate/revoke-all", {})
         assert revoked["ok"] is True and revoked["revoked"], revoked
         assert all(not m["valid"] for m in revoked["state"]["mandates"])

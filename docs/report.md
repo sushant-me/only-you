@@ -147,4 +147,4 @@ instrumented and receipted.
 
 ---
 
-Repo · demo · benchmark: `results/benchmark.md` · real-model runs: `results-real*/benchmark.md` · limitations: `docs/limitations.md` · 162 tests · self-audit
+Repo · demo · benchmark: `results/benchmark.md` · real-model runs: `results-real*/benchmark.md` · limitations: `docs/limitations.md` · 166 tests · self-audit
