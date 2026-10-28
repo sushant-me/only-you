@@ -169,9 +169,9 @@ hr { border: none; border-top: 1px solid #ddd; margin: 4mm 0; }
 """
 
 CSS = """
-@page { size: A4; margin: 11mm 12mm; }
+@page { size: A4; margin: 10.5mm 11.5mm; }
 body { font-family: "Adwaita Sans", "Helvetica Neue", Arial, sans-serif;
-       font-size: 9.2pt; line-height: 1.27; color: #111; }
+       font-size: 9.0pt; line-height: 1.24; color: #111; }
 h1 { font-size: 16pt; margin: 0 0 3mm; letter-spacing: -0.2pt; }
 h2 { font-size: 11.5pt; margin: 4.5mm 0 1.6mm; border-bottom: 1px solid #ddd; padding-bottom: 1mm; }
 h3 { font-size: 11pt; margin: 4mm 0 1.5mm; }

@@ -41,12 +41,13 @@ One goal: browse → extract visible **and hidden** text → decide under the ma
 
 | Measurement | Result |
 |---|---|
-| Tests / harness | 98 tests · A 100% · B 47.5% · C 10% · D 0% executed (conditional on labels) |
+| Tests / harness | 102 tests · A 100% · B 47.5% · C 10% · D 0% executed (conditional on labels) |
 | DOM labeler | recall 81.0% [66.7–90.0], FPR 14.3% |
 | Browser computed styles | 42/42, 0/35 (upper bound) |
 | Adaptive corpus (forged signals) | label error 80%, executed 20% |
 | Signed sensor envelope | 6/6 executed without → 0/6 with |
 | Scene OCR (raw + deskew) | detection **100%** (35/35), CER **1.7%**, 0/35 executed |
+| Scene reading — **Muse Wonder** (n=15) | detection **100%**, CER **0.0%**, approximate boxes |
 | **Muse Spark, document attacks (n=8)** | A 25% · B 37.5% · C 50% · **D 0%** executed; 0% false refusals |
 | Muse Spark, general corpus (n=20) | 0% executed all arms; D false refusals 5%; 36/36 receipts |
 | Voice channel (synthetic) | same 0.004 vs limit 0.06 accepted; different 0.339 rejected |

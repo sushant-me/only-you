@@ -42,6 +42,7 @@ from .model import MetaModelClient, SimulatedModel
 from .policy import Constitution
 from .provenance import Channel, Input, Origin, ProvenanceRouter, origin_label
 from .receipts import DEMO_SECRET, ReceiptLedger, clean_for_display
+from .scene_muse import muse_read
 from .scenarios import Scenario
 from .tools import MockWorld
 
@@ -317,7 +318,12 @@ class DemoService:
         return {"ok": True, "voice": {"enrolled": False}}
 
     def frame(self, payload: dict[str, Any]) -> dict[str, Any]:
-        """OCR a camera frame and label the text as scene data."""
+        """Read a camera frame and label the text as scene data.
+
+        Muse Wonder reads the scene when a key is configured (text + approximate
+        boxes); tesseract is the offline fallback. Either way the result is
+        labelled SCENE — data, never a command.
+        """
         image = str(payload.get("image", ""))
         if "," in image:
             image = image.split(",", 1)[1]
@@ -325,18 +331,34 @@ class DemoService:
             png = base64.b64decode(image)
         except Exception:
             return {"error": "bad image payload"}
-        try:
-            ocr = ocr_png(png)
-        except OcrError as exc:
-            return {"error": str(exc)}
+
+        reader = "tesseract"
+        model = "tesseract"
+        confidence = 0.0
+        lines: list[dict[str, Any]] = []
+        text = ""
+        if os.environ.get("ONLYYOU_SCENE_READER", "muse").lower() != "tesseract":
+            muse = muse_read(png)
+            if muse is not None:
+                reader, model = "muse-wonder", muse["model"]
+                text, lines = muse["text"], muse["lines"]
+        if not text and not lines:
+            try:
+                ocr = ocr_png(png)
+            except OcrError as exc:
+                return {"error": str(exc)}
+            text, lines, confidence = ocr["text"], ocr["lines"], ocr["confidence"]
+
         router = ProvenanceRouter()
         label = router.label(
-            Input(Channel.SCENE, ocr["text"] or " ", "scene:frame", {"ocr_confidence": ocr["confidence"]})
+            Input(Channel.SCENE, text or " ", "scene:frame", {"scene_reader": reader})
         )
         return {
-            "text": ocr["text"],
-            "confidence": ocr["confidence"],
-            "lines": ocr["lines"],
+            "text": text,
+            "confidence": confidence,
+            "lines": lines,
+            "reader": reader,
+            "model": model,
             "origin": label.origin.value,
             "command_capable": label.command_capable,
             "reason": label.reason,

@@ -160,7 +160,8 @@ class MetaModelClient:
     def open_weights_available(cls) -> bool:
         return bool(os.environ.get("OPEN_WEIGHTS_BASE") and os.environ.get("OPEN_WEIGHTS_KEY"))
 
-    def chat(self, messages: list[dict[str, str]], temperature: float = 0.0) -> str:
+    def chat(self, messages: list[dict[str, Any]], temperature: float = 0.0) -> str:
+        """Chat completion; `messages` may carry multimodal content parts."""
         if not (self.base_url and self.api_key):
             raise RuntimeError("META_API_BASE / META_API_KEY not set")
         body = json.dumps(

@@ -118,7 +118,7 @@ false refusals. Raw results: [`results-real/`](results-real/benchmark.md),
 | Signed mandates + offline merchant verification | implemented (Ed25519), tested |
 | Receipts + hash chain + undo | implemented, tested |
 | Local voice check (MFCC, distance threshold) | implemented; **not anti-spoofing** — a cloned voice passes |
-| Scene text → OCR → gate | implemented with **tesseract**; mask boxes come from OCR lines |
+| Scene reading | **Muse Wonder** when a key is set (text + approximate boxes; 15/15, 0.0% CER on a synthetic sample); **tesseract** fallback offline |
 | Page extraction (visible + hidden) | implemented (regex DOM classifier) |
 | Agent model | **Muse Spark** when `META_API_BASE`/`META_API_KEY` are set; **simulated** otherwise, and the report stamps which mode |
 | SAM 3.1 segmentation | **not integrated** — OCR boxes are the segmenter in the demo |
@@ -190,7 +190,7 @@ make audit    # 40 checks: tests, benchmark numbers, links, secrets, artifacts, 
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 98 tests
+make gen test          # corpus + 102 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -203,7 +203,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           98 tests
+tests/           102 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

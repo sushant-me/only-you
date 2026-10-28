@@ -151,7 +151,16 @@ item below was built on top of it.
 - `.env` is gitignored; the key is never committed or printed. `make test` forces the simulated model
   so the suite stays offline.
 
-**Tests:** 98 pass (`make test`).
+**Muse Wonder scene reader**
+- `src/onlyyou/scene_muse.py`: reads a camera frame through **Muse Wonder** (multimodal chat), returns
+  text + approximate pixel boxes, and never promotes scene text to authority (still labelled SCENE).
+  Tesseract remains the offline fallback; `/api/frame` reports which reader answered.
+- Measured on 15 synthetic signs (clean, rotated 8°, low-contrast): detection **100% (15/15)**,
+  mean CER **0.0%**, ~8 s per call including render. `results/scene-muse.json`, `tools/muse_scene_eval.py`.
+- 4 new tests for parsing/fences/fallback/missing-key. Demo shows three Meta models now: Muse Spark
+  (agent), Muse Wonder (scene), with muse-image available for assets; SAM 3.1 still not integrated.
+
+**Tests:** 102 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
 real-model benchmark. The only missing input is `META_API_BASE` / `META_API_KEY` / `MUSE_MODEL`.

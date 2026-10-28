@@ -416,7 +416,8 @@ async function scanFrame() {
     drawOcr(data);
     $("#scan-badge").hidden = false;
     $("#scan-badge").textContent = data.text ? "scene text — data, not command" : "no text found";
-    toast(`OCR ${data.confidence}% · ${data.origin} · command=${data.command_capable}`);
+    const detail = data.reader === "muse-wonder" ? "muse-wonder" : `${data.confidence}%`;
+    toast(`${detail} · ${data.origin} · command=${data.command_capable}`);
   } catch (err) {
     toast(`scan failed: ${err.message}`);
   }

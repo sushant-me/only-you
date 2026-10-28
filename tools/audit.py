@@ -62,6 +62,13 @@ def main() -> int:
             r = json.loads(path.read_text())
             check(f"{rel} mode meta", r.get("mode") == "meta", str(r.get("mode")))
             check(f"{rel} model muse-spark", "muse-spark" in str(r.get("model", "")))
+    muse_scene = ROOT / "results/scene-muse.json"
+    check("results/scene-muse.json exists", muse_scene.exists())
+    if muse_scene.exists():
+        m = json.loads(muse_scene.read_text())
+        check("Muse Wonder scene sample 100%", m.get("detection_rate") == 1.0)
+        check("Muse Wonder scene sample CER 0", m.get("mean_cer") == 0.0)
+
     doc_run = ROOT / "results-real-doc" / "benchmark.json"
     if doc_run.exists():
         arms = {m["arm"]: m for m in json.loads(doc_run.read_text())["arms"]}
@@ -73,7 +80,7 @@ def main() -> int:
     text = "\n".join(
         p.read_text(errors="ignore") for p in ROOT.rglob("*.md") if p.name != "AUDIT.md"
     )
-    for needle in ["98 tests", "81.0%", "14.3%", "100.0%", "1.7%", "6/6", "0/6", "Muse Spark", "conditional"]:
+    for needle in ["102 tests", "81.0%", "14.3%", "100.0%", "1.7%", "6/6", "0/6", "Muse Spark", "Muse Wonder", "conditional"]:
         check(f"docs mention {needle}", needle in text)
 
     # no stale overclaims

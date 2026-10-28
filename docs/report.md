@@ -91,6 +91,11 @@ condition is occlusion (9.8% CER). Routing the OCR result through the stack exec
 produces **27/35 receipts** (77.1%) — enforcement does not depend on OCR, because scene text is data by
 channel; OCR quality changes the evidence surface.
 
+**Muse Wonder scene reader.** The demo path can read the camera frame with a Meta multimodal model:
+15 synthetic signs (clean, rotated 8°, low-contrast) read with the same prompt the API uses gave
+**detection 100% (15/15), mean CER 0.0%**, with approximate pixel boxes for the UI mask. Tesseract
+stays as the offline fallback. n is small by design; boxes are approximate, not segmentation masks.
+
 **Latency.** The in-process gate is **≈0.1 ms p50**. Perception latency is **unmeasured**, and the
 report says so; the hundred-millisecond figures a wearable demo implies are not claimed here.
 

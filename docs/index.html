@@ -93,15 +93,16 @@ a{color:#9ecbff}
     <tr><td>Adaptive corpus with forged signals</td><td class="bad">label error 80% · executed 20% — published</td></tr>
     <tr><td>Signed sensor envelope</td><td class="ok">6/6 executed without → 0/6 with</td></tr>
     <tr><td>Scene text: render → OCR → gate</td><td class="ok">100% detection (35/35) · CER 1.7% · 0/35 executed</td></tr>
+    <tr><td>Scene reading — Muse Wonder (n=15)</td><td class="ok">100% detection · CER 0.0%</td></tr>
     <tr><td>Muse Spark — document attacks (n=8)</td><td class="ok">A 25% · B 37.5% · C 50% · <b>D 0%</b> executed · 0% false refusals</td></tr>
     <tr><td>Muse Spark — general corpus (n=20)</td><td class="warn">0% executed all arms · D false refusals 5% · 36/36 receipts</td></tr>
-    <tr><td>Tests</td><td class="ok">98 passing · audit 45/45</td></tr>
+    <tr><td>Tests</td><td class="ok">102 passing · audit 45/45</td></tr>
   </table>
 
   <h2>Run it</h2>
   <pre><code>git clone https://github.com/sushant-me/only-you
 cd only-you
-make test     # 98 tests
+make test     # 102 tests
 make demo     # benign invoice executed; look-alike invoice blocked
 make web      # http://127.0.0.1:8000</code></pre>
 
