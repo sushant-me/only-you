@@ -53,7 +53,7 @@ HMAC chain, mandates with Ed25519 signatures, the device public key, chain head 
 **Does it plug into a SIEM?**
 Yes — policy changes, mandate revocations and rejected checkouts raise structured alerts, exposed in the UI
 and in `GET /api/state`. Set `ONLYYOU_WEBHOOK_URL` and each alert is POSTed as JSON to your webhook/SIEM
-(delivery is best-effort and never blocks the action).
+(delivery is queued with retries and a delivery log, and never blocks the action).
 
 **Are policy changes auditable?**
 Yes — every enable/disable appends a signed `R7-policy-change` receipt (rule id, new state, source) to the
@@ -100,7 +100,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (149 tests + live-server smoke + audit) then `make web` →
+`make judge` (151 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 

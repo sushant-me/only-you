@@ -14,6 +14,24 @@ from onlyyou.webapp import DemoService
 RECEIVED: list[dict] = []
 
 
+class FailingHandler(BaseHTTPRequestHandler):
+    attempts = 0
+
+    def log_message(self, *args):
+        return
+
+    def do_POST(self):  # noqa: N802
+        FailingHandler.attempts += 1
+        length = int(self.headers.get("Content-Length", 0) or 0)
+        self.rfile.read(length)
+        if FailingHandler.attempts <= FailingHandler.fail_first:
+            self.send_response(500)
+            self.end_headers()
+        else:
+            self.send_response(204)
+            self.end_headers()
+
+
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, *args):
         return
@@ -48,6 +66,55 @@ class TestAlerts(unittest.TestCase):
         self.svc.grant_mandate({"payees": ["electrician"], "max_amount": 100})
         self.svc.revoke_all_mandates()
         self.assertEqual(self.svc.state()["alerts"][-1]["kind"], "mandates_revoked")
+
+    def test_transient_failures_are_retried(self):
+        FailingHandler.attempts = 0
+        FailingHandler.fail_first = 2
+        server = ThreadingHTTPServer(("127.0.0.1", 0), FailingHandler)
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        os.environ["ONLYYOU_WEBHOOK_URL"] = f"http://127.0.0.1:{server.server_address[1]}/hook"
+        os.environ["ONLYYOU_WEBHOOK_RETRIES"] = "4"
+        os.environ["ONLYYOU_WEBHOOK_DELAY"] = "0.02"
+        try:
+            self.svc.set_rule_enabled({"rule_id": "R3-unlock-requires-confirmation", "enabled": False})
+            deadline = time.time() + 5
+            while time.time() < deadline:
+                if self.svc.state()["webhook"]["delivered"] == 1:
+                    break
+                time.sleep(0.05)
+        finally:
+            server.shutdown()
+            os.environ.pop("ONLYYOU_WEBHOOK_RETRIES", None)
+            os.environ.pop("ONLYYOU_WEBHOOK_DELAY", None)
+        webhook = self.svc.state()["webhook"]
+        self.assertEqual(webhook["delivered"], 1, webhook)
+        self.assertEqual(webhook["failed"], 0, webhook)
+        alert = self.svc.state()["alerts"][-1]
+        self.assertEqual(alert["delivery"]["status"], "delivered")
+        self.assertEqual(alert["delivery"]["attempts"], 3)
+
+    def test_permanent_failure_is_logged(self):
+        FailingHandler.attempts = 0
+        FailingHandler.fail_first = 10
+        server = ThreadingHTTPServer(("127.0.0.1", 0), FailingHandler)
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        os.environ["ONLYYOU_WEBHOOK_URL"] = f"http://127.0.0.1:{server.server_address[1]}/hook"
+        os.environ["ONLYYOU_WEBHOOK_RETRIES"] = "2"
+        os.environ["ONLYYOU_WEBHOOK_DELAY"] = "0.01"
+        try:
+            self.svc.set_rule_enabled({"rule_id": "R2-payment-over-limit", "enabled": False})
+            deadline = time.time() + 5
+            while time.time() < deadline:
+                if self.svc.state()["webhook"]["failed"] == 1:
+                    break
+                time.sleep(0.05)
+        finally:
+            server.shutdown()
+            os.environ.pop("ONLYYOU_WEBHOOK_RETRIES", None)
+            os.environ.pop("ONLYYOU_WEBHOOK_DELAY", None)
+        webhook = self.svc.state()["webhook"]
+        self.assertEqual(webhook["failed"], 1, webhook)
+        self.assertEqual(webhook["delivered"], 0, webhook)
 
     def test_webhook_delivery(self):
         server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)

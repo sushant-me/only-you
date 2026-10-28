@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 149 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 151 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -118,12 +118,15 @@ labels it *sub of …*.
 ![Alerts rail](docs/img/alerts.png)
 
 Policy changes, mandate revocations and rejected checkouts emit structured alerts (`state.alerts`). Set
-`ONLYYOU_WEBHOOK_URL` and each alert is POSTed as JSON to a SIEM/webhook, best-effort, without blocking
-the action:
+`ONLYYOU_WEBHOOK_URL` and each alert is queued and POSTed as JSON to a SIEM/webhook by a background worker
+with **retries and a delivery log** — the UI shows `delivered / queued / failed` and per-alert attempts:
 
 ```bash
-ONLYYOU_WEBHOOK_URL=https://example.internal/hooks/only-you make web
+ONLYYOU_WEBHOOK_URL=https://example.internal/hooks/only-you \
+ONLYYOU_WEBHOOK_RETRIES=3 ONLYYOU_WEBHOOK_DELAY=0.25 make web
 ```
+
+![Webhook delivery](docs/img/webhook-delivery.png)
 
 ### Receipt verification page
 
@@ -301,7 +304,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 149 tests
+make gen test          # corpus + 151 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -314,7 +317,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           149 tests
+tests/           151 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

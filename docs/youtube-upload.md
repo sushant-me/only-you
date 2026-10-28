@@ -25,7 +25,7 @@ ONLY YOU fixes the channel: only the enrolled voice is a command, scene/page/doc
 text is data, irreversible actions need a signed mandate, and every action and every
 refusal leaves a verifiable receipt.
 
-Built during the Meta Global AI Developer Hackathon 2026. 149 tests, a four-arm benchmark,
+Built during the Meta Global AI Developer Hackathon 2026. 151 tests, a four-arm benchmark,
 and a published failure list — including the 20% of adaptive attacks that still get through.
 
 Chapters (match the rebuilt 175 s captioned cut)

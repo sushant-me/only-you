@@ -24,7 +24,9 @@ import json
 import os
 import tempfile
 import mimetypes
+import queue
 import urllib.request
+import urllib.error
 from dataclasses import asdict
 import threading
 import time
@@ -112,6 +114,10 @@ class DemoService:
         self.lock = threading.Lock()
         self.voiceprint = None
         self.alerts: list[dict[str, Any]] = []
+        self.delivery_log: list[dict[str, Any]] = []
+        self._alert_queue: queue.Queue | None = None
+        self._alert_lock = threading.Lock()
+        self._alert_worker_started = False
         try:
             self.device_key = DeviceKey.create(Path(tempfile.gettempdir()) / "only-you-device-keys")
         except Exception:
@@ -133,6 +139,14 @@ class DemoService:
             )
             self.counter = 0
             self.alerts = []
+            self.delivery_log = []
+            if self._alert_queue is not None:
+                try:
+                    while True:
+                        self._alert_queue.get_nowait()
+                        self._alert_queue.task_done()
+                except queue.Empty:
+                    pass
         return self.state()
 
     # -- commands ----------------------------------------------------------
@@ -306,6 +320,7 @@ class DemoService:
             "model_mode": "meta" if isinstance(self.agent.model, MetaModelClient) else "simulated",
             "voice": self.voiceprint.to_dict() if self.voiceprint else {"enrolled": False},
             "alerts": self.alerts[-20:],
+            "webhook": self._webhook_state(),
         }
 
     # -- mandates ----------------------------------------------------------
@@ -527,29 +542,75 @@ class DemoService:
             },
         }
 
+    def _webhook_url(self) -> str:
+        return os.environ.get("ONLYYOU_WEBHOOK_URL", "").strip()
+
+    def _ensure_alert_worker(self) -> None:
+        if self._alert_worker_started or not self._webhook_url():
+            return
+        self._alert_worker_started = True
+        self._alert_queue = queue.Queue()
+
+        def worker() -> None:
+            while True:
+                alert = self._alert_queue.get()
+                self._deliver_alert(alert)
+                self._alert_queue.task_done()
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def _deliver_alert(self, alert: dict[str, Any]) -> None:
+        delivery = alert["delivery"]
+        url = self._webhook_url()
+        try:
+            retries = max(1, int(os.environ.get("ONLYYOU_WEBHOOK_RETRIES", "3")))
+            delay = max(0.0, float(os.environ.get("ONLYYOU_WEBHOOK_DELAY", "0.25")))
+        except ValueError:
+            retries, delay = 3, 0.25
+        last_error = ""
+        for attempt in range(1, retries + 1):
+            try:
+                payload = json.dumps(alert).encode()
+                req = urllib.request.Request(
+                    url, data=payload, headers={"Content-Type": "application/json"}, method="POST"
+                )
+                with urllib.request.urlopen(req, timeout=2):
+                    pass
+                delivery.update(status="delivered", attempts=attempt)
+                return
+            except Exception as exc:  # noqa: BLE001
+                last_error = f"{type(exc).__name__}: {exc}"[:160]
+                delivery.update(status="queued", attempts=attempt)
+                if attempt < retries and delay:
+                    time.sleep(delay * attempt)
+        delivery.update(status="failed", last_error=last_error)
+
+    def _webhook_state(self) -> dict[str, Any]:
+        with self._alert_lock:
+            counts = {"queued": 0, "delivered": 0, "failed": 0}
+            for delivery in self.delivery_log:
+                counts[delivery.get("status", "queued")] = counts.get(delivery.get("status", "queued"), 0) + 1
+        return {"enabled": bool(self._webhook_url()), **counts, "total": len(self.delivery_log)}
+
     def _alert(self, kind: str, message: str, data: dict[str, Any] | None = None) -> None:
-        """Append an operational alert and best-effort POST it to a webhook/SIEM."""
+        """Append an operational alert and queue it for durable webhook/SIEM delivery."""
         alert = {
             "ts": time.time(),
             "kind": kind,
             "message": message,
             "data": data or {},
         }
+        if self._webhook_url():
+            delivery = {"status": "queued", "attempts": 0, "last_error": ""}
+            alert["delivery"] = delivery
+            with self._alert_lock:
+                self.delivery_log.append(delivery)
+                self.delivery_log = self.delivery_log[-100:]
+            self._ensure_alert_worker()
+            if self._alert_queue is not None:
+                self._alert_queue.put(alert)
         self.alerts.append(alert)
         self.alerts = self.alerts[-50:]
-        url = os.environ.get("ONLYYOU_WEBHOOK_URL", "").strip()
-        if url:
-            try:
-                payload = json.dumps(alert).encode()
-                req = urllib.request.Request(
-                    url, data=payload, headers={"Content-Type": "application/json"}, method="POST"
-                )
-                threading.Thread(
-                    target=lambda: urllib.request.urlopen(req, timeout=2),
-                    daemon=True,
-                ).start()
-            except Exception:
-                pass
 
     def _mandate_view(self, mandate: Any) -> dict[str, Any]:
         return {

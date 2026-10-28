@@ -282,12 +282,22 @@ function renderState(state) {
   if (exportBtn) exportBtn.addEventListener("click", () => { window.location.href = "/api/export"; });
 
   const alertList = $("#alert-list");
+  const webhook = state.webhook || {};
+  const alertStatus = $("#alert-status");
+  if (alertStatus) {
+    alertStatus.textContent = webhook.enabled
+      ? `delivered ${webhook.delivered || 0} · queued ${webhook.queued || 0} · failed ${webhook.failed || 0}`
+      : "webhook off";
+  }
   if (alertList) {
     const alerts = (state.alerts || []).slice(-5).reverse();
     alertList.innerHTML = alerts.length
-      ? alerts.map((a) => `<div class="receipt allow">
-          <div class="r-top"><span class="r-act">${a.kind}</span><span>${new Date(a.ts * 1000).toLocaleTimeString()}</span></div>
-          <div class="r-meta">${a.message}</div></div>`).join("")
+      ? alerts.map((a) => {
+          const d = a.delivery ? ` · ${a.delivery.status}${a.delivery.attempts ? ` (${a.delivery.attempts})` : ""}` : "";
+          return `<div class="receipt allow">
+          <div class="r-top"><span class="r-act">${a.kind}${d}</span><span>${new Date(a.ts * 1000).toLocaleTimeString()}</span></div>
+          <div class="r-meta">${a.message}</div></div>`;
+        }).join("")
       : `<div class="receipt" style="color:var(--muted)">no alerts</div>`;
   }
 
