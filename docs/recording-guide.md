@@ -46,7 +46,7 @@ If a beat takes longer than ~20 s, it is still working (Muse Spark latency); kee
 If you send a voice memo instead of recording the screen, mux it onto the captioned cut:
 
 ```bash
-make voice VOICE=~/narration.wav   # 60–90 s is enough; it is padded/trimmed to 2:55
+make voice VOICE=~/narration.wav   # 60–90 s is enough; it is padded/trimmed to 2:55, two-pass -16 LUFS
 ```
 
 Speak the script from `docs/video-3min.md`; the captions already carry the beats. Record in a quiet room,

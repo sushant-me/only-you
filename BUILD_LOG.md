@@ -223,6 +223,11 @@ item below was built on top of it.
   bytes), the repo is public, `.env` untracked, and every submission file exists. Full run: all pass.
 - Wired into the submission checklist and README; run it immediately before pasting the form.
 
+**Two-pass voice mux**
+- `tools/mux_voice.py`: measures the narration (loudnorm pass 1), then applies the measured values
+  (pass 2) while copying the video stream, padding/trimming to 175 s. Tested on the owner's sample:
+  output 175.000 s, integrated −17.1 LUFS (gated, includes trailing silence), AAC 160k.
+
 **Tests:** 119 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
