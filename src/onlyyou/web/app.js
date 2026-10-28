@@ -231,7 +231,7 @@ function renderState(state) {
       const decision = r.verdict.decision;
       return `<div class="receipt ${decision}">
         <div class="r-top"><span class="r-act">${actionLabel(r.action)}</span>
-        <span>${decision}</span></div>
+        <span>${decision} · <a class="mini" href="/verify/${r.id}" target="_blank" rel="noopener">verify</a></span></div>
         <div class="r-meta">${r.verdict.rule} · ${r.id}${r.undone ? " · undone" : ""}</div>
       </div>`;
     })

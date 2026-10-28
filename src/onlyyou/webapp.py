@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import base64
 import functools
+import html
 from datetime import datetime, timezone
 import json
 import os
@@ -581,6 +582,56 @@ INVOICE_PAGE = """<!doctype html><html><head><meta charset="utf-8"><title>Invoic
 </body></html>"""
 
 
+def _verify_page(service: DemoService, receipt: Any) -> str:
+    """Public verification page for one receipt. Every field is attacker-influenced: escape it."""
+    verdict = receipt.verdict or {}
+    evidence = receipt.evidence or {}
+    mandate = evidence.get("mandate") or {}
+    sig_ok = service.ledger.verify(receipt)
+    chain_ok = service.ledger.verify_chain()
+    action = _action_label(receipt.action or {})
+    rule = str(verdict.get("rule", ""))
+    reason = str(verdict.get("reason", ""))
+    decision = str(verdict.get("decision", ""))
+    outcome = str((receipt.result or {}).get("outcome", ""))
+    cls = "ok" if decision == "allow" else "bad"
+    mandate_row = (
+        f"<tr><th>mandate</th><td>{html.escape(str(mandate.get('id', '')))} "
+        f"· cap {html.escape(str(mandate.get('max_amount', '')))}"
+        f" · remaining after {html.escape(str(mandate.get('remaining_after', '?')))}</td></tr>"
+        if mandate
+        else ""
+    )
+    return f"""<!doctype html><html><head><meta charset="utf-8">
+<title>Receipt {html.escape(receipt.id)} — ONLY YOU</title>
+<style>
+body{{font-family:ui-sans-serif,system-ui,sans-serif;background:#070a10;color:#e6ebf5;max-width:760px;margin:40px auto;padding:0 20px}}
+h1{{letter-spacing:.08em;font-size:20px}} .badge{{display:inline-block;padding:4px 10px;border-radius:6px;font-weight:800;font-size:12px;letter-spacing:.06em}}
+.badge.ok{{background:#0f2a1e;color:#2fd18c;border:1px solid #2fd18c55}} .badge.bad{{background:#2a0f14;color:#ff5a68;border:1px solid #ff5a6855}}
+table{{border-collapse:collapse;width:100%;margin:18px 0;font-size:13px}} th,td{{text-align:left;padding:8px 10px;border-bottom:1px solid #1c2434;vertical-align:top}}
+th{{color:#8b95a8;font-weight:600;width:150px}} code{{font-family:ui-monospace,monospace;font-size:11.5px;color:#c7cedb;word-break:break-all}}
+.notice{{margin-top:24px;padding:12px 14px;border:1px solid #232b3d;border-radius:8px;background:#0b0e15;color:#8b95a8;font-size:12px}}
+a{{color:#7c9cff}}
+</style></head><body>
+<h1>ONLY YOU · receipt verification</h1>
+<p><span class="badge {cls}">{html.escape(decision.upper())}</span>
+&nbsp; <b>{html.escape(rule)}</b> &nbsp; <code>{html.escape(outcome)}</code></p>
+<p>{html.escape(reason)}</p>
+<table>
+<tr><th>receipt</th><td><code>{html.escape(receipt.id)}</code></td></tr>
+<tr><th>action</th><td>{html.escape(action)}</td></tr>
+<tr><th>time</th><td>{html.escape(datetime.fromtimestamp(receipt.ts, timezone.utc).isoformat(timespec="seconds"))}</td></tr>
+<tr><th>signature</th><td>{"VALID" if sig_ok else "INVALID"} · <code>{html.escape(receipt.signature[:32])}…</code></td></tr>
+<tr><th>chain</th><td>{"OK" if chain_ok else "BROKEN"} · prev <code>{html.escape(receipt.prev_hash[:32])}…</code></td></tr>
+{mandate_row}
+</table>
+<div class="notice">This page is served by the demo, but the same receipt can be checked without it:
+download the <a href="/api/export">signed audit bundle</a> and run <code>python3 tools/verify_audit.py audit.json</code>.
+Receipt fields are attacker-influenced display data; they are escaped here and never treated as instructions.</div>
+<p><a href="/">← back to the demo</a></p>
+</body></html>"""
+
+
 def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRequestHandler]:
     class Handler(BaseHTTPRequestHandler):
         server_version = "OnlyYou/0.1"
@@ -632,6 +683,21 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
             path = urlparse(self.path).path
             if path in ("/api/state", "/api/reset"):
                 self._json(service.reset() if path == "/api/reset" else service.state())
+                return
+            if path.startswith("/verify/") or path.startswith("/api/receipt/"):
+                receipt_id = path.rsplit("/", 1)[-1]
+                receipt = next((r for r in service.ledger.receipts if r.id == receipt_id), None)
+                if receipt is None:
+                    self._json({"error": "unknown receipt"}, 404)
+                    return
+                if path.startswith("/api/receipt/"):
+                    self._json({
+                        **asdict(receipt),
+                        "signature_ok": service.ledger.verify(receipt),
+                        "chain_ok": service.ledger.verify_chain(),
+                    })
+                else:
+                    self._html(_verify_page(service, receipt))
                 return
             if path == "/api/export":
                 self._json(service.export_audit(), filename="only-you-audit.json")

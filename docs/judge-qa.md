@@ -24,6 +24,11 @@ bar, the receipt records `remaining_after`, undo refunds the budget, and one cli
 delegation while keeping the receipts. A payment beyond the remaining budget is no longer covered by the
 mandate — it falls back to the constitution's ask/confirm path.
 
+**Can a merchant check a single receipt?**
+Yes — every receipt has a `/verify/<id>` page (and `/api/receipt/<id>` JSON): action, decision, rule,
+reason, signature validity, chain position, mandate spend. Fields are escaped because receipt text is
+attacker-influenced. For bulk evidence, the signed audit export below verifies offline.
+
 **Can I take the evidence away and verify it myself?**
 Yes — `GET /api/export` (or **export audit** in the UI) returns a single JSON bundle: receipts with their
 HMAC chain, mandates with Ed25519 signatures, the device public key, chain head and instructions.
@@ -64,7 +69,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (127 tests + live-server smoke + audit) then `make web` →
+`make judge` (129 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 

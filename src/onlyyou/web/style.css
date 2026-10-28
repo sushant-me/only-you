@@ -256,3 +256,5 @@ letter-spacing:.06em;padding:3px 7px;border-radius:6px;border:1px solid #2a3448;
 .sim-meta{color:var(--muted);margin-top:3px;font-family:ui-monospace,monospace;font-size:10.5px}
 
 #btn-export{float:right;margin-top:-2px}
+
+a.mini{color:#7c9cff;text-decoration:none;border-bottom:1px dotted #7c9cff}
