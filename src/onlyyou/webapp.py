@@ -43,6 +43,7 @@ from .policy import Constitution
 from .provenance import Channel, Input, Origin, ProvenanceRouter, origin_label
 from .receipts import DEMO_SECRET, ReceiptLedger, clean_for_display
 from .scene_muse import muse_read
+from .voice_muse import transcribe_wav
 from .scenarios import Scenario
 from .tools import MockWorld
 
@@ -329,6 +330,16 @@ class DemoService:
             return {"error": str(exc)}
         return {"ok": True, "voice": self.voiceprint.to_dict()}
 
+    def transcribe(self, payload: dict[str, Any]) -> dict[str, Any]:
+        try:
+            wav = base64.b64decode(str(payload.get("clip", "")))
+        except Exception:
+            return {"error": "bad audio payload"}
+        result = transcribe_wav(wav)
+        if result is None:
+            return {"error": "transcription needs META_API_* and a supported audio model"}
+        return {"ok": True, **result}
+
     def voice_verify(self, payload: dict[str, Any]) -> dict[str, Any]:
         if self.voiceprint is None:
             return {"error": "voice not enrolled"}
@@ -575,6 +586,8 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
                 self._json(service.task(payload))
             elif path == "/api/voice/enroll":
                 self._json(service.voice_enroll(payload))
+            elif path == "/api/voice/transcribe":
+                self._json(service.transcribe(payload))
             elif path == "/api/voice/verify":
                 self._json(service.voice_verify(payload))
             elif path == "/api/voice/reset":

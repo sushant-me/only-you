@@ -28,6 +28,10 @@ Result: you can give an agent real credentials, a real door, a real wallet — b
 bounded by the owner's authority, not by the model's judgement. That is what turns a demo agent into a
 product people will let act for them.
 
+**Also shipped:** Muse Wonder transcribes spoken commands in the demo (`/api/voice/transcribe`), so the
+voice path is a Meta model end-to-end instead of typed text. It is transcription, not speaker
+verification — the MFCC check still decides whose voice it is.
+
 ## Evidence (real Muse Spark runs, temperature 0)
 
 | Corpus | Undefended | Prompt-only | Provenance-only | **Full ONLY YOU** | False refusals |
@@ -56,7 +60,7 @@ Receipts and raw results are committed: `results-real/`, `results-real-doc/`.
 
 ## Why me
 
-I built this in the hackathon window, alone: 115 tests, a self-audit, CI, two real-model evaluations,
+I built this in the hackathon window, alone: 119 tests, a self-audit, CI, two real-model evaluations,
 and an honest failure list — including the cases where the layer does not help. I want to keep building
 this at Meta, on the team that ships agents people can actually delegate to.
 

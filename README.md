@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 115 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 119 tests + self-audit + a live-server smoke, about 25 seconds
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
 
@@ -79,6 +79,10 @@ may issue them, what they may authorise, and what can be proven afterwards.
    `python3 tools/mandate_demo.py` does the same check offline.
 
 ### Voice channel
+
+Spoken commands in the demo are transcribed by **Muse Wonder** (`/api/voice/transcribe`): record 4 s,
+the transcript fills the composer, and it still has to pass the voice check and the gate. MFCC remains
+the speaker check; this is transcription, not anti-spoofing.
 
 `src/onlyyou/voice.py` — enrol three clips in the browser, then verify a command. Energy gate → MFCC →
 mean/std embedding → distance threshold learned from enrolment. It is a channel demonstrator, not an
@@ -208,7 +212,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 115 tests
+make gen test          # corpus + 119 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -221,7 +225,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           115 tests
+tests/           119 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

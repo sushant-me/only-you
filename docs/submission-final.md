@@ -47,7 +47,7 @@ holds), the confused-deputy corpus where the undefended model pays 25% of the ti
 | Product | Use | Evidence |
 |---|---|---|
 | **Muse Spark 1.3** | proposes every action; the gate re-validates; real runs at temperature 0 | `results-real/`, `results-real-doc/` |
-| **Muse Wonder 1.0** | reads the camera frame into text + boxes (`/api/frame`, tesseract fallback) | `results/scene-muse.json` (15/15, 0.0% CER) |
+| **Muse Wonder 1.0** | reads the camera frame into text + boxes (`/api/frame`); transcribes spoken commands (`/api/voice/transcribe`) | `results/scene-muse.json` (15/15, 0.0% CER) |
 | **Muse Image 1.0** | generates the demo's poster, TV frame, invoice, article and hero | `src/onlyyou/web/fakecam-*.jpg`, `docs/img/hero.jpg` |
 | Muse Spark contributor build | third real run on the same corpus (A 50% → D 0%) | `results-real-doc-contributor/` |
 
@@ -79,6 +79,6 @@ model benchmarks, Muse Image assets, the demo UI, captioned video package, CI, a
 - [ ] Repo opens logged out: https://github.com/sushant-me/only-you
 - [ ] Live page returns 200 and plays the video
 - [ ] YouTube link pasted above; video unlisted, ≤ 3:00, plays logged out
-- [ ] `make judge` green in a fresh clone (115 tests, audit green)
+- [ ] `make judge` green in a fresh clone (119 tests, audit green)
 - [ ] No secret in the repo (`git ls-files | grep -c env` → only `.env.example`)
 - [ ] Screenshot the confirmation page and save the submission URL

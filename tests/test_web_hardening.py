@@ -121,3 +121,11 @@ class TestApiValidation(unittest.TestCase):
         code, body = self.post("/api/command", {"speaker": None, "channel": None, "text": None})
         self.assertEqual(code, 200)
         self.assertIn("outcome", body)
+
+
+class TestTranscribeValidation(unittest.TestCase):
+    def test_bad_audio_payload_is_400_or_error(self):
+        from onlyyou.webapp import DemoService
+
+        result = DemoService().transcribe({"clip": "not-base64!!!"})
+        self.assertIn("error", result)

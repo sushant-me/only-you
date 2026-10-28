@@ -211,7 +211,14 @@ item below was built on top of it.
 - `/api/frame` no longer returns raw tesseract stderr; it returns `could not read image`.
 - 4 regression tests (115 total).
 
-**Tests:** 115 pass (`make test`).
+**Spoken commands with Muse Wonder audio-in**
+- Discovered while testing the owner's mic sample: `muse-wonder-1.0` accepts `input_audio` and returns a
+  transcript. Added `src/onlyyou/voice_muse.py`, `/api/voice/transcribe`, and a **🎙 Speak a command** button
+  that records 4 s, transcribes with Muse Wonder, and fills the composer.
+- The transcript is still text through the voice check and the gate — transcription is not verification.
+- Verified on the owner's 20 s sample (transcript returned verbatim). 4 new tests; 119 total.
+
+**Tests:** 119 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
 real-model benchmark. The only missing input is `META_API_BASE` / `META_API_KEY` / `MUSE_MODEL`.

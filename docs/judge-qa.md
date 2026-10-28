@@ -46,7 +46,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (115 tests + live-server smoke + audit) then `make web` →
+`make judge` (119 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 

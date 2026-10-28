@@ -512,6 +512,25 @@ async function recordWav(ms = 1600) {
   return encodeWav(pcm, rate);
 }
 
+async function speakCommand() {
+  let clip;
+  try {
+    toast("speak your command — 4 seconds");
+    clip = await recordWav(4000);
+  } catch (err) {
+    return toast("microphone unavailable");
+  }
+  toast("Muse Wonder is transcribing…");
+  const data = await post("/api/voice/transcribe", { clip });
+  if (data.error) return toast(data.error);
+  const text = (data.text || "").trim();
+  if (!text) return toast("no speech detected");
+  $("#command").value = text;
+  $("#speaker").value = "owner";
+  $("#channel").value = "voice";
+  toast(`Muse Wonder: “${text.slice(0, 80)}” — press Send to agent`);
+}
+
 async function refreshState() {
   try {
     renderState(await (await fetch("/api/state")).json());
