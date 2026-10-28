@@ -1,10 +1,6 @@
-# Repo audit — 2026-10-28T10:42:54+00:00
+# Repo audit — 2026-10-28T10:43:58+00:00
 
-**66 passed · 1 failed**
-
-## Failures
-
-- ❌ git tree clean — M tools/audit.py
+**67 passed · 0 failed**
 
 ## Checks
 
@@ -74,3 +70,4 @@
 - ✅ docs/demo-task-clip.mp4 duration 20s — 20.000000
 - ✅ docs/demo-fallback.mp4 duration 82s — 82.000000
 - ✅ docs/demo-3min.mp4 duration 175s — 175.000000
+- ✅ git tree clean
