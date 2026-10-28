@@ -37,6 +37,8 @@ class Scenario:
     owner_confirms: bool = False
     pay_limit: int = 1000
     note: str = ""
+    # When set, the action must be authorised by this mandate (not any covering one).
+    mandate_id: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         return {

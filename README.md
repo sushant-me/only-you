@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 145 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 149 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -102,6 +102,16 @@ the gate and by the merchant checkout, with undo restoring today's usage as well
 `/merchant-page` is a merchant terminal: select the agent-presented mandate, verify it (Ed25519, scope,
 payee, cap, remaining budget) and charge. The merchant check runs **before** the payment; the agent then
 pays through the provenance gate and the receipt links straight to its verification page.
+
+### Recursive delegation
+
+![A sub-mandate of the owner's mandate](docs/img/recursive-delegation.png)
+
+An agent can hand a **narrower** mandate to a sub-agent — never wider. Payees must be a subset, the cap can
+only shrink (bounded by the parent's remaining budget), expiry can only shorten, and sub-limits must fit
+inside the parent. Spending through the child consumes the parent too (and undo restores both), so a
+shopping sub-agent cannot outspend the owner's delegation. `POST /api/mandate` with `parent_id`; the card
+labels it *sub of …*.
 
 ### Operational alerts
 
@@ -291,7 +301,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 145 tests
+make gen test          # corpus + 149 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -304,7 +314,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           145 tests
+tests/           149 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

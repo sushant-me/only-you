@@ -18,6 +18,11 @@ full gate** (contributor build: 50% → 0%), with 0% false refusals and 18/18 re
 Because the owner really did ask to pay an invoice; the document supplied the payee. Alignment is
 trained to be helpful, not to check authority. That is the gap this layer closes.
 
+**Can one agent delegate to another?**
+Yes — recursive delegation with attenuation: a sub-mandate's payees must be a subset of the parent's, its
+cap cannot exceed the parent's remaining budget, its expiry cannot outlive the parent, and its sub-limits
+must fit inside. Spend through the child also consumes the parent, and undo restores both.
+
 **Can I set per-merchant or daily limits?**
 Yes — a mandate can carry signed `payee_limits` (e.g. electrician ≤ 1,000) and a `daily_limit`, both below
 the cap. The gate and merchant checkout enforce them; undo restores the day's usage. Offline merchant
@@ -95,7 +100,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (145 tests + live-server smoke + audit) then `make web` →
+`make judge` (149 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 

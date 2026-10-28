@@ -47,6 +47,7 @@ class Mandate:
     # Optional sub-limits, signed with the rest of the mandate.
     payee_limits: dict[str, int] = field(default_factory=dict)
     daily_limit: int = 0
+    parent_id: str = ""
     signature: str = ""
 
     def payload(self) -> dict[str, Any]:
@@ -139,6 +140,7 @@ class MandateLedger:
         note: str = "",
         payee_limits: dict[str, int] | None = None,
         daily_limit: int = 0,
+        parent_id: str = "",
         now: float | None = None,
     ) -> Mandate:
         now = time.time() if now is None else now
@@ -155,6 +157,7 @@ class MandateLedger:
             note=note,
             payee_limits={str(k).lower(): int(v) for k, v in (payee_limits or {}).items()},
             daily_limit=int(daily_limit),
+            parent_id=str(parent_id),
         )
         if self.device_key is not None:
             m.signature = self.device_key.sign(m.canonical().encode())
@@ -183,21 +186,99 @@ class MandateLedger:
             return True
         return False
 
+    def get(self, mandate_id: str) -> Mandate | None:
+        return next((m for m in self.mandates if m.id == mandate_id), None)
+
+    def ancestors(self, mandate: Mandate) -> list[Mandate]:
+        chain: list[Mandate] = []
+        current = mandate
+        for _ in range(6):
+            if not current.parent_id:
+                break
+            parent = self.get(current.parent_id)
+            if parent is None:
+                break
+            chain.append(parent)
+            current = parent
+        return chain
+
+    def _covers_chain(
+        self, mandate: Mandate, action: dict[str, Any], now: float | None = None, depth: int = 0
+    ) -> tuple[bool, str]:
+        if depth > 5:
+            return False, "mandate chain too deep"
+        params = action.get("params") or {}
+        payee = str(params.get("payee", "")).lower() if action.get("kind") == "pay" else ""
+        ok, why = mandate.covers(
+            action,
+            now,
+            self.spent.get(mandate.id, 0),
+            self.consumed_payee(mandate, payee),
+            self.consumed_today(mandate, now),
+        )
+        if not ok:
+            return False, why
+        if mandate.parent_id:
+            parent = self.get(mandate.parent_id)
+            if parent is None:
+                return False, "parent mandate missing"
+            return self._covers_chain(parent, action, now, depth + 1)
+        return True, "within mandate"
+
+    def issue_sub(
+        self,
+        parent_id: str,
+        payees: list[str] | None = None,
+        max_amount: int | None = None,
+        ttl_seconds: int | None = None,
+        note: str = "",
+        payee_limits: dict[str, int] | None = None,
+        daily_limit: int = 0,
+    ) -> Mandate:
+        """Issue a narrower mandate to a sub-agent; widening is refused."""
+        parent = self.get(parent_id)
+        if parent is None:
+            raise ValueError("parent mandate not found")
+        if not self.verify(parent):
+            raise ValueError("parent mandate is not valid")
+        child_payees = [p.lower().lstrip("@") for p in (payees or parent.payees)]
+        if not set(child_payees) <= {p.lower() for p in parent.payees}:
+            raise ValueError("sub-mandate payees must be within the parent")
+        remaining = self.remaining(parent)
+        amount = int(max_amount if max_amount is not None else remaining)
+        if amount <= 0 or amount > remaining:
+            raise ValueError("sub-mandate exceeds parent remaining budget")
+        now = time.time()
+        max_ttl = max(1, int(parent.expires_at - now))
+        ttl = int(ttl_seconds if ttl_seconds is not None else max_ttl)
+        if ttl <= 0 or ttl > max_ttl:
+            raise ValueError("sub-mandate expiry must be within the parent")
+        limits = {str(k).lower(): int(v) for k, v in (payee_limits or {}).items()}
+        for payee, limit in limits.items():
+            if payee not in child_payees or limit > amount:
+                raise ValueError("sub-mandate payee limit exceeds parent authority")
+        daily = int(daily_limit)
+        if daily < 0 or daily > amount:
+            raise ValueError("sub-mandate daily limit exceeds parent authority")
+        return self.issue(
+            scope=parent.scope,
+            payees=child_payees,
+            max_amount=amount,
+            ttl_seconds=ttl,
+            principal=f"agent:{parent.id}",
+            note=note,
+            payee_limits=limits,
+            daily_limit=daily,
+            parent_id=parent.id,
+        )
+
     def find_covering(
         self, action: dict[str, Any], now: float | None = None
     ) -> tuple[Mandate | None, str]:
         for m in self.mandates:
-            if not self.verify(m, now):
+            if not self.verify(m):
                 continue
-            params = action.get("params") or {}
-            payee = str(params.get("payee", "")).lower() if action.get("kind") == "pay" else ""
-            ok, why = m.covers(
-                action,
-                now,
-                self.spent.get(m.id, 0),
-                self.consumed_payee(m, payee),
-                self.consumed_today(m, now),
-            )
+            ok, why = self._covers_chain(m, action, now)
             if ok:
                 return m, why
         return None, "no covering mandate"
@@ -220,26 +301,28 @@ class MandateLedger:
         self, mandate: Mandate, amount: int, payee: str = "", now: float | None = None
     ) -> None:
         amount = int(amount)
-        self.spent[mandate.id] = self.spent.get(mandate.id, 0) + amount
-        if payee:
-            key = f"{mandate.id}|{payee.lower().lstrip('@')}"
-            self.spent_payee[key] = self.spent_payee.get(key, 0) + amount
-        day = self._day(now)
-        bucket = self.spent_by_day.setdefault(mandate.id, {})
-        bucket[day] = bucket.get(day, 0) + amount
+        for node in [mandate, *self.ancestors(mandate)]:
+            self.spent[node.id] = self.spent.get(node.id, 0) + amount
+            if payee:
+                key = f"{node.id}|{payee.lower().lstrip('@')}"
+                self.spent_payee[key] = self.spent_payee.get(key, 0) + amount
+            day = self._day(now)
+            bucket = self.spent_by_day.setdefault(node.id, {})
+            bucket[day] = bucket.get(day, 0) + amount
 
     def refund(
         self, mandate: Mandate, amount: int, payee: str = "", now: float | None = None
     ) -> None:
         """Undo an executed spend, restoring total, per-payee and daily budgets."""
         amount = int(amount)
-        self.spent[mandate.id] = max(0, self.spent.get(mandate.id, 0) - amount)
-        if payee:
-            key = f"{mandate.id}|{payee.lower().lstrip('@')}"
-            self.spent_payee[key] = max(0, self.spent_payee.get(key, 0) - amount)
-        day = self._day(now)
-        bucket = self.spent_by_day.setdefault(mandate.id, {})
-        bucket[day] = max(0, bucket.get(day, 0) - amount)
+        for node in [mandate, *self.ancestors(mandate)]:
+            self.spent[node.id] = max(0, self.spent.get(node.id, 0) - amount)
+            if payee:
+                key = f"{node.id}|{payee.lower().lstrip('@')}"
+                self.spent_payee[key] = max(0, self.spent_payee.get(key, 0) - amount)
+            day = self._day(now)
+            bucket = self.spent_by_day.setdefault(node.id, {})
+            bucket[day] = max(0, bucket.get(day, 0) - amount)
 
     # -- merchant-side check (the commerce extension) ----------------------
     def verify_for_merchant(
@@ -293,6 +376,7 @@ def merchant_verify(
         note=str(mandate.get("note", "")),
         payee_limits={str(k).lower(): int(v) for k, v in (mandate.get("payee_limits") or {}).items()},
         daily_limit=int(mandate.get("daily_limit", 0) or 0),
+        parent_id=str(mandate.get("parent_id", "")),
         signature=str(mandate.get("signature", "")),
     )
     if not DeviceKey.verify(m.canonical().encode(), m.signature, public_pem):

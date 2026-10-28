@@ -122,8 +122,18 @@ class Agent:
             and self.mandates is not None
             and not action.is_none()
         ):
-            found, _why = self.mandates.find_covering(action.to_dict())
-            mandate = found
+            explicit_id = getattr(scenario, "mandate_id", "")
+            if explicit_id:
+                candidate = self.mandates.get(explicit_id)
+                if (
+                    candidate is not None
+                    and self.mandates.verify(candidate)
+                    and self.mandates._covers_chain(candidate, action.to_dict())[0]
+                ):
+                    mandate = candidate
+            else:
+                found, _why = self.mandates.find_covering(action.to_dict())
+                mandate = found
 
         if neutral is not None and arm is Arm.D_FULL and self.ledger is not None:
             # Nothing executed, but an environment-originated instruction was

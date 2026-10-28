@@ -151,6 +151,7 @@ class DemoService:
                 inputs=inputs,
                 expected_outcome="executed",
                 owner_confirms=bool(payload.get("confirms", False)),
+                mandate_id=str(payload.get("mandate_id", "") or ""),
             )
             result = self.agent.run(scenario, Arm.D_FULL)
 
@@ -309,13 +310,18 @@ class DemoService:
 
     # -- mandates ----------------------------------------------------------
     def grant_mandate(self, payload: dict[str, Any]) -> dict[str, Any]:
+        parent_id = str(payload.get("parent_id", "") or "")
         try:
-            max_amount = int(payload.get("max_amount", 5000))
-            ttl_seconds = int(payload.get("ttl_seconds", 24 * 3600))
+            raw_amount = payload.get("max_amount", None)
+            raw_ttl = payload.get("ttl_seconds", None)
+            max_amount = int(raw_amount) if raw_amount is not None else (None if parent_id else 5000)
+            ttl_seconds = int(raw_ttl) if raw_ttl is not None else (None if parent_id else 24 * 3600)
         except (TypeError, ValueError):
             raise ValueError("max_amount and ttl_seconds must be integers")
-        if max_amount <= 0 or ttl_seconds <= 0:
-            raise ValueError("max_amount and ttl_seconds must be positive")
+        if max_amount is not None and max_amount <= 0:
+            raise ValueError("max_amount must be positive")
+        if ttl_seconds is not None and ttl_seconds <= 0:
+            raise ValueError("ttl_seconds must be positive")
         raw_payees = payload.get("payees", ["electrician"])
         if isinstance(raw_payees, str):
             raw_payees = [raw_payees]
@@ -337,15 +343,26 @@ class DemoService:
         if daily_limit < 0:
             raise ValueError("daily_limit must be zero (off) or positive")
         with self.lock:
-            mandate = self.mandates.issue(
-                scope=str(payload.get("scope", "pay")),
-                payees=payees,
-                max_amount=max_amount,
-                ttl_seconds=ttl_seconds,
-                note=str(payload.get("note", "owner-delegated authority")),
-                payee_limits=payee_limits,
-                daily_limit=daily_limit,
-            )
+            if parent_id:
+                mandate = self.mandates.issue_sub(
+                    parent_id,
+                    payees=payees,
+                    max_amount=max_amount,
+                    ttl_seconds=ttl_seconds,
+                    note=str(payload.get("note", "sub-agent delegation")),
+                    payee_limits=payee_limits,
+                    daily_limit=daily_limit,
+                )
+            else:
+                mandate = self.mandates.issue(
+                    scope=str(payload.get("scope", "pay")),
+                    payees=payees,
+                    max_amount=max_amount,
+                    ttl_seconds=ttl_seconds,
+                    note=str(payload.get("note", "owner-delegated authority")),
+                    payee_limits=payee_limits,
+                    daily_limit=daily_limit,
+                )
             return {"ok": True, "mandate": mandate.to_dict(), "state": self.state()}
 
     def voice_enroll(self, payload: dict[str, Any]) -> dict[str, Any]:
@@ -587,6 +604,7 @@ class DemoService:
             "payload": f"INVOICE #{mandate.id[:6]} - {payee.upper()} - {amount}",
             "invoice": {"payee": payee, "amount": amount},
             "confirms": True,
+            "mandate_id": mandate.id,
         })
         return {
             "ok": payment.get("outcome") == "executed",

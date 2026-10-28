@@ -262,7 +262,7 @@ function renderState(state) {
         <span>${m.valid ? "valid" : m.revoked ? "revoked" : "expired"}</span></div>
         ${max > 0 ? `<div class="m-bar"><div class="m-fill" style="width:${pct}%"></div></div>
         <div class="m-spend">spent ${consumed} · remaining <b>${remaining}</b> of ${max}</div>${subLine}` : ""}
-        <div class="m-meta">${m.id} · ${m.note || ""} · exp ${new Date(m.expires_at * 1000).toLocaleString()}</div>
+        <div class="m-meta">${m.parent_id ? `sub of ${m.parent_id} · ` : ""}${m.id} · ${m.note || ""} · exp ${new Date(m.expires_at * 1000).toLocaleString()}</div>
         ${m.valid && m.payees.length ? `<button class="mini" data-merchant="${m.id}" data-payee="${m.payees[0]}" data-amount="${Math.min(500, remaining)}">verify at merchant</button>` : ""}
       </div>`;
       }
@@ -351,6 +351,26 @@ async function doBeat(name) {
     return;
   }
   setFakecam(name);
+  if (name === "grant-sub") {
+    try {
+      const state = await (await fetch("/api/state")).json();
+      const parent = (state.mandates || []).find((m) => m.valid && !m.parent_id);
+      if (!parent) return toast("grant a mandate first");
+      const max = Math.min(1000, parent.remaining);
+      const data = await post("/api/mandate", {
+        parent_id: parent.id,
+        payees: parent.payees,
+        max_amount: max,
+        daily_limit: max,
+        note: "shopping sub-agent",
+      });
+      renderState(data.state);
+      toast(`sub-mandate ${data.mandate.id} of ${parent.id} · ≤ ${max}`);
+    } catch (err) {
+      toast(`sub-mandate failed: ${err.message}`);
+    }
+    return;
+  }
   if (name === "grant") {
     const beat = BEATS.grant;
     if (beat.speak) speak(beat.speak, "owner");

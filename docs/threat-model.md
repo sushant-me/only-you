@@ -68,4 +68,5 @@ document ► invoice parse┘        (labels)                              (auth
 | Demo server input bounds | `tests/test_web_hardening.py` |
 | Audit export verifies offline / detects tamper | `tools/verify_audit.py`, `tests/test_audit_export.py` |
 | Policy changes are receipted (R7) | `tests/test_webapp.py` (policy-change receipt + export) |
+| Sub-mandates cannot widen authority | `tests/test_delegation.py` (payees/cap/expiry, parent budget) |
 | Known failures | `docs/limitations.md` |

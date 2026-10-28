@@ -23,7 +23,7 @@ from onlyyou.devicekey import DeviceKey  # noqa: E402
 from onlyyou.mandates import Mandate  # noqa: E402
 from onlyyou.receipts import DEMO_SECRET  # noqa: E402
 
-MANDATE_FIELDS = ("id", "principal", "scope", "payees", "max_amount", "issued_at", "expires_at", "nonce", "note")
+MANDATE_FIELDS = ("id", "principal", "scope", "payees", "max_amount", "issued_at", "expires_at", "nonce", "note", "payee_limits", "daily_limit", "parent_id")
 
 
 def verify_bundle(bundle: dict[str, Any], secret: bytes = DEMO_SECRET) -> dict[str, Any]:
