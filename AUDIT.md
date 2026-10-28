@@ -1,4 +1,4 @@
-# Repo audit — 2026-10-28T12:56:46+00:00
+# Repo audit — 2026-10-28T13:00:20+00:00
 
 **67 passed · 0 failed**
 
@@ -33,7 +33,7 @@
 - ✅ results-real-doc-contributor/benchmark.json: undefended > 0%
 - ✅ results-real-doc-contributor/benchmark.json: full gate 0%
 - ✅ results-real-doc-contributor/benchmark.json: full gate 0% false refusals
-- ✅ docs mention 162 tests
+- ✅ docs mention 166 tests
 - ✅ docs mention 81.0%
 - ✅ docs mention 14.3%
 - ✅ docs mention 100.0%
