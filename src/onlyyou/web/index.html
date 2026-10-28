@@ -122,6 +122,11 @@
     <section class="panel receipts">
       <h2>Receipts <small id="chain"></small></h2>
       <div class="rail-tools"><a class="mini" href="/merchant-page" target="_blank" rel="noopener">merchant checkout</a><button id="btn-export" class="mini" title="download the signed audit bundle">export audit</button></div>
+      <div class="receipt-filters">
+        <select id="r-decision"><option value="">all decisions</option><option value="allow">allow</option><option value="ask">ask</option><option value="deny">deny</option></select>
+        <input id="r-search" placeholder="search payee / rule / id" />
+        <a id="r-csv" class="mini" href="/api/receipts.csv">CSV</a>
+      </div>
       <div id="receipt-list" class="receipt-list"></div>
       <h2>Ask your agent</h2>
       <div class="ask">

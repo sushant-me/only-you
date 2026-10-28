@@ -60,6 +60,11 @@ Yes — every receipt has a `/verify/<id>` page (and `/api/receipt/<id>` JSON): 
 reason, signature validity, chain position, mandate spend. Fields are escaped because receipt text is
 attacker-influenced. For bulk evidence, the signed audit export below verifies offline.
 
+**Can an auditor search the ledger and export it?**
+Yes — filter by decision/rule/text in the UI, or `GET /api/receipts?decision=deny&q=electrician`. The same
+filtered set exports as CSV (`/api/receipts.csv`) with the signature and mandate on each row, which is what
+an auditor or SIEM ingestion job consumes.
+
 **Can I take the evidence away and verify it myself?**
 Yes — `GET /api/export` (or **export audit** in the UI) returns a single JSON bundle: receipts with their
 HMAC chain, mandates with Ed25519 signatures, the device public key, chain head and instructions.
@@ -126,7 +131,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (166 tests + live-server smoke + audit) then `make web` →
+`make judge` (169 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 

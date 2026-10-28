@@ -17,7 +17,9 @@ which is exactly what the plan says to do for a stable 10-day demo.
 from __future__ import annotations
 
 import base64
+import csv
 import functools
+import io
 import html
 from datetime import datetime, timezone
 import json
@@ -36,7 +38,7 @@ import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 from .actions import Action, parse_action
 from .devicekey import DeviceKey
@@ -510,6 +512,67 @@ class DemoService:
         with self.lock:
             ok = self.mandates.revoke(mandate_id)
             return {"ok": ok, "state": self.state()}
+
+    def search_receipts(self, params: dict[str, Any]) -> dict[str, Any]:
+        """Filter the ledger for audit triage (decision, rule, free text)."""
+        decision = str(params.get("decision", "") or "").strip().lower()
+        rule = str(params.get("rule", "") or "").strip().lower()
+        query = str(params.get("q", "") or "").strip().lower()
+        try:
+            limit = int(params.get("limit", 50) or 50)
+        except (TypeError, ValueError):
+            limit = 50
+        limit = max(1, min(limit, 200))
+        rows: list[dict[str, Any]] = []
+        for receipt in self.ledger.receipts:
+            row = asdict(receipt)
+            verdict = row.get("verdict") or {}
+            if decision and str(verdict.get("decision", "")).lower() != decision:
+                continue
+            if rule and not str(verdict.get("rule", "")).lower().startswith(rule):
+                continue
+            if query:
+                action = row.get("action") or {}
+                haystack = " ".join(
+                    [
+                        str(row.get("id", "")),
+                        str(verdict.get("rule", "")),
+                        str(verdict.get("reason", "")),
+                        _action_label(action),
+                        json.dumps(action.get("params") or {}, sort_keys=True),
+                    ]
+                ).lower()
+                if query not in haystack:
+                    continue
+            rows.append({**row, "receipt_ok": self.ledger.verify(receipt)})
+        rows.reverse()
+        return {
+            "count": len(rows),
+            "total": len(self.ledger.receipts),
+            "limit": limit,
+            "filters": {"decision": decision, "rule": rule, "q": query},
+            "receipts": rows[:limit],
+        }
+
+    def receipts_csv(self, params: dict[str, Any]) -> str:
+        data = self.search_receipts({**params, "limit": 200})
+        buffer = io.StringIO()
+        writer = csv.writer(buffer)
+        writer.writerow(["id", "time", "decision", "rule", "action", "reason", "mandate_id", "signature"])
+        for row in data["receipts"]:
+            verdict = row.get("verdict") or {}
+            evidence = verdict.get("evidence") or {}
+            writer.writerow([
+                row.get("id", ""),
+                datetime.fromtimestamp(row.get("ts", 0), timezone.utc).isoformat(timespec="seconds"),
+                verdict.get("decision", ""),
+                verdict.get("rule", ""),
+                _action_label(row.get("action") or {}),
+                verdict.get("reason", ""),
+                evidence.get("mandate_id", ""),
+                row.get("signature", ""),
+            ])
+        return buffer.getvalue()
 
     def export_audit(self) -> dict[str, Any]:
         """A self-contained evidence bundle a compliance team can verify offline."""
@@ -1245,6 +1308,21 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
                 return
             if path == "/merchant-page":
                 self._html(MERCHANT_PAGE)
+                return
+            if path == "/api/receipts":
+                query = parse_qs(urlparse(self.path).query)
+                self._json(service.search_receipts({k: v[0] for k, v in query.items()}))
+                return
+            if path == "/api/receipts.csv":
+                query = parse_qs(urlparse(self.path).query)
+                body = service.receipts_csv({k: v[0] for k, v in query.items()}).encode()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/csv; charset=utf-8")
+                self.send_header("Content-Length", str(len(body)))
+                self.send_header("Content-Disposition", 'attachment; filename="only-you-receipts.csv"')
+                self.send_header("Cache-Control", "no-store")
+                self.end_headers()
+                self.wfile.write(body)
                 return
             if path == "/api/export":
                 self._json(service.export_audit(), filename="only-you-audit.json")

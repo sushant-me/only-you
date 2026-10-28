@@ -274,3 +274,8 @@ a.mini{color:#7c9cff;text-decoration:none;border-bottom:1px dotted #7c9cff}
 #policy-diff .diff-note{font-size:12px;color:var(--muted);margin-bottom:8px}
 
 .r-top button.mini{margin-left:auto}
+
+.receipt-filters{display:flex;gap:6px;margin:0 0 8px;align-items:center}
+.receipt-filters select,.receipt-filters input{background:#101522;border:1px solid #2a3448;color:var(--text);border-radius:6px;padding:4px 6px;font-size:11px;min-width:0}
+.receipt-filters select{flex:0 0 auto}
+.receipt-filters input{flex:1}

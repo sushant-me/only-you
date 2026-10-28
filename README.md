@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 166 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 169 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -153,6 +153,15 @@ ONLYYOU_WEBHOOK_RETRIES=3 ONLYYOU_WEBHOOK_DELAY=0.25 make web
 ```
 
 ![Webhook delivery](docs/img/webhook-delivery.png)
+
+### Audit triage
+
+![Receipt filters in the rail](docs/img/ledger-filters.png)
+
+The rail filters the signed ledger by decision, rule or free text (payee, rule, id). The same query is
+available as JSON (`GET /api/receipts?decision=deny&q=electrician`) and as a CSV export
+(`GET /api/receipts.csv`) with id, time, decision, rule, action, reason, mandate and signature — the shape an
+auditor or SIEM ingestion job expects.
 
 ### Scannable receipt verification
 
@@ -338,7 +347,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 166 tests
+make gen test          # corpus + 169 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -351,7 +360,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           166 tests
+tests/           169 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

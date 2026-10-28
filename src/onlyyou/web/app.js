@@ -226,8 +226,23 @@ function renderState(state) {
   $("#m-chain").style.color = s.chain_ok ? "var(--green)" : "var(--red)";
   $("#chain").textContent = s.chain_ok ? "chain ok" : "chain broken";
 
+  const decisionFilter = ($("#r-decision") && $("#r-decision").value) || "";
+  const searchFilter = (($("#r-search") && $("#r-search").value) || "").trim().toLowerCase();
+  const filtered = receipts.filter((r) => {
+    if (decisionFilter && r.verdict.decision !== decisionFilter) return false;
+    if (searchFilter) {
+      const hay = [r.id, r.verdict.rule, r.verdict.reason, actionLabel(r.action),
+        JSON.stringify((r.action && r.action.params) || {})].join(" ").toLowerCase();
+      if (!hay.includes(searchFilter)) return false;
+    }
+    return true;
+  });
+  const csv = $("#r-csv");
+  if (csv) csv.href = `/api/receipts.csv?decision=${encodeURIComponent(decisionFilter)}&q=${encodeURIComponent(searchFilter)}`;
   const list = $("#receipt-list");
-  list.innerHTML = receipts
+  list.innerHTML = filtered.length === 0
+    ? `<div class="receipt" style="color:var(--muted)">no receipts match</div>`
+    : filtered
     .slice(-14)
     .reverse()
     .map((r) => {
@@ -820,6 +835,11 @@ async function enableCamera() {
 /* ----------------------------------------------------------------- init */
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const rDecision = $("#r-decision");
+  const rSearch = $("#r-search");
+  if (rDecision) rDecision.addEventListener("change", () => { if (currentState) renderState(currentState); });
+  if (rSearch) rSearch.addEventListener("input", () => { if (currentState) renderState(currentState); });
+
   $("#btn-send").addEventListener("click", () => {
     const payload = {
       speaker: $("#speaker").value,

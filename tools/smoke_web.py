@@ -107,6 +107,9 @@ def main() -> int:
         restored = post("/api/policy/import", {"bundle": policy})
         assert restored["ok"] and all(r["enabled"] for r in restored["state"]["rules"]), restored
 
+        denied = get("/api/receipts?decision=deny")
+        assert denied["count"] >= 1 and denied["receipts"][0]["verdict"]["decision"] == "deny", denied
+
         scheduled = post("/api/schedule", {
             "payee": "electrician", "amount": 100, "every_seconds": 86400,
             "mandate_id": state["mandate"]["id"],
