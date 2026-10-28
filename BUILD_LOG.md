@@ -309,6 +309,10 @@ item below was built on top of it.
   audit verifier, delegation/recurring/scheduled answers, a 3-minute condensed cut, static-asset failure
   fallbacks and 15 current Q&A answers.
 
+**Fresh demo/video assets**
+- Captured the current UI running on the real model (`demo-live-muse.png`: 4 blocked, 1 allowed, 5
+  receipts, chain OK) and regenerated the video contact sheet from the narrated cut.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

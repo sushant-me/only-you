@@ -58,7 +58,7 @@ docker build -t only-you-demo . && docker run --rm -p 8000:8000 only-you-demo
 > is how a prompt injection reaches the model."
 > — Meta Wearables Developers, WebMCP agent tools
 
-![ONLY YOU running on Muse Spark](docs/img/screenshot-live.png)
+![ONLY YOU running on Muse Spark](docs/img/demo-live-muse.png)
 
 ## The problem
 
