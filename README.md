@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 169 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 171 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -153,6 +153,14 @@ ONLYYOU_WEBHOOK_RETRIES=3 ONLYYOU_WEBHOOK_DELAY=0.25 make web
 ```
 
 ![Webhook delivery](docs/img/webhook-delivery.png)
+
+### API docs
+
+![Rendered API reference](docs/img/api-docs.png)
+
+The whole authority layer is documented twice: a checked-in OpenAPI 3.1 spec at
+`GET /api/openapi.json`, and a dependency-free rendered reference at `GET /docs` with a runnable `curl` example
+for every write endpoint. An engineer can integrate or review the surface in a minute.
 
 ### Audit triage
 
@@ -347,7 +355,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 169 tests
+make gen test          # corpus + 171 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -360,7 +368,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           169 tests
+tests/           171 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script
