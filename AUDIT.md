@@ -1,4 +1,4 @@
-# Repo audit — 2026-10-28T07:29:53+00:00
+# Repo audit — 2026-10-28T07:34:44+00:00
 
 **44 passed · 0 failed**
 
@@ -15,7 +15,7 @@
 - ✅ adaptive 80/80/20
 - ✅ forged 6/6 -> 0/6
 - ✅ scene detection 94.3%
-- ✅ docs mention 94 tests
+- ✅ docs mention 97 tests
 - ✅ docs mention 81.0%
 - ✅ docs mention 14.3%
 - ✅ docs mention 6/6
