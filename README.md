@@ -32,7 +32,13 @@ from a document.
 make judge     # 172 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
+
+# or no Python at all:
+docker build -t only-you-demo . && docker run --rm -p 8000:8000 only-you-demo
+# or: docker compose up --build
 ```
+
+- **Deploy:** [`docs/deploy.md`](docs/deploy.md) — Docker/compose, Meta credentials, healthcheck, ports.
 
 - **Hiring memo:** [`docs/for-meta.md`](docs/for-meta.md) — what the layer makes possible, the real-model
   numbers, and what I would build next with Meta.

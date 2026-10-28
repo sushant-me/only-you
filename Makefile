@@ -65,3 +65,9 @@ verify:
 	PYTHONPATH=$(PYTHONPATH) python3 -m onlyyou.cli verify --ledger results/receipts-D.jsonl
 
 all: gen test bench
+
+docker:
+	docker build -t only-you-demo .
+
+docker-run:
+	docker run --rm -p 8000:8000 --name only-you-demo only-you-demo

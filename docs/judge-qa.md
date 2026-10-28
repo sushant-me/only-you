@@ -141,6 +141,11 @@ Mandates are Ed25519-signed; a merchant verifies signature, payee, cap and expir
 key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMAC-chained and displayed
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
+**Can I run it without installing Python?**
+Yes — `docker build -t only-you-demo . && docker run --rm -p 8000:8000 only-you-demo` (or
+`docker compose up --build`). The image includes OCR and QR tooling, exposes port 8000 and has a
+healthcheck on `/api/state`; see `docs/deploy.md`.
+
 **How do I run it?**
 `make judge` (172 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated

@@ -1,0 +1,13 @@
+# docker compose up --build
+# Pass Meta credentials with: META_API_KEY=... META_API_BASE=... docker compose up --build
+services:
+  only-you:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      META_API_KEY: ${META_API_KEY:-}
+      META_API_BASE: ${META_API_BASE:-https://api.meta.ai/v1}
+      MUSE_MODEL: ${MUSE_MODEL:-muse-spark-1.3}
+      ONLYYOU_MODEL: ${ONLYYOU_MODEL:-simulated}
+    restart: unless-stopped

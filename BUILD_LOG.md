@@ -253,6 +253,11 @@ item below was built on top of it.
   aligned per section, loudnorm to -16 LUFS, and muxed as AAC into `docs/demo-3min.mp4`. The submission is
   never silent; a human recording can replace the track with `make voice VOICE=...`. End cards at 172 tests.
 
+**Docker + deploy docs**
+- `Dockerfile` (python:3.12-slim + tesseract/qrencode, healthcheck on `/api/state`, port 8000),
+  `docker-compose.yml`, `make docker` / `make docker-run`, `docs/deploy.md`. Verified locally: image builds
+  and serves `/`, `/api/state`, `/docs` on a mapped port. No test count change (172).
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
