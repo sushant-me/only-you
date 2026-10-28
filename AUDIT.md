@@ -1,4 +1,4 @@
-# Repo audit — 2026-10-28T16:03:53+00:00
+# Repo audit — 2026-10-28T16:26:18+00:00
 
 **67 passed · 0 failed**
 
@@ -69,5 +69,5 @@
 - ✅ artifact docs/img/youtube-thumb.jpg
 - ✅ docs/demo-task-clip.mp4 duration 20s — 20.000000
 - ✅ docs/demo-fallback.mp4 duration 82s — 82.000000
-- ✅ docs/demo-3min.mp4 duration 175s — 175.000000
+- ✅ docs/demo-3min.mp4 duration 179s — 179.000000
 - ✅ git tree clean
