@@ -417,6 +417,14 @@ item below was built on top of it.
 - New 1280×720 thumbnail: "undefended · 25% paid → full gate · 0%" contrast, **2:59** runtime, four Meta models
   in the footer. Replaces the stale 2:55 / three-model card.
 
+**Designed, editable handbook (18 pages)**
+- `docs/handbook.md` + `tools/handbook.py` / `make handbook`: fixed A4 pages, cover, contents with real page
+  numbers, running headers/footers, per-page **EDIT · BUILD · PROOF** blocks, and a build-time overflow check
+  that refuses to print a clipped page. Covers pitch, architecture, four Meta models, evidence, demo, run/
+  verify, change maps, submission runbook, limitations/Q&A and appendix.
+- Thumbnail source moved into the repo (`docs/assets/youtube-thumb.html`, `make thumb`).
+- README/submission/preflight linked; rebuild `make handbook`.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

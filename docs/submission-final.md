@@ -74,6 +74,7 @@ ship (`results-sam/`); text-region masks are roadmap in `for-meta.md`, not claim
 - Human voice study (LibriSpeech, real voices): `results/voice-study-human.json` (2/12 FAR at demo threshold)
 - Latency: `results/latency.json`
 - Deck: https://github.com/sushant-me/only-you/blob/main/docs/pitch.pdf
+- Handbook (18 pages, includes edit/build/proof map): https://github.com/sushant-me/only-you/blob/main/docs/handbook.pdf
 - Hiring memo: https://github.com/sushant-me/only-you/blob/main/docs/for-meta.md
 - WebMCP note: https://github.com/sushant-me/only-you/blob/main/docs/webmcp-note.md
 - Team: Sushant Poudel (solo)

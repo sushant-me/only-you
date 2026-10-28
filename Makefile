@@ -1,4 +1,4 @@
-.PHONY: gen demo demo-text scenes brief report pitch audit voice-study latency links cross-model sam-check asr-check voice-e2e web bench bench-meta bench-frontier bench-open smoke test verify all
+.PHONY: gen demo demo-text scenes brief report pitch thumb handbook audit voice-study latency links cross-model sam-check asr-check voice-e2e web bench bench-meta bench-frontier bench-open smoke test verify all
 
 PYTHONPATH := src
 
@@ -40,6 +40,12 @@ bench-open:
 
 brief:
 	python3 tools/md_to_pdf.py docs/brief.md docs/brief.pdf
+
+thumb:
+	python3 tools/make_thumbnail.py
+
+handbook:
+	python3 tools/handbook.py
 
 report:
 	python3 tools/md_to_pdf.py docs/report.md docs/report.pdf
