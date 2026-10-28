@@ -45,6 +45,11 @@ mandate — principal signature, scope, payee, cap, remaining budget — and onl
 through the gate. The merchant gets the rule that authorised it, the remaining budget and a link to the
 receipt's verification page.
 
+**Can a receipt be scanned at a counter?**
+Yes — every verification page includes a QR code (`GET /api/qr/<id>.png`) of its absolute `/verify/<id>`
+URL, so a phone camera opens the same signed evidence. The merchant terminal shows the QR to the payer on
+successful checkout.
+
 **Can a merchant check a single receipt?**
 Yes — every receipt has a `/verify/<id>` page (and `/api/receipt/<id>` JSON): action, decision, rule,
 reason, signature validity, chain position, mandate spend. Fields are escaped because receipt text is
@@ -111,7 +116,7 @@ key (`/api/merchant-verify`, demo "verify at merchant" button). Receipts are HMA
 sanitised; the ledger enters the model's context as DATA, never as instructions.
 
 **How do I run it?**
-`make judge` (157 tests + live-server smoke + audit) then `make web` →
+`make judge` (160 tests + live-server smoke + audit) then `make web` →
 `http://127.0.0.1:8000/?script=full&fakecam=1`. Fresh clone verified; no key needed for the simulated
 demo, `.env` for the real model.
 

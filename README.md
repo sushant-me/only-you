@@ -28,7 +28,7 @@ from a document.
 ## Judge checklist — one command
 
 ```bash
-make judge     # 157 tests + self-audit + a live-server smoke, about 25 seconds
+make judge     # 160 tests + self-audit + a live-server smoke, about 25 seconds
 make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
@@ -142,6 +142,14 @@ ONLYYOU_WEBHOOK_RETRIES=3 ONLYYOU_WEBHOOK_DELAY=0.25 make web
 ```
 
 ![Webhook delivery](docs/img/webhook-delivery.png)
+
+### Scannable receipt verification
+
+![Receipt verification page with QR](docs/img/verify-qr.png)
+
+Every verification page carries a **QR code** (`GET /api/qr/<id>.png`) of the absolute `/verify/<id>` URL,
+so a merchant counter or a printed invoice can be checked with a phone camera. QR generation uses the system
+`qrencode` if installed (optional; the page simply omits the image otherwise).
 
 ### Receipt verification page
 
@@ -319,7 +327,7 @@ make audit    # self-audit: tests, benchmark numbers, links, secrets, artifacts,
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .
-make gen test          # corpus + 157 tests
+make gen test          # corpus + 160 tests
 make bench             # writes results/benchmark.md
 make demo              # end-to-end story
 make web               # UI at http://127.0.0.1:8000
@@ -332,7 +340,7 @@ Optional extras for OCR/scene evaluation: `pip install -r requirements-optional.
 
 ```
 src/onlyyou/     provenance, actions, policy, mandates, receipts, sensors, scene, agent, web UI
-tests/           157 tests
+tests/           160 tests
 examples/        mandate demo
 tools/           PDF builder, consistency audit, Meta API smoke test
 docs/            report, pitch, limitations, WebMCP note, video script

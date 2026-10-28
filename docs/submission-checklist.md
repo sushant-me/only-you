@@ -8,7 +8,7 @@ Deadline: **4 Nov 2026, 9:00 PM ET = 5 Nov, 7:45 AM NPT**. Do not start this on 
 - [ ] From `only-you-hackathon/`: `git remote add origin <url>` → `git push -u origin main`
 - [ ] Open the repo URL in a **logged-out** browser: README renders, LICENSE visible, no `.env`
 - [ ] `make gen test bench` works from a fresh clone
-- [ ] `make judge` runs 157 tests and a self-audit, all green
+- [ ] `make judge` runs 160 tests and a self-audit, all green
 
 ## 2. Record and upload the 3-minute video
 
