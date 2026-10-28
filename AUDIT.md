@@ -1,10 +1,6 @@
-# Repo audit — 2026-10-28T13:31:44+00:00
+# Repo audit — 2026-10-28T13:33:12+00:00
 
-**66 passed · 1 failed**
-
-## Failures
-
-- ❌ no secrets committed — docker-compose.yml: # Pass Meta credentials with: META_API_KEY=... META_API_BASE=... docker compose ; docs/deploy.md: -e META_API_KEY=... -e META_API_BASE=https://api.meta.ai/v1 -e MUSE_MODEL=muse-s; docs/deploy.md: META_API_KEY=... MUSE_MODEL=muse-spark-1.3 docker compose up --build
+**67 passed · 0 failed**
 
 ## Checks
 
@@ -52,6 +48,7 @@
 - ✅ no stale claim '40/40'
 - ✅ no stale claim '0 false refusals'
 - ✅ no stale claim '100% secure'
+- ✅ no secrets committed
 - ✅ .env exists but is gitignored and untracked
 - ✅ relative links resolve
 - ✅ artifact docs/report.pdf
