@@ -1,6 +1,6 @@
-# Repo audit — 2026-10-28T07:36:58+00:00
+# Repo audit — 2026-10-28T07:40:21+00:00
 
-**44 passed · 0 failed**
+**45 passed · 0 failed**
 
 ## Checks
 
@@ -14,13 +14,14 @@
 - ✅ DOM FPR 14.3%
 - ✅ adaptive 80/80/20
 - ✅ forged 6/6 -> 0/6
-- ✅ scene detection 94.3%
+- ✅ scene detection 100% (35/35)
 - ✅ docs mention 98 tests
 - ✅ docs mention 81.0%
 - ✅ docs mention 14.3%
+- ✅ docs mention 100.0%
+- ✅ docs mention 1.7%
 - ✅ docs mention 6/6
 - ✅ docs mention 0/6
-- ✅ docs mention 94.3%
 - ✅ docs mention conditional
 - ✅ no stale claim '71 ms'
 - ✅ no stale claim 'under 100 ms'
