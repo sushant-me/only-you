@@ -203,7 +203,15 @@ item below was built on top of it.
   footage, never voice).
 - Report corrected to three real runs (195/115/115 calls); open-weights category explicitly not claimed.
 
-**Tests:** 111 pass (`make test`).
+**API validation fix (found by malformed-input sweep)**
+- `/api/mandate` with `max_amount: "lots"` raised inside the handler and **dropped the connection**.
+  Mandate input is now validated (integer, positive, at least one payee) and the handler maps
+  `ValueError/TypeError/KeyError` to **400 JSON**, other exceptions to **500 JSON** — the connection never
+  dies on a malformed request.
+- `/api/frame` no longer returns raw tesseract stderr; it returns `could not read image`.
+- 4 regression tests (115 total).
+
+**Tests:** 115 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
 real-model benchmark. The only missing input is `META_API_BASE` / `META_API_KEY` / `MUSE_MODEL`.

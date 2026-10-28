@@ -298,13 +298,25 @@ class DemoService:
 
     # -- mandates ----------------------------------------------------------
     def grant_mandate(self, payload: dict[str, Any]) -> dict[str, Any]:
+        try:
+            max_amount = int(payload.get("max_amount", 5000))
+            ttl_seconds = int(payload.get("ttl_seconds", 24 * 3600))
+        except (TypeError, ValueError):
+            raise ValueError("max_amount and ttl_seconds must be integers")
+        if max_amount <= 0 or ttl_seconds <= 0:
+            raise ValueError("max_amount and ttl_seconds must be positive")
+        raw_payees = payload.get("payees", ["electrician"])
+        if isinstance(raw_payees, str):
+            raw_payees = [raw_payees]
+        payees = [str(p).strip().lstrip("@").lower() for p in raw_payees if str(p).strip()]
+        if not payees:
+            raise ValueError("at least one payee is required")
         with self.lock:
-            payees = [str(p) for p in payload.get("payees", ["electrician"])]
             mandate = self.mandates.issue(
                 scope=str(payload.get("scope", "pay")),
                 payees=payees,
-                max_amount=int(payload.get("max_amount", 5000)),
-                ttl_seconds=int(payload.get("ttl_seconds", 24 * 3600)),
+                max_amount=max_amount,
+                ttl_seconds=ttl_seconds,
                 note=str(payload.get("note", "owner-delegated authority")),
             )
             return {"ok": True, "mandate": mandate.to_dict(), "state": self.state()}
@@ -355,8 +367,8 @@ class DemoService:
         if not text and not lines:
             try:
                 ocr = ocr_png(png)
-            except OcrError as exc:
-                return {"error": str(exc)}
+            except OcrError:
+                return {"error": "could not read image"}
             text, lines, confidence = ocr["text"], ocr["lines"], ocr["confidence"]
 
         router = ProvenanceRouter()
@@ -535,6 +547,14 @@ def make_handler(service: DemoService, root: Path = WEB_ROOT) -> type[BaseHTTPRe
                 self._json({"error": "bad json"}, 400)
                 return
             path = urlparse(self.path).path
+            try:
+                self._dispatch(path, payload)
+            except (ValueError, TypeError, KeyError) as exc:
+                self._json({"error": "bad request", "detail": str(exc)[:120]}, 400)
+            except Exception:
+                self._json({"error": "internal error"}, 500)
+
+        def _dispatch(self, path: str, payload: dict[str, Any]) -> None:
             if path == "/api/command":
                 self._json(service.command(payload))
             elif path == "/api/reset":

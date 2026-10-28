@@ -80,3 +80,44 @@ class TestWebHardening(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestApiValidation(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(DemoService()))
+        threading.Thread(target=cls.server.serve_forever, daemon=True).start()
+        cls.base = f"http://127.0.0.1:{cls.server.server_address[1]}"
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.server.shutdown()
+
+    def post(self, path, payload):
+        req = urllib.request.Request(
+            self.base + path, data=json.dumps(payload).encode(),
+            headers={"Content-Type": "application/json"}, method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                return resp.status, json.load(resp)
+        except urllib.error.HTTPError as exc:
+            return exc.code, json.loads(exc.read() or b"{}")
+
+    def test_non_numeric_amount_is_400_not_dropped(self):
+        code, body = self.post("/api/mandate", {"payees": "electrician", "max_amount": "lots"})
+        self.assertEqual(code, 400)
+        self.assertIn("error", body)
+
+    def test_negative_amount_rejected(self):
+        code, body = self.post("/api/mandate", {"payees": ["electrician"], "max_amount": -5})
+        self.assertEqual(code, 400)
+
+    def test_empty_payees_rejected(self):
+        code, _ = self.post("/api/mandate", {"payees": [], "max_amount": 100})
+        self.assertEqual(code, 400)
+
+    def test_malformed_command_still_answers(self):
+        code, body = self.post("/api/command", {"speaker": None, "channel": None, "text": None})
+        self.assertEqual(code, 200)
+        self.assertIn("outcome", body)
