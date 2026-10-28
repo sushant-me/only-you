@@ -1,6 +1,6 @@
-# Repo audit — 2026-10-28T07:40:21+00:00
+# Repo audit — 2026-10-28T08:47:25+00:00
 
-**45 passed · 0 failed**
+**55 passed · 0 failed**
 
 ## Checks
 
@@ -15,6 +15,15 @@
 - ✅ adaptive 80/80/20
 - ✅ forged 6/6 -> 0/6
 - ✅ scene detection 100% (35/35)
+- ✅ results-real/benchmark.json exists
+- ✅ results-real/benchmark.json mode meta — meta
+- ✅ results-real/benchmark.json model muse-spark
+- ✅ results-real-doc/benchmark.json exists
+- ✅ results-real-doc/benchmark.json mode meta — meta
+- ✅ results-real-doc/benchmark.json model muse-spark
+- ✅ real doc run: undefended > 0%
+- ✅ real doc run: full gate 0%
+- ✅ real doc run: full gate 0% false refusals
 - ✅ docs mention 98 tests
 - ✅ docs mention 81.0%
 - ✅ docs mention 14.3%
@@ -22,6 +31,7 @@
 - ✅ docs mention 1.7%
 - ✅ docs mention 6/6
 - ✅ docs mention 0/6
+- ✅ docs mention Muse Spark
 - ✅ docs mention conditional
 - ✅ no stale claim '71 ms'
 - ✅ no stale claim 'under 100 ms'
@@ -29,7 +39,7 @@
 - ✅ no stale claim '0 false refusals'
 - ✅ no stale claim '100% secure'
 - ✅ no secrets committed
-- ✅ .env not tracked
+- ✅ .env exists but is gitignored and untracked
 - ✅ relative links resolve
 - ✅ artifact docs/report.pdf
 - ✅ docs/report.pdf has 2 pages — 2
