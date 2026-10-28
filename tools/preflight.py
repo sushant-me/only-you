@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import pathlib
 import subprocess
+import time
 import sys
 import urllib.error
 import urllib.request
@@ -38,6 +39,7 @@ LOCAL = [
     "docs/demo-60s.srt",
     "docs/demo-60s-vertical.mp4",
     "docs/demo-60s-vertical.srt",
+    "docs/demo-60s.md",
     "docs/demo-3min.vtt",
     "docs/playground.html",
     "docs/verify.html",
@@ -100,19 +102,35 @@ def main() -> int:
         print(f"  {'PASS' if ok else 'FAIL'}  {name:20s} {detail}")
 
     print("GITHUB")
-    try:
-        req = urllib.request.Request(
-            "https://api.github.com/repos/sushant-me/only-you",
-            headers={"User-Agent": "only-you-preflight", "Accept": "application/vnd.github+json"},
-        )
-        with urllib.request.urlopen(req, timeout=20) as resp:
-            data = json.load(resp)
-        public = data.get("private") is False and data.get("visibility") == "public"
-        failures += 0 if public else 1
-        print(f"  {'PASS' if public else 'FAIL'}  repo public          {data.get('html_url')}")
-    except Exception as exc:  # noqa: BLE001
-        failures += 1
-        print(f"  FAIL  repo public          {type(exc).__name__}")
+    repo_url = "https://github.com/sushant-me/only-you"
+    public = False
+    detail = "unreachable"
+    for attempt in range(3):
+        try:
+            req = urllib.request.Request(
+                "https://api.github.com/repos/sushant-me/only-you",
+                headers={"User-Agent": "only-you-preflight", "Accept": "application/vnd.github+json"},
+            )
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                data = json.load(resp)
+            public = data.get("private") is False and data.get("visibility") == "public"
+            detail = data.get("html_url") or repo_url
+            break
+        except Exception as exc:  # noqa: BLE001
+            detail = type(exc).__name__
+            if attempt < 2:
+                time.sleep(2)
+    if not public:
+        # Logged-out GitHub returns 200 for a public repo (and 404 for a private one);
+        # this fallback keeps preflight honest when the API is rate-limited.
+        try:
+            with urllib.request.urlopen(repo_url, timeout=20) as resp:
+                public = resp.status == 200
+                detail = repo_url if public else f"HTTP {resp.status}"
+        except Exception as exc:  # noqa: BLE001
+            detail = f"{detail} / {type(exc).__name__}"
+    failures += 0 if public else 1
+    print(f"  {'PASS' if public else 'FAIL'}  repo public          {detail}")
 
     tracked_env = subprocess.run(
         ["git", "ls-files", ".env"], cwd=ROOT, capture_output=True, text=True
