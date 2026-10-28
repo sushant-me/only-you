@@ -446,6 +446,10 @@ item below was built on top of it.
   → close/CTA. Nothing static beyond a beat; captions burned for UI beats; full SRT at `docs/demo-60s.srt`.
 - 1920×1080, 60.000 s, narrated, 11 MB. Source assets kept in `docs/assets/youtube-thumb.html` and the repo.
 
+**9:16 vertical cut for Reels/Shorts**
+- Same beats, rebuilt for 1080×1920: vertical cards, right-rail crops of the real UI with large headlines, poster
+  crop, model badge, frontier 50→0, verify crop, CTA. 60.000 s; captions for UI beats; full SRT.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

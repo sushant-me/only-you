@@ -36,6 +36,8 @@ LOCAL = [
     "docs/demo-contrast.mp4",
     "docs/demo-60s.mp4",
     "docs/demo-60s.srt",
+    "docs/demo-60s-vertical.mp4",
+    "docs/demo-60s-vertical.srt",
     "docs/demo-3min.vtt",
     "docs/playground.html",
     "docs/verify.html",

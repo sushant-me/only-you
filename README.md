@@ -62,7 +62,8 @@ docker build -t only-you-demo . && docker run --rm -p 8000:8000 only-you-demo
 
 - **3-minute demo (2:59, narrated + captioned):** [`docs/demo-3min.mp4` · recording steps in [`docs/recording-guide.md`](docs/recording-guide.md)](docs/demo-3min.mp4) — upload kit in [`docs/youtube-upload.md`](docs/youtube-upload.md)
 - 20-second **contrast clip** (undefended vs gated, narrated): [`docs/demo-contrast.mp4`](docs/demo-contrast.mp4)
-- 60-second **motion cut** (8 beats, cursor-driven UI, frontier contrast + browser verify): [`docs/demo-60s.mp4`](docs/demo-60s.mp4)
+- 60-second **motion cut** (9 beats, cursor-driven UI, real R1/R6 states, frontier + verify): [`docs/demo-60s.mp4`](docs/demo-60s.mp4)
+- **9:16 vertical cut** for Reels/Shorts/Stories: [`docs/demo-60s-vertical.mp4`](docs/demo-60s-vertical.mp4)
 - 20-second agentic task clip: [`docs/demo-task-clip.mp4`](docs/demo-task-clip.mp4)
 - Voice-over mux: `make voice VOICE=narration.wav` · generative B-roll feasibility: [`docs/omni-video.md`](docs/omni-video.md)
 - 82-second silent walkthrough (fallback): [`docs/demo-fallback.mp4`](docs/demo-fallback.mp4)
