@@ -218,6 +218,11 @@ item below was built on top of it.
 - The transcript is still text through the voice check and the gate — transcription is not verification.
 - Verified on the owner's 20 s sample (transcript returned verbatim). 4 new tests; 119 total.
 
+**Submission preflight**
+- `make preflight` (`tools/preflight.py`) checks the live page, every video/PDF/SRT/thumbnail (HTTP 200 +
+  bytes), the repo is public, `.env` untracked, and every submission file exists. Full run: all pass.
+- Wired into the submission checklist and README; run it immediately before pasting the form.
+
 **Tests:** 119 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

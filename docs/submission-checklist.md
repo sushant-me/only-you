@@ -19,6 +19,12 @@ Deadline: **4 Nov 2026, 9:00 PM ET = 5 Nov, 7:45 AM NPT**. Do not start this on 
 - [ ] Title: "ONLY YOU — the layer that decides who your agent obeys"
 - [ ] Description: one-liner, repo link, benchmark link, honest caveat
 
+## 2b. Preflight the live links
+
+```bash
+make preflight   # repo public, page + every video/PDF 200, .env untracked, submission files present
+```
+
 ## 3. Submit on the CV platform
 
 - [ ] Open the submission form; keep it open in a second tab

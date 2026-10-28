@@ -46,6 +46,9 @@ voice:
 	ffmpeg -y -i docs/demo-3min.mp4 -i "$(VOICE)" -filter_complex "[1:a]aresample=48000,loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:175[a]" -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 160k -movflags +faststart docs/demo-3min-voice.mp4
 	@echo "wrote docs/demo-3min-voice.mp4"
 
+preflight:
+	python3 tools/preflight.py
+
 smoke-web:
 	PYTHONPATH=$(PYTHONPATH) python3 tools/smoke_web.py
 

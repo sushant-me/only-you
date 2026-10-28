@@ -29,6 +29,7 @@ from a document.
 
 ```bash
 make judge     # 119 tests + self-audit + a live-server smoke, about 25 seconds
+make preflight # live links + repo public + submission files, right before you submit
 make web       # http://127.0.0.1:8000/?script=full&fakecam=1
 ```
 
