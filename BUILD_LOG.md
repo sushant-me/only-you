@@ -413,6 +413,10 @@ item below was built on top of it.
   give 0/12 but was chosen after seeing the clips, so it is labelled exploratory. Synthetic TTS remains 0/6.
 - Artifact `results/voice-study-human.json`; voice.md/voice-study/limitations/report/README/submission updated.
 
+**YouTube thumbnail refreshed for the final cut**
+- New 1280×720 thumbnail: "undefended · 25% paid → full gate · 0%" contrast, **2:59** runtime, four Meta models
+  in the footer. Replaces the stale 2:55 / three-model card.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
