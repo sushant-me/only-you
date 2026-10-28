@@ -185,7 +185,7 @@ Every push runs the full suite, the demo and the self-audit on GitHub Actions
 ## Self-audit
 
 ```bash
-make audit    # 40 checks: tests, benchmark numbers, links, secrets, artifacts, durations
+make audit    # 65 checks: tests, benchmark numbers, links, secrets, artifacts, durations
 ```
 
 ## Quickstart
