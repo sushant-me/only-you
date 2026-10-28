@@ -279,6 +279,11 @@ item below was built on top of it.
   0% executed, 16/16 receipts verified, chain intact, 99 calls, p50 3.1 s. Committed to
   `results-real-verify/` (general corpus reproduction, not a new security claim).
 
+**Honest-limits refresh + report**
+- `docs/limitations.md` now names 16 attacks, adding scheduled instructions, sub-mandate widening, policy
+  import, webhook spoofing, an exposed demo server and synthetic narration — with status per row.
+- `docs/report.md`/PDF updated: four real runs (including the final-code reproduction), rebuilt to 2 pages.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
