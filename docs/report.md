@@ -96,8 +96,8 @@ stays as the offline fallback. n is small by design; boxes are approximate, not 
 
 **SAM 3.1 + Muse Voice Transcribe.** SAM 3.1 returns one object box for `paper` (drawn in the overlay);
 `text` prompts return zero and mask decoding is roadmap, so the label-layer numbers are unchanged. Muse Voice
-Transcribe transcribes the sample command with one ASR error; the transcript is still only text that must
-pass the voice check and the gate.
+Transcribe transcribes the sample command with one ASR error; that imperfect transcript still passes the
+voice check and the gate and executes under mandate **R6**, receipt written (`results/voice-e2e.json`).
 
 **Latency (measured, `results/latency.json`).** Constitution rules **0.001 ms p50**; full dry-run path
 (routing + labels + gate) **4.3 ms p50**; local HTTP command with a simulated proposal and a written

@@ -400,6 +400,12 @@ item below was built on top of it.
   submission table has rows for all four Meta models; Q&A, for-meta roadmap, X post, README and FORM-ANSWERS
   corrected (no "not integrated" or `model_not_found` claims left).
 
+**End-to-end spoken command (real Muse ASR → voice check → gate → receipt)**
+- `tools/voice_e2e.py` / `make voice-e2e`: Muse Voice Transcribe returns the imperfect transcript, the
+  MFCC voice check accepts the owner, and the command executes under **R6-mandate** with a written receipt.
+- Artifact `results/voice-e2e.json`; README/report/submission/voice-study updated. The ASR error is the point:
+  text from a model still has to clear the authority layer.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

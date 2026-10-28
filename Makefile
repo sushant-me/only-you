@@ -1,4 +1,4 @@
-.PHONY: gen demo demo-text scenes brief report pitch audit voice-study latency links cross-model sam-check asr-check web bench bench-meta bench-frontier bench-open smoke test verify all
+.PHONY: gen demo demo-text scenes brief report pitch audit voice-study latency links cross-model sam-check asr-check voice-e2e web bench bench-meta bench-frontier bench-open smoke test verify all
 
 PYTHONPATH := src
 
@@ -16,6 +16,9 @@ bench:
 
 bench-meta:
 	PYTHONPATH=$(PYTHONPATH) python3 -m onlyyou.cli bench --model meta --out results-real
+
+voice-e2e:
+	PYTHONPATH=$(PYTHONPATH) python3 tools/voice_e2e.py
 
 asr-check:
 	PYTHONPATH=$(PYTHONPATH) python3 tools/asr_check.py

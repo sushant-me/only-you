@@ -39,6 +39,7 @@ alignment is trying to help.
 | Forged sensor signals | **6/6 → 0/6** with a signed bus |
 | Cross-model audit | same gate and verifier for Muse Spark + a local model → [`results-cross-model/`](results-cross-model/), browser-verified |
 | Meta stack | Muse Spark + Muse Wonder + **Muse Voice Transcribe** + **SAM 3.1** grounding (`results-sam/`, drawn in the live overlay) |
+| Spoken-command path | real ASR transcript → voice check → gate: **executed under R6**, receipt written (`results/voice-e2e.json`) |
 | Latency (measured) | constitution **0.001 ms** · dry-run **4.3 ms** · HTTP command **12.8 ms** · OCR **156 ms** (`results/latency.json`) |
 | Engineering | **172 tests**, 67-check self-audit, CI (tests + Docker) |
 
@@ -342,7 +343,7 @@ false refusals. Raw results: [`results-real/`](results-real/benchmark.md),
 | Signed mandates + offline merchant verification | implemented (Ed25519), tested |
 | Receipts + hash chain + undo | implemented, tested |
 | Local voice check (MFCC, distance threshold) | implemented; **not anti-spoofing** — a cloned voice passes |
-| Voice transcription | **Muse Voice Transcribe** when a key is set (`results/voice-asr.json`); Muse Wonder fallback |
+| Voice transcription | **Muse Voice Transcribe** when a key is set (`results/voice-asr.json`); the spoken command then passes the voice check and gate (`results/voice-e2e.json`) |
 | Scene reading | **Muse Wonder** when a key is set (text + approximate boxes; 15/15, 0.0% CER on a synthetic sample); **tesseract** fallback offline |
 | Page extraction (visible + hidden) | implemented (regex DOM classifier) |
 | Agent model | **Muse Spark** when `META_API_BASE`/`META_API_KEY` are set; **simulated** otherwise, and the report stamps which mode |

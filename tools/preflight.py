@@ -50,6 +50,7 @@ LOCAL = [
     "docs/sam.md",
     "results-sam/sam.json",
     "results/voice-asr.json",
+    "results/voice-e2e.json",
     "docs/cross-model-audit.json",
     "results-cross-model/cross-model-audit.json",
     "docs/press.md",

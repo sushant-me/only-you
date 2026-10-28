@@ -59,3 +59,18 @@ make asr-check          # data/voice-study/asr-sample.wav -> results/voice-asr.j
 Measured transcript for the committed sample: **"Pay the electrician electrician 4,500 rupees."** —
 model `muse-voice-transcribe-1.0`. Note the duplicated word: ASR is imperfect, and the transcript is still
 only *text* — it must pass the voice check and the gate like typed input.
+
+
+## End-to-end spoken command (real ASR → voice check → gate)
+
+`make voice-e2e` runs the full path on the committed sample:
+
+| Step | Result |
+|---|---|
+| Muse Voice Transcribe | `muse-voice-transcribe-1.0` → "Pay the electrician electrician 4,500 rupees." (one ASR error) |
+| Voice check | accept, distance **0.0** vs threshold 0.06 |
+| Constitution + mandate | **executed · R6-mandate** |
+| Receipt | written (signature prefix `5520f8ed6c9385c5`) |
+
+The transcript is imperfect and still only *text*: it must pass the voice check and the gate, exactly like
+typed input. Artifact: `results/voice-e2e.json`.

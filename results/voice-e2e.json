@@ -1,0 +1,28 @@
+{
+  "generated_at": "2026-10-28T16:53:41Z",
+  "wav": "data/voice-study/asr-sample.wav",
+  "asr": {
+    "model": "muse-voice-transcribe-1.0",
+    "transcript": "Pay the electrician electrician 4,500 rupees."
+  },
+  "voice_check": {
+    "accept": true,
+    "distance": 0.0,
+    "threshold": 0.06
+  },
+  "command": {
+    "outcome": "executed",
+    "rule": "R6-mandate",
+    "action": {
+      "kind": "pay",
+      "params": {
+        "payee": "electrician",
+        "amount": 4500
+      },
+      "source_id": "voice:adhoc-1:owner",
+      "arg_source": ""
+    },
+    "receipt": "5520f8ed6c9385c5"
+  },
+  "note": "ASR is imperfect (it repeats a word in the sample); the transcript is still only text and must pass the voice check and the gate. This is the real spoken-command path."
+}
