@@ -30,7 +30,7 @@ def main() -> int:
     proc = subprocess.run(
         [sys.executable, "-m", "unittest", "discover", "-s", "tests"],
         cwd=ROOT,
-        env={**__import__("os").environ, "PYTHONPATH": "src"},
+        env={**__import__("os").environ, "PYTHONPATH": "src", "ONLYYOU_MODEL": "simulated"},
         capture_output=True,
         text=True,
     )
@@ -54,11 +54,26 @@ def main() -> int:
     else:
         check("results/benchmark.json exists", False)
 
+    # real-model runs (committed)
+    for rel in ("results-real/benchmark.json", "results-real-doc/benchmark.json"):
+        path = ROOT / rel
+        check(f"{rel} exists", path.exists())
+        if path.exists():
+            r = json.loads(path.read_text())
+            check(f"{rel} mode meta", r.get("mode") == "meta", str(r.get("mode")))
+            check(f"{rel} model muse-spark", "muse-spark" in str(r.get("model", "")))
+    doc_run = ROOT / "results-real-doc" / "benchmark.json"
+    if doc_run.exists():
+        arms = {m["arm"]: m for m in json.loads(doc_run.read_text())["arms"]}
+        check("real doc run: undefended > 0%", arms["A"]["attack_success_rate"] > 0)
+        check("real doc run: full gate 0%", arms["D"]["attack_success_rate"] == 0.0)
+        check("real doc run: full gate 0% false refusals", arms["D"]["false_refusal_rate"] == 0.0)
+
     # docs mention the key numbers
     text = "\n".join(
         p.read_text(errors="ignore") for p in ROOT.rglob("*.md") if p.name != "AUDIT.md"
     )
-    for needle in ["98 tests", "81.0%", "14.3%", "100.0%", "1.7%", "6/6", "0/6", "conditional"]:
+    for needle in ["98 tests", "81.0%", "14.3%", "100.0%", "1.7%", "6/6", "0/6", "Muse Spark", "conditional"]:
         check(f"docs mention {needle}", needle in text)
 
     # no stale overclaims
@@ -76,7 +91,13 @@ def main() -> int:
             if re.search(r"(META_API_KEY|META_API_BASE|OPEN_WEIGHTS_KEY)\s*=\s*\S+", line):
                 secret_hits.append(f"{p.relative_to(ROOT)}: {line.strip()[:80]}")
     check("no secrets committed", not secret_hits, "; ".join(secret_hits[:3]))
-    check(".env not tracked", not (ROOT / ".env").exists())
+    tracked_env = subprocess.run(
+        ["git", "ls-files", ".env"], cwd=ROOT, capture_output=True, text=True
+    ).stdout.strip()
+    ignored_env = subprocess.run(
+        ["git", "check-ignore", "-q", ".env"], cwd=ROOT
+    ).returncode == 0
+    check(".env exists but is gitignored and untracked", not tracked_env and ignored_env)
 
     # relative links
     missing = []

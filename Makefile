@@ -36,10 +36,10 @@ smoke:
 	python3 tools/smoke_meta.py
 
 audit:
-	PYTHONPATH=$(PYTHONPATH) python3 tools/audit.py
+	ONLYYOU_MODEL=simulated PYTHONPATH=$(PYTHONPATH) python3 tools/audit.py
 
 test:
-	PYTHONPATH=$(PYTHONPATH) python3 -m unittest discover -s tests -v
+	ONLYYOU_MODEL=simulated PYTHONPATH=$(PYTHONPATH) python3 -m unittest discover -s tests -v
 
 verify:
 	PYTHONPATH=$(PYTHONPATH) python3 -m onlyyou.cli verify --ledger results/receipts-D.jsonl

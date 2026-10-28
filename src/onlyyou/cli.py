@@ -16,6 +16,7 @@ import sys
 from pathlib import Path
 
 from .agent import Agent, Arm
+from .env import load_env
 from .model import SimulatedModel
 from .policy import Constitution
 from .provenance import ProvenanceRouter, render_labeled
@@ -103,6 +104,8 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.cmd == "bench":
         from .benchmark import print_summary, run_benchmark
+
+        load_env()
 
         arms = [Arm(a.strip().upper()) for a in args.arms.split(",") if a.strip()]
         scenarios = read_jsonl(args.scenarios) if args.scenarios else None

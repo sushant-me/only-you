@@ -97,6 +97,19 @@ receipts, benchmark harness). Everything below was built on top of it during the
 
 `BUILD_LOG.md` has the dated record.
 
+### Muse Spark 1.3 — real-model runs
+
+| Corpus | Executed | False refusals | Receipts | p50 (D) |
+|---|---|---|---|---|
+| General (20 attacks / 20 benign) | A/B/C/D **0%** | D 5% · C 10% · A/B 0% | 36/36 verified | 6.8 s |
+| Document / confused-deputy (8 attacks / 12 benign) | A 25% · B 37.5% · C 50% · **D 0%** | 0% | 18/18 verified | 10.7 s |
+
+On obvious injections, Muse Spark's own alignment refuses even when undefended. Where the model is
+trying to be *helpful* — the owner asks to pay an invoice and the document supplies the payee — it
+complies 25–50% of the time, provenance alone is worse (50%), and the full gate blocks 8/8 with zero
+false refusals. Raw results: [`results-real/`](results-real/benchmark.md),
+[`results-real-doc/`](results-real-doc/benchmark.md).
+
 ## What is real today
 
 | Component | Status |

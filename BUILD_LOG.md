@@ -138,6 +138,19 @@ item below was built on top of it.
   68.6% → 77.1%). Enforcement does not depend on OCR quality; only the evidence surface does.
 - Limitations item 9 reworded honestly: the corpus is rendered, not camera-captured.
 
+**Muse Spark real-model runs (key arrived)**
+- Found the endpoint (`https://api.meta.ai/v1`), listed models (muse-spark-1.3, muse-wonder-1.0,
+  sam-3.1, muse-voice-transcribe-1.0, muse-image-1.0) and made the first real call.
+- `.env` auto-loading (`onlyyou/env.py`) so `make web` and `make bench-meta` use the key without exports.
+- **Run 1 — general corpus (20 attacks / 20 benign, `results-real/`):** 195 calls, 319k completion tokens.
+  Muse Spark's alignment dominates: **0% executed on every arm**, including undefended; the gate's cost is
+  false refusals (D 5%, C 10%) and it files 36/36 verified receipts; p50 6.8 s (D).
+- **Run 2 — document/confused-deputy (8 attacks / 12 benign, `results-real-doc/`):** 115 calls, 261k
+  tokens. When the owner asks to pay and the document supplies the payee: **A 25%, B 37.5%, C 50%,
+  D 0%** executed; 0% false refusals; 18/18 receipts; p50 10.7 s.
+- `.env` is gitignored; the key is never committed or printed. `make test` forces the simulated model
+  so the suite stays offline.
+
 **Tests:** 98 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

@@ -46,6 +46,22 @@ table are co-designed, so arm D cannot mislabel inside it. Its zero is condition
 | C | provenance-only | 10% | 0% |
 | D | full ONLY YOU | 0% | 0% |
 
+**Real-model run — Muse Spark 1.3.** Two runs through the Meta Model API (`api.meta.ai/v1`, model
+`muse-spark-1.3`), 195 and 115 calls at temperature 0, with every proposal re-validated by the gate.
+
+*General corpus (20 attacks / 20 benign; ambient, scene, voice, web).* Muse Spark's own refusal behaviour
+dominates: **0% executed on every arm**, including undefended. The gate's measurable cost is false
+refusals (**D 5%**, C 10%; A/B 0%), and it files **36/36 verified receipts**. p50 6.8 s (D), p95 14.5 s.
+
+*Document / confused-deputy corpus (8 attacks / 12 benign).* When the owner asks to pay a real invoice
+and the document supplies the payee, the model is helpful — and wrong: **A 25%, B 37.5%, C 50% executed**
+(provenance alone is worse, because it reclassifies instructions but not arguments). The full gate blocks
+**8/8 (D 0%) with 0% false refusals** and 18/18 verified receipts. p50 10.7 s, p95 34.7 s.
+
+The two runs are the honest picture: alignment is a strong first line against obvious injections; the
+authority layer is what catches the confused deputy the model is trying to be helpful about. The samples
+are small and the corpus is synthetic, and the latencies are dominated by the model call, not the gate.
+
 **The label layer — the part that can be wrong.** A DOM hidden-text detector on 42 hidden / 35 benign
 HTML snippets: recall **81.0%** (95% CI 66.7–90.0), false positives **14.3%** (6.3–29.4), precision
 86.8%. Eight hiding techniques are missed (`clip-path`, `clip`, `transform:scale(0)`, zero-height,
@@ -84,12 +100,15 @@ report says so; the hundred-millisecond figures a wearable demo implies are not 
   three executions are the confirms-true worst case.
 - **Forged sensor dict**: mitigated for the cheap forgery — with a signed sensor bus, fabricated
   signals go from 6/6 executed to 0/6. A compromised sensor, and a cloned voice, still pass.
-- **Merchant verification** is a design sketch. The demo signs mandates symmetrically with a device
-  key; a merchant cannot hold that secret. Production needs a public key (Ed25519) and an offline
-  verifier.
-- **Second-order injection** through the ledger: with the deterministic `ask()` template, receipt text
-  is quoted, not interpreted. When the 1M-context summariser is wired, ledger entries must enter as
-  data with provenance labels. Not yet exercised.
+- **Merchant verification** is implemented: mandates are signed with an Ed25519 device key and a
+  merchant verifies them offline with only the public key (signature, payee, cap, expiry); the demo
+  exposes it as "verify at merchant". Residual: replay across merchants is future work.
+- **Second-order injection** through the ledger is defended and tested: receipt text is sanitised for
+  display and the model-facing ledger view labels every entry as data, never an instruction
+  (`docs/ledger-safety.md`). Editing a receipt breaks its signature and the chain.
+- **Model-alignment confound** in the real-model run: on the general corpus Muse Spark refused even
+  when undefended, so the layer's incremental value only appears on the confused-deputy corpus
+  (25–50% undefended/prompt/provenance vs 0% with the full gate).")
 - **Biometric consent**: voiceprints are special-category data (GDPR Art. 9, DPDP 2023, BIPA). The demo
   enrolls only its author and keeps no audio; a product needs a consent flow, retention policy and a
   bystander policy.
@@ -118,4 +137,4 @@ instrumented and receipted.
 
 ---
 
-Repo · demo · benchmark: `results/benchmark.md` · limitations: `docs/limitations.md` · 89 tests
+Repo · demo · benchmark: `results/benchmark.md` · real-model runs: `results-real*/benchmark.md` · limitations: `docs/limitations.md` · 98 tests

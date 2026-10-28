@@ -31,6 +31,7 @@ from urllib.parse import urlparse
 
 from .actions import parse_action
 from .devicekey import DeviceKey
+from .env import load_env
 from .agent import Agent, Arm
 from .mandates import MandateLedger, merchant_verify as verify_mandate_offline
 from .ocr import OcrError, ocr_png
@@ -77,6 +78,7 @@ def _action_past(action: dict[str, Any]) -> str:
 
 @functools.lru_cache(maxsize=1)
 def _default_model():
+    load_env()
     """Real Muse Spark when the API env is set; simulated fallback otherwise."""
     if os.environ.get("ONLYYOU_MODEL", "").lower() == "simulated":
         return SimulatedModel()
