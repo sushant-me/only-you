@@ -29,6 +29,7 @@ TV ad, poster, webpage or invoice can issue commands. Capability is solved; **au
 | Label layer (the part that can be wrong) | DOM recall 81.0%, 14.3% false positives — published, with 8 missed techniques |
 | Forged sensor signals | 6/6 executed without a signed bus → **0/6** with it |
 | Cross-model audit | same gate + receipt format under Muse Spark and a local model, verified in the browser |
+| Voice channel (public human study) | owner 3/3 · **2/12 impostors accepted (16.7% FAR)** at the demo threshold; fixed 0.10 is exploratory |
 | Engineering | **172 tests**, 67-check self-audit, CI (tests + Docker), four committed real-model runs |
 
 ## Why it matters commercially

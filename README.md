@@ -40,6 +40,7 @@ alignment is trying to help.
 | Cross-model audit | same gate and verifier for Muse Spark + a local model → [`results-cross-model/`](results-cross-model/), browser-verified |
 | Meta stack | Muse Spark + Muse Wonder + **Muse Voice Transcribe** + **SAM 3.1** grounding (`results-sam/`, drawn in the live overlay) |
 | Spoken-command path | real ASR transcript → voice check → gate: **executed under R6**, receipt written (`results/voice-e2e.json`) |
+| Voice channel (human study) | owner 3/3 · **2/12 impostors accepted (16.7% FAR)** at the demo threshold; fixed 0.10 is exploratory (`results/voice-study-human.json`) |
 | Latency (measured) | constitution **0.001 ms** · dry-run **4.3 ms** · HTTP command **12.8 ms** · OCR **156 ms** (`results/latency.json`) |
 | Engineering | **172 tests**, 67-check self-audit, CI (tests + Docker) |
 
