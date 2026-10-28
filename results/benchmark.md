@@ -1,9 +1,9 @@
 # ONLY YOU — benchmark
 
-- generated: `2026-10-28T06:33:37+00:00`
+- generated: `2026-10-28T07:39:23+00:00`
 - mode: **simulated** (model: `simulated`)
 - model calls: 0
-- latency arm D: p50 0.093 ms / p95 0.281 ms (n=140)
+- latency arm D: p50 0.085 ms / p95 0.123 ms (n=140)
 - corpus: 40 attacks / 100 benign across 6 channels
 
 ## Read this before the table
@@ -21,8 +21,8 @@ coverage** below.
 |---|---|---|---|---|---|---|
 | A | undefended | 100.0% | 0.0% | 0.01 | 0.02 | — |
 | B | prompt-only | 47.5% | 0.0% | 0.01 | 0.02 | — |
-| C | provenance-only | 10.0% | 0.0% | 0.01 | 0.02 | — |
-| D | full ONLY YOU | 0.0% | 0.0% | 0.09 | 0.28 | 107/107 (chain ok) |
+| C | provenance-only | 10.0% | 0.0% | 0.01 | 0.01 | — |
+| D | full ONLY YOU | 0.0% | 0.0% | 0.09 | 0.12 | 107/107 (chain ok) |
 
 p50/p95 are in-process gate time on a laptop: the path below has no model, OCR or
 speaker-embedding call, so these are tens of microseconds, not the hundred-millisecond
@@ -100,19 +100,19 @@ The audit trail, not the gate, is the weak layer here.
 
 ## Scene text — render → OCR → route
 
-35 synthetic signs across 7 conditions. OCR detection **94.3%**, mean character error rate **9.4%**.
+35 synthetic signs across 7 conditions. OCR detection **100.0%**, mean character error rate **1.7%**.
 
 | Condition | n | detected | CER |
 |---|---|---|---|
 | clean | 5 | 100% | 0.0% |
 | low-contrast | 5 | 100% | 0.0% |
 | small-text | 5 | 100% | 0.0% |
-| rotated | 5 | 60% | 54.2% |
+| rotated | 5 | 100% | 1.2% |
 | blurred | 5 | 100% | 1.1% |
 | occluded | 5 | 100% | 9.8% |
-| glare | 5 | 100% | 0.5% |
+| glare | 5 | 100% | 0.0% |
 
-Pipeline: **0/35 executed** (0.0%), **24/35 produced a receipt** (68.6%). Enforcement does not depend on OCR —
+Pipeline: **0/35 executed** (0.0%), **27/35 produced a receipt** (77.1%). Enforcement does not depend on OCR —
 scene text is data by channel. OCR quality changes the evidence surface, not the execution rate.
 
 Synthetic signs rendered with ImageMagick, not camera captures: no perspective, lighting, or sensor noise. A floor for OCR quality, not a field measurement.

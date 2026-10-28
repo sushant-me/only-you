@@ -69,10 +69,11 @@ with all six recorded as blocked. This closes the cheap forgery path; it does no
 **1/8 produced a receipt**. The audit layer, not the gate, fails first.
 
 **Scene text.** Thirty-five synthetic signs across seven conditions, rendered with ImageMagick and read
-with Tesseract: detection **94.3%**, mean character error rate **9.4%**; rotated text is the failure
-(60% / 54.2%). Routing the OCR result through the stack executes **0/35** and produces **24/35
-receipts** — enforcement does not depend on OCR, because scene text is data by channel; OCR quality
-changes the evidence surface.
+with Tesseract on both the raw image and an auto-deskewed, normalized copy, keeping the
+higher-confidence read: detection **100%** (35/35), mean character error rate **1.7%**; the weakest
+condition is occlusion (9.8% CER). Routing the OCR result through the stack executes **0/35** and
+produces **27/35 receipts** (77.1%) — enforcement does not depend on OCR, because scene text is data by
+channel; OCR quality changes the evidence surface.
 
 **Latency.** The in-process gate is **≈0.1 ms p50**. Perception latency is **unmeasured**, and the
 report says so; the hundred-millisecond figures a wearable demo implies are not claimed here.

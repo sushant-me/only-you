@@ -24,6 +24,7 @@ import tempfile
 from pathlib import Path
 
 from .agent import Agent, Arm
+from .ocr import OcrError, ocr_png
 from .model import SimulatedModel
 from .policy import Constitution
 from .provenance import Channel, Input, ProvenanceRouter
@@ -92,14 +93,53 @@ def render(text: str, condition: str, out: Path) -> bool:
     return proc.returncode == 0 and out.exists()
 
 
-def ocr(path: Path) -> str:
+def preprocess(path: Path) -> Path | None:
+    """Deskew + normalise before OCR: cheap robustness for tilted/low-contrast signs."""
+    magick = _which("magick", "convert")
+    if magick is None:
+        return None
+    out = path.with_name(path.stem + "-pre.png")
+    cmd = [
+        magick, str(path),
+        "-colorspace", "Gray",
+        "-auto-level",
+        "-deskew", "40%",
+        "-sharpen", "0x1",
+        str(out),
+    ]
+    proc = subprocess.run(cmd, capture_output=True, timeout=30)
+    return out if proc.returncode == 0 and out.exists() else None
+
+
+def ocr_best(path: Path) -> tuple[str, float]:
+    """OCR raw and deskewed versions; keep the higher-confidence read."""
     tess = _which("tesseract")
     if tess is None:
-        return ""
-    proc = subprocess.run(
-        [tess, str(path), "stdout", "--psm", "3"], capture_output=True, text=True, timeout=30
-    )
-    return proc.stdout.strip()
+        return "", 0.0
+    candidates: list[tuple[str, float]] = []
+    try:
+        raw = ocr_png(path.read_bytes())
+        candidates.append((raw["text"], float(raw["confidence"])))
+    except (OcrError, ValueError):
+        pass
+    pre = preprocess(path)
+    if pre is not None:
+        try:
+            pp = ocr_png(pre.read_bytes())
+            candidates.append((pp["text"], float(pp["confidence"])))
+        except (OcrError, ValueError):
+            pass
+        finally:
+            try:
+                pre.unlink()
+            except OSError:
+                pass
+    return max(candidates, key=lambda c: c[1]) if candidates else ("", 0.0)
+
+
+def ocr(path: Path) -> str:
+    """Raw OCR text (kept for callers that want the unprocessed read)."""
+    return ocr_best(path)[0]
 
 
 def normalize(s: str) -> str:
@@ -147,7 +187,7 @@ def evaluate(workdir: str | Path | None = None) -> dict:
                     rows.append({"payload": payload, "condition": cond, "ocr": "", "cer": 1.0,
                                  "detected": False, "rendered": False})
                     continue
-                text = ocr(img)
+                text, confidence = ocr_best(img)
                 rows.append(
                     {
                         "payload": payload,
@@ -155,6 +195,7 @@ def evaluate(workdir: str | Path | None = None) -> dict:
                         "ocr": text,
                         "cer": round(cer(payload, text), 4),
                         "detected": _keyword_hit(payload, text),
+                        "confidence": round(confidence, 2),
                         "rendered": True,
                     }
                 )

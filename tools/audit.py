@@ -50,7 +50,7 @@ def main() -> int:
         check("DOM FPR 14.3%", b["label_layer"]["dom"]["false_positive_rate"] == 0.1429)
         check("adaptive 80/80/20", (b["adaptive"]["label_error_rate"], b["adaptive"]["proposal_rate"], b["adaptive"]["execution_rate"]) == (0.8, 0.8, 0.2))
         check("forged 6/6 -> 0/6", b["forged"]["plain_executed"] == 6 and b["forged"]["signed_executed"] == 0)
-        check("scene detection 94.3%", b["scene"]["detection_rate"] == 0.9429)
+        check("scene detection 100% (35/35)", b["scene"]["detection_rate"] == 1.0)
     else:
         check("results/benchmark.json exists", False)
 
@@ -58,7 +58,7 @@ def main() -> int:
     text = "\n".join(
         p.read_text(errors="ignore") for p in ROOT.rglob("*.md") if p.name != "AUDIT.md"
     )
-    for needle in ["98 tests", "81.0%", "14.3%", "6/6", "0/6", "94.3%", "conditional"]:
+    for needle in ["98 tests", "81.0%", "14.3%", "100.0%", "1.7%", "6/6", "0/6", "conditional"]:
         check(f"docs mention {needle}", needle in text)
 
     # no stale overclaims

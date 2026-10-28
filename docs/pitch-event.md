@@ -46,7 +46,7 @@ One goal: browse → extract visible **and hidden** text → decide under the ma
 | Browser computed styles | 42/42, 0/35 (upper bound) |
 | Adaptive corpus (forged signals) | label error 80%, executed 20% |
 | Signed sensor envelope | 6/6 executed without → 0/6 with |
-| Scene OCR | detection 94.3%, CER 9.4%, 0/35 executed |
+| Scene OCR (raw + deskew) | detection **100%** (35/35), CER **1.7%**, 0/35 executed |
 | Voice channel (synthetic) | same 0.004 vs limit 0.06 accepted; different 0.339 rejected |
 
 The zero is conditional on correct labels. Cloned voice passes; human speaker accuracy is unmeasured. We publish the 20%.

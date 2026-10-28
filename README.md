@@ -145,7 +145,7 @@ proposal re-validated by the action gate. The gate is the product; the model is 
 | DOM labeler (inline-style regex) | recall 81.0% [66.7–90.0], FPR 14.3% [6.3–29.4] |
 | Browser computed-style labeler | 42/42, 0/35 false positives (upper bound) |
 | Adaptive corpus (forged signals) | label error 80%, executed 20% (3/15) |
-| Scene text (render → OCR) | detection 94.3%, mean CER 9.4%; 0/35 executed |
+| Scene text (render → OCR, raw + deskew) | detection **100%** (35/35), mean CER **1.7%**; 0/35 executed |
 | Signed sensor envelope | 6/6 executed without → 0/6 with |
 | Ed25519 merchant verifier | valid mandate VERIFIED offline; tampered / over-cap / expired REJECTED |
 

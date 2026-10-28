@@ -130,6 +130,14 @@ item below was built on top of it.
 - README and the landing page now show the architecture (inputs → provenance labels → gate → receipts)
   with one diagram; the model-never-executes line is explicit.
 
+**OCR robustness (deskew)**
+- Scene OCR now tries the raw image and an auto-deskewed, grayscale, auto-levelled copy, keeping the
+  higher-confidence read. Re-measured on the same 35 synthetic signs: detection **94.3% → 100%**,
+  mean CER **9.4% → 1.7%** (rotated 60% → 100%); weakest condition is occlusion (9.8% CER).
+- Pipeline unchanged by construction: **0/35 executed**, receipts **24/35 → 27/35** (evidence coverage
+  68.6% → 77.1%). Enforcement does not depend on OCR quality; only the evidence surface does.
+- Limitations item 9 reworded honestly: the corpus is rendered, not camera-captured.
+
 **Tests:** 98 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full
