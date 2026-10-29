@@ -1,5 +1,5 @@
 # ONLY YOU — full project dossier
-*Generated 2026-10-29 10:13 +0545 from commit `b0870d9` (2026-10-29).*
+*Generated 2026-10-29 10:14 +0545 from commit `2c60ed6` (2026-10-29).*
 
 > **Capability is solved. Authority isn’t.**
 >
@@ -13,12 +13,12 @@ This dossier is generated from the repository, not written by hand after the fac
 |---|---|
 | Project | ONLY YOU — a provenance-gated authority layer for wearable agents |
 | Hackathon | Meta Global AI Developer Hackathon 2026 · Indie track |
-| Commit / date | `b0870d9` · 2026-10-29 |
+| Commit / date | `2c60ed6` · 2026-10-29 |
 | Tests | Ran ? tests · self-audit ****67 passed · 0 failed**** |
 | Meta models | Muse Spark 1.3, Muse Wonder 1.0, Muse Voice Transcribe 1.0, SAM 3.1, Muse Image 1.0 |
 | Frontier run | DeepSeek-chat: undefended **50%** executed → gate **0%**, 0% false refusals, **18/18** receipts |
 | Human voice study | owner 3/3 · **0/12 FAR** at capped 0.10 (pilot + 12 unseen speakers) |
-| Repository | 287 files · 30 Python modules · 20 tools · 31 test files · ~7007 lines in `src/onlyyou` |
+| Repository | 291 files · 30 Python modules · 20 tools · 31 test files · ~7007 lines in `src/onlyyou` |
 | Primary artefacts | 3-min film (179 s), 60 s motion cut (16:9), 60 s vertical (9:16), contrast clip, brief, report, deck, handbook, dossier |
 
 ## 2. The problem and the thesis
@@ -160,7 +160,7 @@ The 60-second cut follows the requested beat sheet: hook 0–3, quote 3–7, man
 
 ## 11. Repository and commands
 
-The repository has 287 tracked files, 30 Python modules in `src/onlyyou`, 20 tools and 31 test files (~7007 lines in the package).
+The repository has 291 tracked files, 30 Python modules in `src/onlyyou`, 20 tools and 31 test files (~7007 lines in the package).
 
 | Command | What it does |
 |---|---|
@@ -238,6 +238,7 @@ The full 17-row failure list with evidence is in `docs/limitations.md`.
 
 ## 16. Recent commits
 
+- `2c60ed6 feat: generated full project dossier PDF (with visuals)`
 - `b0870d9 docs: AUDIT.md 67/67 (dossier)`
 - `9b4bfed feat: generated full project dossier PDF`
 - `42a8382 docs: AUDIT.md 67/67 (60s guide)`
@@ -249,7 +250,6 @@ The full 17-row failure list with evidence is in `docs/limitations.md`.
 - `aeabd02 docs: AUDIT.md 67/67 (exact 60s cut)`
 - `b7f3057 polish: exact 60s beat timings (hook 3, quote 4, mandate 6, pay 7, attack 10, poster 6, frontier 9, verify 7, close 8)`
 - `374339b docs: AUDIT.md 67/67 (60s timing)`
-- `19fb284 polish: keep every 60s card under five seconds`
 
 ## 17. Appendix: environment and credits
 
