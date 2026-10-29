@@ -178,6 +178,8 @@ def main() -> int:
     add("| SAM 3.1 | object grounding (box) | `POST /v1/responses` | `results-sam/sam.json` (`paper` → 1 box) |")
     add("| Muse Image 1.0 | demo posters, TV, invoice, hero | image generation | `src/onlyyou/web/fakecam-*.jpg`, `docs/img/hero.jpg` |")
     add("")
+    add("![SAM 3.1 paper region](img/dossier-sam.jpg)")
+    add("")
     add("Honest limits: SAM returns object boxes, not text masks; mask decoding is roadmap. Muse Voice Transcribe is real ASR and makes real errors; the transcript still passes the voice check and gate. The MFCC voice channel is a demonstrator, not anti-spoofing.")
     add("")
     add("## 6. Evidence: confused deputy")
@@ -231,6 +233,8 @@ def main() -> int:
         s = entry.get("summary", {})
         add(f"| {entry.get('provider')} | {entry.get('model')} | {s.get('benign')} | {s.get('attack')} | {s.get('receipts')}/{s.get('receipts')} |")
     add("")
+    add("![Browser verifier: VERIFIED · CROSS-MODEL](img/dossier-verify.jpg)")
+    add("")
     add("`results-cross-model/cross-model-audit.json` is verified by the CLI and by `docs/verify.html` (WebCrypto) as **VERIFIED · CROSS-MODEL**. Both models share the device key, receipt format and verifier.")
     add("")
     add("## 10. Video and presentation assets")
@@ -254,6 +258,8 @@ def main() -> int:
         else:
             detail = f"{duration(rel)} · {size(rel)}"
         add(f"| `{rel}` | {typ} | {detail} |")
+    add("")
+    add("![60-second cut storyboard](img/dossier-storyboard-small.jpg)")
     add("")
     add("The 60-second cut follows the requested beat sheet: hook 0–3, quote 3–7, mandate 7–13, pay/R6 13–20, attack/R1 20–30, poster/R0 30–36, frontier 50→0 36–45, browser verify 45–52, close/CTA 52–60. Cards are held under five seconds; cursor and zoom carry the UI beats. The UI states are real captures from a live Muse Spark server; the cursor/zooms/captions are edited motion graphics. Narration is synthetic and disclosed.")
     add("")

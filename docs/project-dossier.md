@@ -1,5 +1,5 @@
 # ONLY YOU — full project dossier
-*Generated 2026-10-29 10:12 +0545 from commit `42a8382` (2026-10-29).*
+*Generated 2026-10-29 10:13 +0545 from commit `b0870d9` (2026-10-29).*
 
 > **Capability is solved. Authority isn’t.**
 >
@@ -13,12 +13,12 @@ This dossier is generated from the repository, not written by hand after the fac
 |---|---|
 | Project | ONLY YOU — a provenance-gated authority layer for wearable agents |
 | Hackathon | Meta Global AI Developer Hackathon 2026 · Indie track |
-| Commit / date | `42a8382` · 2026-10-29 |
+| Commit / date | `b0870d9` · 2026-10-29 |
 | Tests | Ran ? tests · self-audit ****67 passed · 0 failed**** |
 | Meta models | Muse Spark 1.3, Muse Wonder 1.0, Muse Voice Transcribe 1.0, SAM 3.1, Muse Image 1.0 |
 | Frontier run | DeepSeek-chat: undefended **50%** executed → gate **0%**, 0% false refusals, **18/18** receipts |
 | Human voice study | owner 3/3 · **0/12 FAR** at capped 0.10 (pilot + 12 unseen speakers) |
-| Repository | 284 files · 30 Python modules · 20 tools · 31 test files · ~7007 lines in `src/onlyyou` |
+| Repository | 287 files · 30 Python modules · 20 tools · 31 test files · ~7007 lines in `src/onlyyou` |
 | Primary artefacts | 3-min film (179 s), 60 s motion cut (16:9), 60 s vertical (9:16), contrast clip, brief, report, deck, handbook, dossier |
 
 ## 2. The problem and the thesis
@@ -73,6 +73,8 @@ Mandates are Ed25519-signed statements (owner key → agent key, payees, max, ex
 | Muse Voice Transcribe 1.0 | spoken command → transcript | `POST /v1/asr/transcribe` | `results/voice-asr.json`, `results/voice-e2e.json` |
 | SAM 3.1 | object grounding (box) | `POST /v1/responses` | `results-sam/sam.json` (`paper` → 1 box) |
 | Muse Image 1.0 | demo posters, TV, invoice, hero | image generation | `src/onlyyou/web/fakecam-*.jpg`, `docs/img/hero.jpg` |
+
+![SAM 3.1 paper region](img/dossier-sam.jpg)
 
 Honest limits: SAM returns object boxes, not text masks; mask decoding is roadmap. Muse Voice Transcribe is real ASR and makes real errors; the transcript still passes the voice check and gate. The MFCC voice channel is a demonstrator, not anti-spoofing.
 
@@ -133,6 +135,8 @@ The adaptive/forged figures come from the deterministic simulated harness in `re
 | meta | muse-spark-1.3 | executed | blocked | 2/2 |
 | deepseek | deepseek-chat | executed | blocked | 2/2 |
 
+![Browser verifier: VERIFIED · CROSS-MODEL](img/dossier-verify.jpg)
+
 `results-cross-model/cross-model-audit.json` is verified by the CLI and by `docs/verify.html` (WebCrypto) as **VERIFIED · CROSS-MODEL**. Both models share the device key, receipt format and verifier.
 
 ## 10. Video and presentation assets
@@ -150,11 +154,13 @@ The adaptive/forged figures come from the deterministic simulated harness in `re
 | `docs/pitch.pdf` | 10-slide deck | 10 pages · 576 KB |
 | `docs/handbook.pdf` | 18-page handbook | 18 pages · 549 KB |
 
+![60-second cut storyboard](img/dossier-storyboard-small.jpg)
+
 The 60-second cut follows the requested beat sheet: hook 0–3, quote 3–7, mandate 7–13, pay/R6 13–20, attack/R1 20–30, poster/R0 30–36, frontier 50→0 36–45, browser verify 45–52, close/CTA 52–60. Cards are held under five seconds; cursor and zoom carry the UI beats. The UI states are real captures from a live Muse Spark server; the cursor/zooms/captions are edited motion graphics. Narration is synthetic and disclosed.
 
 ## 11. Repository and commands
 
-The repository has 284 tracked files, 30 Python modules in `src/onlyyou`, 20 tools and 31 test files (~7007 lines in the package).
+The repository has 287 tracked files, 30 Python modules in `src/onlyyou`, 20 tools and 31 test files (~7007 lines in the package).
 
 | Command | What it does |
 |---|---|
@@ -232,6 +238,8 @@ The full 17-row failure list with evidence is in `docs/limitations.md`.
 
 ## 16. Recent commits
 
+- `b0870d9 docs: AUDIT.md 67/67 (dossier)`
+- `9b4bfed feat: generated full project dossier PDF`
 - `42a8382 docs: AUDIT.md 67/67 (60s guide)`
 - `4864ef9 docs: 60s cut guide + resilient repo-public preflight`
 - `c6a3f02 docs: AUDIT.md 67/67 (vertical cut)`
@@ -242,8 +250,6 @@ The full 17-row failure list with evidence is in `docs/limitations.md`.
 - `b7f3057 polish: exact 60s beat timings (hook 3, quote 4, mandate 6, pay 7, attack 10, poster 6, frontier 9, verify 7, close 8)`
 - `374339b docs: AUDIT.md 67/67 (60s timing)`
 - `19fb284 polish: keep every 60s card under five seconds`
-- `06c2d73 docs: AUDIT.md 67/67 (60s R1 cut)`
-- `e45d452 feat: 60s cut with R1 attack beat, readable captions, real-model badge`
 
 ## 17. Appendix: environment and credits
 
