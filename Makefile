@@ -1,4 +1,4 @@
-.PHONY: gen demo demo-text scenes brief report pitch thumb handbook audit voice-study latency links cross-model sam-check asr-check voice-e2e web bench bench-meta bench-frontier bench-open smoke test verify all
+.PHONY: gen demo demo-text scenes brief report pitch thumb dossier handbook audit voice-study latency links cross-model sam-check asr-check voice-e2e web bench bench-meta bench-frontier bench-open smoke test verify all
 
 PYTHONPATH := src
 
@@ -43,6 +43,9 @@ brief:
 
 thumb:
 	python3 tools/make_thumbnail.py
+
+dossier:
+	python3 tools/dossier.py
 
 handbook:
 	python3 tools/handbook.py

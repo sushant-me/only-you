@@ -450,6 +450,11 @@ item below was built on top of it.
 - Same beats, rebuilt for 1080×1920: vertical cards, right-rail crops of the real UI with large headlines, poster
   crop, model badge, frontier 50→0, verify crop, CTA. 60.000 s; captions for UI beats; full SRT.
 
+**Generated project dossier**
+- `tools/dossier.py` / `make dossier`: reads tests, audit, benchmark JSON, PDF page counts, video durations,
+  git log and repo stats, then renders `docs/project-dossier.md` + `docs/project-dossier.pdf` (6 pages). Every
+  number is from the repo at build time; no hand-maintained duplicate.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

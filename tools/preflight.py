@@ -55,6 +55,8 @@ LOCAL = [
     "docs/cross-model.md",
     "docs/handbook.md",
     "docs/handbook.pdf",
+    "docs/project-dossier.pdf",
+    "docs/project-dossier.md",
     "tools/handbook.py",
     "docs/assets/youtube-thumb.html",
     "docs/sam.md",
