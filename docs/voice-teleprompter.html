@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ONLY YOU — voice-over teleprompter</title>
+<style>
+  :root { --bg:#090b0f; --fg:#f4f7fb; --dim:#7d8798; --red:#ff4d5e; --green:#2fd18c; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; background:var(--bg); color:var(--fg);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; }
+  body { display:flex; flex-direction:column; overflow:hidden; }
+  header { display:flex; align-items:center; gap:18px; padding:18px 28px;
+    border-bottom:1px solid #ffffff14; font:600 12px ui-monospace,monospace;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--dim); }
+  header b { color:var(--green); }
+  #clock { margin-left:auto; font-size:18px; letter-spacing:.04em; color:var(--fg); }
+  #clock span { color:var(--dim); }
+  #bar { height:4px; background:#ffffff10; }
+  #fill { height:100%; width:0; background:var(--red); transition:width .12s linear; }
+  main { flex:1; display:grid; place-items:center; padding:4vh 8vw; overflow:hidden; }
+  #stage { width:min(1200px,100%); }
+  .line { display:none; }
+  .line.on { display:block; animation:in .35s ease-out; }
+  @keyframes in { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+  .beat { font:600 12px ui-monospace,monospace; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--red); margin-bottom:18px; }
+  .text { font-size:clamp(34px,5.4vw,76px); line-height:1.12; letter-spacing:-.025em;
+    font-weight:650; text-wrap:balance; }
+  .text em { color:var(--red); font-style:normal; }
+  .hint { margin-top:26px; color:var(--dim); font-size:clamp(14px,1.4vw,19px); line-height:1.5; }
+  footer { display:flex; gap:14px; align-items:center; padding:16px 28px;
+    border-top:1px solid #ffffff14; font:600 12px ui-monospace,monospace;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--dim); }
+  button { background:#ffffff10; color:var(--fg); border:1px solid #ffffff20;
+    border-radius:999px; padding:10px 18px; font:inherit; cursor:pointer; }
+  button:hover { background:#ffffff1c; }
+  #go { background:var(--red); border-color:var(--red); color:#fff; }
+  kbd { border:1px solid #ffffff30; border-bottom-width:2px; border-radius:5px;
+    padding:1px 6px; font:inherit; color:var(--fg); }
+  #done { display:none; text-align:center; }
+  #done .big { font-size:clamp(40px,7vw,96px); font-weight:750; letter-spacing:-.03em; }
+  #done .big span { color:var(--green); }
+</style>
+</head>
+<body>
+<header>
+  <b>● REC</b> <span>only you · owner voice-over</span>
+  <div id="clock">00.0 <span>/ 60.0 s</span></div>
+</header>
+<div id="bar"><div id="fill"></div></div>
+<main>
+  <div id="stage"></div>
+  <div id="done">
+    <div class="big">That’s <span>60</span>.</div>
+    <p style="color:var(--dim);font-size:20px">Stop the recording. Keep the file raw. Send it.</p>
+  </div>
+</main>
+<footer>
+  <button id="go">Start 3·2·1</button>
+  <button id="pause">Pause <kbd>space</kbd></button>
+  <span id="status">ready · read it like one thought</span>
+</footer>
+<script>
+const LINES = [
+  { t: 0,  beat: "0:00 · hook",              text: "Your glasses can hear the world. Meta says this hint is <em>not a security boundary</em>." },
+  { t: 5,  beat: "0:05 · voice is the only command", text: "So I built the boundary: <em>only my enrolled voice</em> is a command. Everything else is data." },
+  { t: 12, beat: "0:12 · scoped mandate",    text: "I sign one mandate: pay this electrician <em>five thousand</em>, before tomorrow." },
+  { t: 18, beat: "0:18 · receipt R6",        text: "The agent pays. Receipt <em>R six</em> shows the mandate. Allowed." },
+  { t: 25, beat: "0:25 · attack, receipt R1",text: "The same invoice names a stranger. The gate refuses: <em>R one</em>, payee is not a contact. No mandate, no money." },
+  { t: 34, beat: "0:34 · poster, receipt R0",text: "A poster says unlock the door. The agent reads data, not a command. <em>R zero</em> blocked." },
+  { t: 41, beat: "0:41 · frontier model",    text: "We attacked a frontier model. Undefended, DeepSeek paid half. Behind this gate: <em>zero</em>. Eighteen of eighteen verified." },
+  { t: 50, beat: "0:50 · browser verifier",  text: "Don’t trust me. Open the audit bundle. <em>Verified, cross-model.</em>" },
+  { t: 55, beat: "0:55 · close",             text: "Everyone builds agents that can act. This is the one you <em>hand your wallet</em> to." },
+];
+const stage = document.getElementById('stage');
+const clock = document.getElementById('clock');
+const fill = document.getElementById('fill');
+const statusEl = document.getElementById('status');
+const go = document.getElementById('go');
+const pauseBtn = document.getElementById('pause');
+const done = document.getElementById('done');
+
+LINES.forEach((l, i) => {
+  const d = document.createElement('div');
+  d.className = 'line'; d.dataset.i = i;
+  d.innerHTML = `<div class="beat">${l.beat}</div><div class="text">${l.text}</div>` +
+    (i === 0 ? `<div class="hint">Start with one second of silence. Read the whole thing as one thought.</div>` : '');
+  stage.appendChild(d);
+});
+
+let t0 = 0, elapsed = 0, running = false, raf = 0, started = false;
+const fmt = s => s.toFixed(1).padStart(4, '0');
+function current() {
+  let idx = 0;
+  for (let i = 0; i < LINES.length; i++) if (elapsed >= LINES[i].t) idx = i;
+  return idx;
+}
+function show(idx) {
+  document.querySelectorAll('.line').forEach((el, i) => el.classList.toggle('on', i === idx));
+}
+function frame() {
+  if (!running) return;
+  elapsed = Math.min(60, (performance.now() - t0) / 1000);
+  clock.innerHTML = `${fmt(elapsed)} <span>/ 60.0 s</span>`;
+  fill.style.width = (elapsed / 60 * 100) + '%';
+  show(current());
+  if (elapsed >= 60) {
+    running = false; started = false;
+    stage.style.display = 'none'; done.style.display = 'block';
+    statusEl.textContent = 'done · stop the recording';
+    go.textContent = 'Again';
+    return;
+  }
+  raf = requestAnimationFrame(frame);
+}
+function start() {
+  stage.style.display = 'block'; done.style.display = 'none';
+  elapsed = 0; t0 = performance.now(); running = true; started = true;
+  show(0); go.textContent = 'Restart';
+  statusEl.textContent = 'rolling · keep going';
+  cancelAnimationFrame(raf); frame();
+}
+function togglePause() {
+  if (!started) return;
+  if (running) {
+    running = false; cancelAnimationFrame(raf);
+    statusEl.textContent = 'paused · press space to resume';
+    pauseBtn.innerHTML = 'Resume <kbd>space</kbd>';
+  } else if (elapsed < 60) {
+    t0 = performance.now() - elapsed * 1000; running = true;
+    statusEl.textContent = 'rolling · keep going';
+    pauseBtn.innerHTML = 'Pause <kbd>space</kbd>';
+    frame();
+  }
+}
+go.addEventListener('click', start);
+pauseBtn.addEventListener('click', togglePause);
+addEventListener('keydown', e => {
+  if (e.code === 'Space') { e.preventDefault(); togglePause(); }
+  if (e.code === 'KeyR') start();
+});
+show(0);
+</script>
+</body>
+</html>
