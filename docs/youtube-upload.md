@@ -43,8 +43,8 @@ Chapters (match the rebuilt 179 s captioned cut)
 2:20 Real-model numbers
 2:40 Close
 
-60-second motion cut (judge/social, 16:9): https://github.com/sushant-me/only-you/blob/main/docs/demo-60s.mp4
-60-second vertical cut (Reels/Shorts): https://github.com/sushant-me/only-you/blob/main/docs/demo-60s-vertical.mp4
+60-second screen-recorded cut (judge/social, 16:9): https://github.com/sushant-me/only-you/blob/main/docs/demo-60s.mp4
+same cut, clean/no captions: https://github.com/sushant-me/only-you/blob/main/docs/demo-60s-clean.mp4
 20-second contrast clip (undefended vs gated): https://github.com/sushant-me/only-you/blob/main/docs/demo-contrast.mp4
 Play it yourself (no install): https://sushant-me.github.io/only-you/playground.html
 Repo: https://github.com/sushant-me/only-you

@@ -67,8 +67,8 @@ ship (`results-sam/`); text-region masks are roadmap in `for-meta.md`, not claim
 - Try it (no install): https://sushant-me.github.io/only-you/playground.html
 - Verify evidence in the browser: https://sushant-me.github.io/only-you/verify.html (load cross-model bundle)
 - 3-minute demo: **<YouTube unlisted URL>** (file: `docs/demo-3min.mp4`, 2:59, narrated + captioned)
-- 60s motion cut (9 beats, frontier contrast + browser verify): `docs/demo-60s.mp4`
-- 9:16 vertical 60s cut: `docs/demo-60s-vertical.mp4`
+- 60s screen-recorded cut (real app, R1/R6, frontier + browser verify): `docs/demo-60s.mp4`
+- same cut, no burned captions: `docs/demo-60s-clean.mp4`
 - 20s contrast clip (undefended vs gated): `docs/demo-contrast.mp4`
 - Brief: https://github.com/sushant-me/only-you/blob/main/docs/brief.pdf
 - Report: https://github.com/sushant-me/only-you/blob/main/docs/report.pdf

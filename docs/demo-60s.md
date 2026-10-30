@@ -1,58 +1,57 @@
 # The 60-second cut
 
-Two deliverables, same beats:
+**This is a screen recording of the live app, not a motion-graphics assembly.**
 
-- **16:9** `docs/demo-60s.mp4` — 1920×1080, 60.000 s, captions `docs/demo-60s.srt`
-- **9:16** `docs/demo-60s-vertical.mp4` — 1080×1920, 60.000 s, captions `docs/demo-60s-vertical.srt`
+- **16:9** `docs/demo-60s.mp4` — 1920×1080, 60.000 s, captioned
+- **16:9 clean** `docs/demo-60s-clean.mp4` — same cut, no burned captions
+- **Captions** `docs/demo-60s.srt`
 
-Both use **real UI states captured from a live server with `muse-spark-1.3`** (the badge is visible in the
-UI and as an overlaid chip). The cursor, zooms, cards and captions are edited motion graphics, not a literal
-screen recording; the receipts and verdicts are genuine.
+The capture is from the real demo server with a real Meta key; the badge reads
+`model: muse-spark-1.3`. The run shows a real mandate, a real `R6-mandate` allow, a real
+`R1-payee-not-contact` block, a real `R0-instruction-from-data` refusal and the live
+`verify.html` page. Mouse movement and clicks are dispatched into the page and recorded
+with it; the pointer is a page overlay because a headless capture does not include the
+OS cursor. Cursor, clicks, page loads and verdicts are real interactions, not a
+frame-by-frame animation.
+
+**Voice:** Swar (Naamche Labs), Maya preset — a synthetic Nepali-accented English voice
+chosen because it sounds like a person rather than a flat screen-reader. It is still a
+synthetic voice (not a microphone recording of the owner), and it is disclosed here and
+in `docs/limitations.md`. The voice was generated from the same 60-second script and
+mixed with a small room tone; no voice cloning of a real person is used.
 
 ## Beat sheet
 
-| Time | Beat | Source |
+| Time | On screen | Evidence |
 |---|---|---|
-| 0:00–0:03 | Hook | card |
-| 0:03–0:07 | WebMCP quote | card |
-| 0:07–0:13 | grant: empty UI → click → mandate | `state-pre`, `state-mandate` |
-| 0:13–0:20 | owner pays; **allow · R6-mandate** | `state-paid` |
-| 0:20–0:30 | attacker; **deny · R1-payee-not-contact** | `state-final` |
-| 0:30–0:36 | poster; **BLOCKED · R0-instruction-from-data** | `poster-verdict` |
-| 0:36–0:40 | frontier **50%** paid | card |
-| 0:40–0:45 | gate **0%** · 18/18 receipts | card |
-| 0:45–0:52 | browser **VERIFIED · CROSS-MODEL** | live verifier |
-| 0:52–0:56 | close | card |
-| 0:56–1:00 | links / CTA | card |
+| 0:00–0:03 | hook page, cursor | — |
+| 0:03–0:07 | WebMCP quote page | quote |
+| 0:07–0:13 | live app; grant mandate | `R6-mandate` appears |
+| 0:13–0:20 | owner pays | green allow receipt |
+| 0:20–0:30 | attacker invoice | red `R1-payee-not-contact`; counters 1 blocked / 1 allowed / 2 receipts |
+| 0:30–0:36 | poster scan | red scene mask + `R0-instruction-from-data` label |
+| 0:36–0:45 | frontier page | DeepSeek 50% → 0%, 18/18 receipts |
+| 0:45–0:52 | live browser verifier | `VERIFIED · CROSS-MODEL` |
+| 0:52–1:00 | close / links | — |
 
-Cards are never held longer than 5 s; the attack/poster/verify beats carry continuous cursor + zoom motion.
+The app page is 1920×1080 and is recorded at that size; nothing is hidden behind a
+cursor or a card. The poster and verifier lower-thirds are small labels added in post so
+the verdict stays readable at 1080p.
 
-## Recreate the UI states
+## Captions
 
-With the server running (`make web`, real key in `.env`):
+`docs/demo-60s.srt` is the full transcript. The captioned file burns it in with a
+small bottom subtitle; `docs/demo-60s-clean.mp4` is the same video without burned
+captions for a more raw screen-recording feel.
 
-```bash
-curl -s -X POST localhost:8000/api/reset -d '{}'
-# screenshot -> empty state
-curl -s -X POST localhost:8000/api/mandate \
-  -H 'Content-Type: application/json' \
-  -d '{"payees":["electrician"],"max_amount":5000,"ttl_seconds":86400}'
-# screenshot -> mandate state
-curl -s -X POST localhost:8000/api/command -H 'Content-Type: application/json' \
-  -d '{"speaker":"owner","channel":"voice","text":"pay the electrician 4500","confirms":true}'
-# screenshot -> R6 allow
-curl -s -X POST localhost:8000/api/command -H 'Content-Type: application/json' \
-  -d '{"speaker":"owner","channel":"voice","text":"pay @attacker0 5000","confirms":true}'
-# screenshot -> R1 deny
-```
+## Recreate the states
 
-The first 16:9 frame uses the `R1-payee-not-contact` receipt and the R6 allow, so the attack beat is not
-spoiled before it happens.
+The server is the normal demo (`make web` or `python -m onlyyou.cli web --port 8022`)
+with the real Meta key in `.env`; the app is opened with `?fakecam=1`. The UI actions are
+the normal demo buttons: `8 · grant a mandate`, `1 · owner pays invoice`,
+`5 · attacker invoice`, `3 · poster tries to unlock`. The verifier is
+`docs/verify.html?auto=cross` served from the repository.
 
-## Edit the cut
-
-- **Narration:** per-beat MP3s are the current audio bed; `docs/demo-60s.srt` is the full transcript.
-- **Length:** the six card beats and five UI beats are independent clips; swap a card, keep the timestamps.
-- **Style:** white on `#0b0e15`, red `#ff2d55` for deny/risk, green `#2fd18c` for allow/verified.
-- Rebuild the 3-minute film separately (`docs/narration-script.md`); this cut is intentionally synthetic-
-  narration and is labelled as such in `docs/limitations.md`.
+The recording is driven by `tools/record_demo.mjs` (Chromium DevTools Protocol at
+1920×1080); its intro/quote/frontier/close pages are in `docs/assets/record/`. It dispatches
+the same clicks a person would. The old motion-graphics cut is superseded by this recording.

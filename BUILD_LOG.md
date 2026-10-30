@@ -455,6 +455,12 @@ item below was built on top of it.
   git log and repo stats, then renders `docs/project-dossier.md` + `docs/project-dossier.pdf` (6 pages). Every
   number is from the repo at build time; no hand-maintained duplicate.
 
+**Recorded 60 s cut (humanized voice)**
+- Replaced the motion-graphics 60 s cut with a real screen recording of the live app (1920×1080, 60 s,
+  real Muse Spark badge, real R6 allow, R1 deny, R0 refusal, browser verifier).
+- Voice generated with Swar (Naamche Labs), Maya preset; mixed with room tone; ASR round-trip is clean.
+- `docs/demo-60s.mp4` captioned; `docs/demo-60s-clean.mp4` uncaptioned; `docs/demo-60s.srt`.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

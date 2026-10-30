@@ -1,0 +1,35 @@
+1
+00:00:00,500 --> 00:00:03,830
+Your glasses can hear the world. Who do they obey?
+
+2
+00:00:03,900 --> 00:00:08,570
+Meta's documentation says this hint is not a security boundary.
+
+3
+00:00:08,800 --> 00:00:14,080
+The owner writes a mandate: electrician, five thousand, until tomorrow.
+
+4
+00:00:14,400 --> 00:00:18,160
+The agent pays the invoice. The receipt cites the mandate.
+
+5
+00:00:20,900 --> 00:00:26,210
+The owner names a stranger. The gate refuses. The payee was never in the mandate.
+
+6
+00:00:30,350 --> 00:00:33,490
+The poster is data. A TV ad is not your voice.
+
+7
+00:00:36,300 --> 00:00:45,630
+We tested a frontier model. Undefended, DeepSeek paid half the invoices. Behind the gate, zero. 18 of 18 receipts verified.
+
+8
+00:00:45,750 --> 00:00:49,540
+Open the audit bundle in a browser. Verified cross-model.
+
+9
+00:00:52,300 --> 00:00:59,060
+Everyone is building agents that can do things. This is the one you can hand your wallet to.
