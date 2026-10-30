@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ONLY YOU — 3-minute voice-over teleprompter</title>
+<style>
+  :root { --bg:#090b0f; --fg:#f4f7fb; --dim:#7d8798; --red:#ff4d5e; --green:#2fd18c; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; background:var(--bg); color:var(--fg);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; }
+  body { display:flex; flex-direction:column; overflow:hidden; }
+  header { display:flex; align-items:center; gap:18px; padding:18px 28px;
+    border-bottom:1px solid #ffffff14; font:600 12px ui-monospace,monospace;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--dim); }
+  header b { color:var(--green); }
+  #clock { margin-left:auto; font-size:18px; letter-spacing:.04em; color:var(--fg); }
+  #clock span { color:var(--dim); }
+  #bar { height:4px; background:#ffffff10; }
+  #fill { height:100%; width:0; background:var(--red); transition:width .12s linear; }
+  main { flex:1; display:grid; place-items:center; padding:3vh 7vw; overflow:hidden; }
+  #stage { width:min(1250px,100%); }
+  .line { display:none; }
+  .line.on { display:block; animation:in .28s ease-out; }
+  @keyframes in { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+  .beat { font:600 12px ui-monospace,monospace; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--red); margin-bottom:14px; }
+  .text { font-size:clamp(28px,3.45vw,52px); line-height:1.18; letter-spacing:-.022em;
+    font-weight:650; text-wrap:balance; }
+  .text em { color:var(--red); font-style:normal; }
+  .hint { margin-top:22px; color:var(--dim); font-size:clamp(13px,1.2vw,17px); line-height:1.5; }
+  footer { display:flex; gap:14px; align-items:center; padding:16px 28px;
+    border-top:1px solid #ffffff14; font:600 12px ui-monospace,monospace;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--dim); }
+  button { background:#ffffff10; color:var(--fg); border:1px solid #ffffff20;
+    border-radius:999px; padding:10px 18px; font:inherit; cursor:pointer; }
+  button:hover { background:#ffffff1c; }
+  #go { background:var(--red); border-color:var(--red); color:#fff; }
+  kbd { border:1px solid #ffffff30; border-bottom-width:2px; border-radius:5px;
+    padding:1px 6px; font:inherit; color:var(--fg); }
+  #done { display:none; text-align:center; }
+  #done .big { font-size:clamp(40px,7vw,96px); font-weight:750; letter-spacing:-.03em; }
+  #done .big span { color:var(--green); }
+</style>
+</head>
+<body>
+<header>
+  <b>● REC</b> <span>only you · 3-minute submission take</span>
+  <div id="clock">00.0 <span>/ 179.0 s</span></div>
+</header>
+<div id="bar"><div id="fill"></div></div>
+<main>
+  <div id="stage"></div>
+  <div id="done">
+    <div class="big">That’s <span>2:59</span>.</div>
+    <p style="color:var(--dim);font-size:20px">Stop the recording. Keep the file raw. Send it.</p>
+  </div>
+</main>
+<footer>
+  <button id="go">Start 3·2·1</button>
+  <button id="pause">Pause <kbd>space</kbd></button>
+  <span id="status">ready · one continuous read, 2:50–2:58</span>
+</footer>
+<script>
+const TOTAL = 179;
+const LINES = [
+  { t: 4,  beat: "0:04 · hook", text: "Your glasses can hear the world. The question is who they obey. This is ONLY YOU — the layer that decides who a wearable agent answers to." },
+  { t: 16, beat: "0:16 · the problem", text: "Meta’s own docs say the untrusted-content flag is <em>not an enforced security boundary</em>. The agent can’t tell an instruction from content, or you from a stranger." },
+  { t: 32, beat: "0:32 · the channel", text: "So a TV ad, a poster, a look-alike invoice — all reach the same context window as your voice. <em>I fixed the channel, not the model.</em>" },
+  { t: 48, beat: "0:48 · voice + constitution + mandates", text: "Only your enrolled voice is a command. Everything else is data: read, summarised, never obeyed. You write a constitution, and hand out signed, scoped, expiring mandates." },
+  { t: 66, beat: "1:06 · mandate + merchant verify + pay", text: "Pay the electrician up to five thousand until tomorrow. A merchant can verify that mandate offline with only the public key. Then the agent can act without interrupting you." },
+  { t: 82, beat: "1:22 · paid, then refused", text: "Paid. The receipt cites the mandate. Now the same spoken command, with a different invoice — <em>refused</em>, because the payee came from a document, not from you." },
+  { t: 96, beat: "1:36 · poster + TV ad", text: "A poster in the scene: masked as data, read, never obeyed. A TV ad: not your voice, not a command." },
+  { t: 110, beat: "1:50 · hidden page text + ledger", text: "Hidden page text: same result. Then ask it what it did today. Every action and every refusal is on the record: rule, evidence, source, hash chain." },
+  { t: 124, beat: "2:04 · frontier numbers", text: "We measured the part that can be wrong. Muse Spark executed <em>twenty-five percent</em> of confused-deputy attacks undefended, <em>fifty percent</em> with provenance only — and <em>zero</em> with the full gate, zero false refusals." },
+  { t: 140, beat: "2:20 · label layer + sensors + adaptive", text: "Label layer: eighty-one percent recall, fourteen percent false positives. Forged sensor signals: six of six without a signed sensor bus, zero with it. Adaptive corpus: twenty percent still get through. We publish that too." },
+  { t: 160, beat: "2:40 · roadmap + close", text: "With ten engineers: tool-result provenance in WebMCP, SAM masks and voice provenance in the Muse client, device-key mandates merchants can verify. Superintelligence is useless if it <em>isn’t yours</em>. Repo and benchmark in the description." },
+];
+const stage = document.getElementById('stage');
+const clock = document.getElementById('clock');
+const fill = document.getElementById('fill');
+const statusEl = document.getElementById('status');
+const go = document.getElementById('go');
+const pauseBtn = document.getElementById('pause');
+const done = document.getElementById('done');
+
+LINES.forEach((l, i) => {
+  const d = document.createElement('div');
+  d.className = 'line'; d.dataset.i = i;
+  d.innerHTML = `<div class="beat">${l.beat}</div><div class="text">${l.text}</div>` +
+    (i === 0 ? `<div class="hint">Start with one second of silence. Read the whole thing as one thought, not eleven lines.</div>` : '');
+  stage.appendChild(d);
+});
+
+let t0 = 0, elapsed = 0, running = false, raf = 0, started = false;
+const fmt = s => (Math.floor(s / 60) + ':' + (s % 60).toFixed(1).padStart(4, '0'));
+function current() {
+  let idx = 0;
+  for (let i = 0; i < LINES.length; i++) if (elapsed >= LINES[i].t) idx = i;
+  return idx;
+}
+function show(idx) {
+  document.querySelectorAll('.line').forEach((el, i) => el.classList.toggle('on', i === idx));
+}
+function frame() {
+  if (!running) return;
+  elapsed = Math.min(TOTAL, (performance.now() - t0) / 1000);
+  clock.innerHTML = `${fmt(elapsed)} <span>/ 2:59</span>`;
+  fill.style.width = (elapsed / TOTAL * 100) + '%';
+  show(current());
+  if (elapsed >= TOTAL) {
+    running = false; started = false;
+    stage.style.display = 'none'; done.style.display = 'block';
+    statusEl.textContent = 'done · stop the recording';
+    go.textContent = 'Again';
+    return;
+  }
+  raf = requestAnimationFrame(frame);
+}
+function start() {
+  stage.style.display = 'block'; done.style.display = 'none';
+  elapsed = 0; t0 = performance.now(); running = true; started = true;
+  show(0); go.textContent = 'Restart';
+  statusEl.textContent = 'rolling · keep going';
+  cancelAnimationFrame(raf); frame();
+}
+function togglePause() {
+  if (!started) return;
+  if (running) {
+    running = false; cancelAnimationFrame(raf);
+    statusEl.textContent = 'paused · press space to resume';
+    pauseBtn.innerHTML = 'Resume <kbd>space</kbd>';
+  } else if (elapsed < TOTAL) {
+    t0 = performance.now() - elapsed * 1000; running = true;
+    statusEl.textContent = 'rolling · keep going';
+    pauseBtn.innerHTML = 'Pause <kbd>space</kbd>';
+    frame();
+  }
+}
+go.addEventListener('click', start);
+pauseBtn.addEventListener('click', togglePause);
+addEventListener('keydown', e => {
+  if (e.code === 'Space') { e.preventDefault(); togglePause(); }
+  if (e.code === 'KeyR') start();
+});
+show(0);
+</script>
+</body>
+</html>
