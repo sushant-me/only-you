@@ -120,7 +120,7 @@ def main() -> int:
     add(f"| Frontier run | DeepSeek-chat: undefended **50%** executed → gate **0%**, 0% false refusals, **18/18** receipts |")
     add(f"| Human voice study | owner 3/3 · **0/12 FAR** at capped 0.10 (pilot + 12 unseen speakers) |")
     add(f"| Repository | {repo_files} files · {src_files} Python modules · {tool_files} tools · {test_files} test files · ~{py_lines} lines in `src/onlyyou` |")
-    add(f"| Primary artefacts | 3-min film (179 s), 60 s motion cut (16:9), 60 s vertical (9:16), contrast clip, brief, report, deck, handbook, dossier |")
+    add(f"| Primary artefacts | 3-min film (179 s), 60 s screen recording (Swar voice), clean variant, contrast clip, brief, report, deck, handbook, dossier |")
     add("")
     add("## 2. The problem and the thesis")
     add("")
@@ -243,8 +243,8 @@ def main() -> int:
     add("|---|---|---|")
     for rel, typ in [
         ("docs/demo-3min.mp4", "3-minute narrated film"),
-        ("docs/demo-60s.mp4", "60-second motion cut (16:9)"),
-        ("docs/demo-60s-vertical.mp4", "60-second vertical cut (9:16)"),
+        ("docs/demo-60s.mp4", "60-second screen recording (captioned)"),
+        ("docs/demo-60s-clean.mp4", "60-second screen recording (clean)"),
         ("docs/demo-contrast.mp4", "20-second contrast clip"),
         ("docs/demo-fallback.mp4", "82-second silent walkthrough"),
         ("docs/demo-task-clip.mp4", "20-second agentic task clip"),
@@ -261,7 +261,7 @@ def main() -> int:
     add("")
     add("![60-second cut storyboard](img/dossier-storyboard-small.jpg)")
     add("")
-    add("The 60-second cut follows the requested beat sheet: hook 0–3, quote 3–7, mandate 7–13, pay/R6 13–20, attack/R1 20–30, poster/R0 30–36, frontier 50→0 36–45, browser verify 45–52, close/CTA 52–60. Cards are held under five seconds; cursor and zoom carry the UI beats. The UI states are real captures from a live Muse Spark server; the cursor/zooms/captions are edited motion graphics. Narration is synthetic and disclosed.")
+    add("The 60-second cut is a real screen recording of the live app: hook 0–3, quote 3–7, mandate 7–13, pay/R6 13–20, attack/R1 20–30, poster/R0 30–36, frontier 50→0 36–45, browser verify 45–52, close/CTA 52–60. Real page actions and the real model badge are visible; the pointer is a page overlay because the capture is headless. The voice is Swar (Naamche Labs) Maya — synthetic, human-sounding, disclosed; no real person was cloned.")
     add("")
     add("## 11. Repository and commands")
     add("")
@@ -328,8 +328,8 @@ def main() -> int:
     add("| File | Bytes |")
     add("|---|---|")
     for rel in [
-        "docs/demo-3min.mp4", "docs/demo-3min.srt", "docs/demo-60s.mp4", "docs/demo-60s.srt",
-        "docs/demo-60s-vertical.mp4", "docs/demo-60s-vertical.srt", "docs/demo-contrast.mp4",
+        "docs/demo-3min.mp4", "docs/demo-3min.srt", "docs/demo-60s.mp4", "docs/demo-60s-clean.mp4", "docs/demo-60s.srt",
+        "docs/demo-contrast.mp4",
         "docs/brief.pdf", "docs/report.pdf", "docs/pitch.pdf", "docs/handbook.pdf",
         "docs/img/youtube-thumb.jpg", "docs/img/attack-blocked.gif",
     ]:

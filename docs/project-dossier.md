@@ -1,5 +1,5 @@
 # ONLY YOU — full project dossier
-*Generated 2026-10-29 10:14 +0545 from commit `2c60ed6` (2026-10-29).*
+*Generated 2026-10-30 15:11 +0545 from commit `7ee4ddb` (2026-10-30).*
 
 > **Capability is solved. Authority isn’t.**
 >
@@ -13,13 +13,13 @@ This dossier is generated from the repository, not written by hand after the fac
 |---|---|
 | Project | ONLY YOU — a provenance-gated authority layer for wearable agents |
 | Hackathon | Meta Global AI Developer Hackathon 2026 · Indie track |
-| Commit / date | `2c60ed6` · 2026-10-29 |
+| Commit / date | `7ee4ddb` · 2026-10-30 |
 | Tests | Ran ? tests · self-audit ****67 passed · 0 failed**** |
 | Meta models | Muse Spark 1.3, Muse Wonder 1.0, Muse Voice Transcribe 1.0, SAM 3.1, Muse Image 1.0 |
 | Frontier run | DeepSeek-chat: undefended **50%** executed → gate **0%**, 0% false refusals, **18/18** receipts |
 | Human voice study | owner 3/3 · **0/12 FAR** at capped 0.10 (pilot + 12 unseen speakers) |
-| Repository | 291 files · 30 Python modules · 20 tools · 31 test files · ~7007 lines in `src/onlyyou` |
-| Primary artefacts | 3-min film (179 s), 60 s motion cut (16:9), 60 s vertical (9:16), contrast clip, brief, report, deck, handbook, dossier |
+| Repository | 301 files · 30 Python modules · 21 tools · 31 test files · ~7007 lines in `src/onlyyou` |
+| Primary artefacts | 3-min film (179 s), 60 s screen recording (Swar voice), clean variant, contrast clip, brief, report, deck, handbook, dossier |
 
 ## 2. The problem and the thesis
 
@@ -144,8 +144,8 @@ The adaptive/forged figures come from the deterministic simulated harness in `re
 | Asset | Type | Size / duration / pages |
 |---|---|---|
 | `docs/demo-3min.mp4` | 3-minute narrated film | 179.000 s · 11.2 MB |
-| `docs/demo-60s.mp4` | 60-second motion cut (16:9) | 60.000 s · 11.7 MB |
-| `docs/demo-60s-vertical.mp4` | 60-second vertical cut (9:16) | 60.000 s · 4.3 MB |
+| `docs/demo-60s.mp4` | 60-second screen recording (captioned) | 60.000 s · 3.5 MB |
+| `docs/demo-60s-clean.mp4` | 60-second screen recording (clean) | 60.000 s · 3.1 MB |
 | `docs/demo-contrast.mp4` | 20-second contrast clip | 20.500 s · 602 KB |
 | `docs/demo-fallback.mp4` | 82-second silent walkthrough | 82.000 s · 5.7 MB |
 | `docs/demo-task-clip.mp4` | 20-second agentic task clip | 20.000 s · 1.2 MB |
@@ -156,11 +156,11 @@ The adaptive/forged figures come from the deterministic simulated harness in `re
 
 ![60-second cut storyboard](img/dossier-storyboard-small.jpg)
 
-The 60-second cut follows the requested beat sheet: hook 0–3, quote 3–7, mandate 7–13, pay/R6 13–20, attack/R1 20–30, poster/R0 30–36, frontier 50→0 36–45, browser verify 45–52, close/CTA 52–60. Cards are held under five seconds; cursor and zoom carry the UI beats. The UI states are real captures from a live Muse Spark server; the cursor/zooms/captions are edited motion graphics. Narration is synthetic and disclosed.
+The 60-second cut is a real screen recording of the live app: hook 0–3, quote 3–7, mandate 7–13, pay/R6 13–20, attack/R1 20–30, poster/R0 30–36, frontier 50→0 36–45, browser verify 45–52, close/CTA 52–60. Real page actions and the real model badge are visible; the pointer is a page overlay because the capture is headless. The voice is Swar (Naamche Labs) Maya — synthetic, human-sounding, disclosed; no real person was cloned.
 
 ## 11. Repository and commands
 
-The repository has 291 tracked files, 30 Python modules in `src/onlyyou`, 20 tools and 31 test files (~7007 lines in the package).
+The repository has 301 tracked files, 30 Python modules in `src/onlyyou`, 21 tools and 31 test files (~7007 lines in the package).
 
 | Command | What it does |
 |---|---|
@@ -224,10 +224,9 @@ The full 17-row failure list with evidence is in `docs/limitations.md`.
 |---|---|
 | `docs/demo-3min.mp4` | 11.2 MB |
 | `docs/demo-3min.srt` | 2 KB |
-| `docs/demo-60s.mp4` | 11.7 MB |
+| `docs/demo-60s.mp4` | 3.5 MB |
+| `docs/demo-60s-clean.mp4` | 3.1 MB |
 | `docs/demo-60s.srt` | 1 KB |
-| `docs/demo-60s-vertical.mp4` | 4.3 MB |
-| `docs/demo-60s-vertical.srt` | 1 KB |
 | `docs/demo-contrast.mp4` | 602 KB |
 | `docs/brief.pdf` | 164 KB |
 | `docs/report.pdf` | 226 KB |
@@ -238,6 +237,10 @@ The full 17-row failure list with evidence is in `docs/limitations.md`.
 
 ## 16. Recent commits
 
+- `7ee4ddb docs: AUDIT.md 67/67 (recorded 60s cut)`
+- `b407b17 feat: replace 60s motion cut with real screen recording + Swar voice`
+- `7d09222 docs: AUDIT.md 67/67 (dossier)`
+- `c8fba2f docs: refresh dossier header to generated commit`
 - `2c60ed6 feat: generated full project dossier PDF (with visuals)`
 - `b0870d9 docs: AUDIT.md 67/67 (dossier)`
 - `9b4bfed feat: generated full project dossier PDF`
@@ -246,10 +249,6 @@ The full 17-row failure list with evidence is in `docs/limitations.md`.
 - `c6a3f02 docs: AUDIT.md 67/67 (vertical cut)`
 - `8da05d5 feat: 9:16 vertical 60s cut (Reels/Shorts/Stories)`
 - `12a062c docs: AUDIT.md 67/67 (progressive 60s)`
-- `b5ccd6a feat: 60s cut now shows the actual state progression`
-- `aeabd02 docs: AUDIT.md 67/67 (exact 60s cut)`
-- `b7f3057 polish: exact 60s beat timings (hook 3, quote 4, mandate 6, pay 7, attack 10, poster 6, frontier 9, verify 7, close 8)`
-- `374339b docs: AUDIT.md 67/67 (60s timing)`
 
 ## 17. Appendix: environment and credits
 
