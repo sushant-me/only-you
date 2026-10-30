@@ -8,7 +8,7 @@ A provenance-gated authority layer for wearable agents — built on **Muse Spark
 through the Meta Model API (Muse Spark reasoning, Muse Wonder scene reading, Muse Voice Transcribe commands, SAM 3.1 grounding); built during the Meta
 Global AI Developer Hackathon 2026.
 
-**▶ Start here:** [2:59 narrated demo](docs/demo-3min.mp4) · [try the playground](https://sushant-me.github.io/only-you/playground.html) · [1-page brief](docs/brief.pdf) · [repo](https://github.com/sushant-me/only-you) · [live page](https://sushant-me.github.io/only-you/)
+**▶ Start here:** [60-second live screen recording](docs/demo-60s.mp4) · [try the playground](https://sushant-me.github.io/only-you/playground.html) · [1-page brief](docs/brief.pdf) · [repo](https://github.com/sushant-me/only-you) · [live page](https://sushant-me.github.io/only-you/) · [2:59 film](docs/demo-3min.mp4)
 
 [![tests](https://github.com/sushant-me/only-you/actions/workflows/ci.yml/badge.svg)](https://github.com/sushant-me/only-you/actions/workflows/ci.yml)
 [![audit](https://img.shields.io/badge/self--audit-67%2F67-2fd18c)](AUDIT.md)
@@ -60,7 +60,7 @@ docker build -t only-you-demo . && docker run --rm -p 8000:8000 only-you-demo
 
 - **Deploy:** [`docs/deploy.md`](docs/deploy.md) — Docker/compose, Meta credentials, healthcheck, ports.
 
-- **3-minute demo (2:59, narrated + captioned):** [`docs/demo-3min.mp4` · recording steps in [`docs/recording-guide.md`](docs/recording-guide.md)](docs/demo-3min.mp4) — upload kit in [`docs/youtube-upload.md`](docs/youtube-upload.md)
+- **Older 3-minute motion cut (2:59, synthetic draft, superseded by the 60 s recording):** [`docs/demo-3min.mp4`](docs/demo-3min.mp4) — upload kit in [`docs/youtube-upload.md`](docs/youtube-upload.md)
 - 20-second **contrast clip** (undefended vs gated, narrated): [`docs/demo-contrast.mp4`](docs/demo-contrast.mp4)
 - 60-second **live screen recording with punch-ins** (real app, readable R1/R6, human-style Swar voice): [`docs/demo-60s.mp4`](docs/demo-60s.mp4) · [clean/no-captions](docs/demo-60s-clean.mp4)
 - How the cuts are built and how to edit them: [`docs/demo-60s.md`](docs/demo-60s.md) · [open-source editing notes](docs/video-editing.md)
