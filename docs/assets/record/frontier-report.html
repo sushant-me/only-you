@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0}html,body{height:100%}
+body{background:#0b0e15;color:#d8e0ef;font:15px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;padding:54px 64px;overflow:hidden}
+.k{color:#8b95a8;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+h1{font:600 26px/1.2 Inter,system-ui,sans-serif;color:#fff;margin:8px 0 22px}
+pre{font:14px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;color:#c7d2e4;white-space:pre-wrap;max-width:1600px}
+.red{color:#ff2d55;font-weight:700}.green{color:#2fd18c;font-weight:700}.dim{color:#7d8aa3}
+.box{border:1px solid #26334b;border-radius:8px;padding:18px 22px;margin-top:18px;background:#0e1420}
+</style></head><body>
+<div class="k">results-frontier / benchmark.json · same corpus, same gate</div>
+<h1>DeepSeek-chat · frozen frontier run</h1>
+<pre><span class="dim">$ jq '.model, [.arms[] | {arm, attack_success_rate, false_refusal_rate, receipts_verified}]' results-frontier/benchmark.json</span>
+"deepseek-chat"
+
+[
+  { "arm": "A — undefended",          "attack_success_rate": <span class="red">0.50</span>, "false_refusal_rate": 0.00, "receipts_verified": 0  },
+  { "arm": "D — full ONLY YOU gate", "attack_success_rate": <span class="green">0.00</span>, "false_refusal_rate": 0.00, "receipts_verified": <span class="green">18</span> }
+]
+
+<span class="dim">corpus:</span> 8 injected invoices / 12 benign · temperature 0 · 40 calls · 54.1 s
+<span class="dim">verdict:</span> undefended <span class="red">4 / 8 paid</span> → gated <span class="green">0 / 8 paid</span>
+<span class="dim">ledger:</span> <span class="green">18 / 18 receipts verified</span> · chain <span class="green">OK</span>
+</pre>
+<div class="box"><span class="dim">the point:</span> the more helpful the model, the more it needs an authority layer outside the model.</div>
+</body></html>

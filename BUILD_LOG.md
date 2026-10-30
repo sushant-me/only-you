@@ -461,6 +461,12 @@ item below was built on top of it.
 - Voice generated with Swar (Naamche Labs), Maya preset; mixed with room tone; ASR round-trip is clean.
 - `docs/demo-60s.mp4` captioned; `docs/demo-60s-clean.mp4` uncaptioned; `docs/demo-60s.srt`.
 
+**Editable 60 s cut (screen recording + punch-ins)**
+- App-first recording: hook/quote overlays sit over the live UI; R6 and R1 are readable 1080p
+  punch-ins cropped from the same recording; verifier is punched in; frontier is a raw JSON page.
+- Open-source-only edit path: FFmpeg helpers in `tools/video_edit.py`, notes in `docs/video-editing.md`.
+- Captioned and clean variants; Swar Maya voice; 60.000 s, 1920x1080.
+
 **Tests:** 172 pass (`make test`).
 
 **Next:** first real Muse Spark call (`make smoke --call`), then `make bench-meta --limit 5` and the full

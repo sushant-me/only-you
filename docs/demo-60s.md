@@ -34,9 +34,11 @@ mixed with a small room tone; no voice cloning of a real person is used.
 | 0:45–0:52 | live browser verifier | `VERIFIED · CROSS-MODEL` |
 | 0:52–1:00 | close / links | — |
 
-The app page is 1920×1080 and is recorded at that size; nothing is hidden behind a
-cursor or a card. The poster and verifier lower-thirds are small labels added in post so
-the verdict stays readable at 1080p.
+The app page is 1920×1080 and is recorded at that size. The R6 and R1 beats are **punch-ins**:
+crops of the same recorded right-rail frames, scaled to 1080p so the receipt and counters are
+readable on a phone. The verifier beat gets the same treatment. The poster lower-third is a
+small label added in post. These are ordinary factual-demo edits — the pixels are from the
+live recording, not rebuilt graphics. Editing notes: `docs/video-editing.md`.
 
 ## Captions
 
@@ -53,5 +55,6 @@ the normal demo buttons: `8 · grant a mandate`, `1 · owner pays invoice`,
 `docs/verify.html?auto=cross` served from the repository.
 
 The recording is driven by `tools/record_demo.mjs` (Chromium DevTools Protocol at
-1920×1080); its intro/quote/frontier/close pages are in `docs/assets/record/`. It dispatches
-the same clicks a person would. The old motion-graphics cut is superseded by this recording.
+1920×1080); its frontier/close pages are in `docs/assets/record/`. It dispatches the same
+clicks a person would. `tools/video_edit.py` contains the open-source FFmpeg helpers used for
+the punch-ins, overlays and captions. The old motion-graphics cut is superseded.

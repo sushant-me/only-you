@@ -225,7 +225,7 @@ obeys the owner. The label and the artifact (`results-frontier/`) are explicit.
 
 | Asset | What it is |
 |---|---|
-| `docs/demo-60s.mp4` | 60 s live screen recording: real app, R1/R6, frontier + browser verify, Swar voice |
+| `docs/demo-60s.mp4` | 60 s live screen recording + R6/R1 punch-ins: real app, frontier, verifier, Swar voice |
 | `docs/demo-contrast.mp4` | 20.5 s standalone contrast clip |
 | `docs/demo-3min.srt` / `.vtt` | Shifted +4 s for the new opening; captions match |
 | `docs/img/attack-blocked.gif` | 26 s README GIF cut from the refusal beat |
