@@ -1,0 +1,43 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+  html,body{height:auto;overflow:auto}
+section{width:100%;min-height:920px;display:flex;flex-direction:column;justify-content:center}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+  .stat{font:800 190px/0.9 Inter,system-ui;letter-spacing:-.05em;margin-top:12px}
+  .stat small{font-size:40px;color:#8b95a8;letter-spacing:0}
+  .card{border:1px solid #26334b;border-radius:12px;padding:26px 30px;background:#0e1420}
+  .card h3{font:700 22px/1.25 Inter,system-ui;color:#fff;margin-bottom:10px}
+  .card p{font:400 18px/1.55 Inter,system-ui;color:#9aa6ba}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:34px}
+</style></head><body style="display:block;padding:80px 110px">
+<section id="labels">
+  <div class="k">the part that can be wrong · published</div>
+  <div class="h" style="font-size:76px">Label layer</div>
+  <div class="row" style="margin-top:36px">
+    <div><div class="stat">81%<small> recall</small></div><div class="sub" style="font-size:24px">hidden-text techniques the label layer catches</div></div>
+    <div><div class="stat">14.3%<small> false positives</small></div><div class="sub" style="font-size:24px">published, with the 8 techniques it misses</div></div>
+  </div>
+  <div class="card" style="margin-top:40px"><h3>We do not hide the weak layer.</h3><p>The model reads text; the label layer decides whether that text is data. Its recall and false positives are measured on the corpus and shipped in the repo.</p></div>
+</section>
+
+<section id="sensors">
+  <div class="k">forged sensor signals · signed bus</div>
+  <div class="h" style="font-size:76px">A fake sensor is data too.</div>
+  <div class="row" style="margin-top:36px">
+    <div><div class="stat red">6 / 6<small> executed</small></div><div class="sub" style="font-size:24px">forged signals without a signed sensor bus</div></div>
+    <div><div class="stat green">0 / 6<small> executed</small></div><div class="sub" style="font-size:24px">with the signed envelope</div></div>
+  </div>
+  <div class="card" style="margin-top:40px"><h3>Adaptive attackers still get through.</h3><p>20% on the adaptive corpus. That number is in the video, the report and the repo — not buried.</p></div>
+</section>
+
+<section id="roadmap">
+  <div class="k">what ten engineers would build next</div>
+  <div class="h" style="font-size:72px">This should be in the platform.</div>
+  <div class="two">
+    <div class="card"><h3>01 · WebMCP</h3><p>Tool-result provenance: every tool result carries its origin into the model context.</p></div>
+    <div class="card"><h3>02 · Muse client</h3><p>Voice and DOM provenance checked in the client, before the token reaches the model.</p></div>
+    <div class="card"><h3>03 · Merchant keys</h3><p>Device-key mandates that any merchant can verify offline, with no call to our server.</p></div>
+    <div class="card"><h3>04 · Receipts</h3><p>Every yes and every no, signed and hash-chained, verifiable in a browser.</p></div>
+  </div>
+</section>
+</body></html>

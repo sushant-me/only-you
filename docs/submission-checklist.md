@@ -10,11 +10,11 @@ Deadline: **4 Nov 2026, 9:00 PM ET = 5 Nov, 7:45 AM NPT**. Do not start this on 
 - [ ] `make gen test bench` works from a fresh clone
 - [ ] `make judge` runs 172 tests and a self-audit, all green
 
-## 2. Record and upload the 3-minute video
+## 2. Upload the submission video
 
-- [ ] Rehearse the shot list in `docs/video-3min.md` twice
-- [ ] Record screen + voice — or voice-over `docs/demo-3min.mp4` (2:59, captioned, already within the limit)
+- [ ] Use `docs/demo-owner.mp4` — 2:16, owner voice, no burned captions (see `docs/demo-owner.md`)
 - [ ] Length **≤ 3:00**; 1920×1080; H.264; under 300 MB
+- [ ] The older `docs/demo-3min.mp4` is a synthetic fallback only; do not submit it unless the owner cut is unavailable
 - [ ] Upload **unlisted** to YouTube; check it plays logged out
 - [ ] Title: "ONLY YOU — the layer that decides who your agent obeys"
 - [ ] Description: one-liner, repo link, benchmark link, honest caveat
