@@ -41,9 +41,9 @@ the undefended model pays 25% of the time and the full gate pays 0%, the label l
 positives, and the adaptive attacks that still get through.
 
 META PRODUCTS
-Muse Spark 1.3 (agent proposals, gated; three real runs), Muse Wonder 1.0 (scene reading, text + boxes),
-Muse Image 1.0 (demo poster, TV frame, invoice, article, hero). Not integrated: SAM 3.1 masks, Muse voice
-transcription — stated honestly, roadmap only.
+Muse Spark 1.3 (agent proposals, gated; real runs), Muse Wonder 1.0 (scene reading, text + boxes),
+Muse Voice Transcribe 1.0 (spoken commands), SAM 3.1 (object boxes; mask decoding not integrated),
+Muse Image 1.0 (demo poster, TV frame, invoice, article, hero).
 
 BONUS CATEGORIES
 Best Agentic Use-Case; Most Viral Project. (Open Weights not claimed — no deployment ran.)
@@ -51,7 +51,7 @@ Best Agentic Use-Case; Most Viral Project. (Open Weights not claimed — no depl
 LINKS
 Repo: https://github.com/sushant-me/only-you
 Live page: https://sushant-me.github.io/only-you/
-3-minute demo: <YOUTUBE UNLISTED URL>
+Submission video (2:16, owner voice, no burned captions): <YOUTUBE UNLISTED URL>
 Report: https://github.com/sushant-me/only-you/blob/main/docs/report.pdf
 Real runs: results-real/ · results-real-doc/ · results-real-doc-contributor/
 Hiring memo: https://github.com/sushant-me/only-you/blob/main/docs/for-meta.md

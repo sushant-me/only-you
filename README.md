@@ -8,7 +8,7 @@ A provenance-gated authority layer for wearable agents — built on **Muse Spark
 through the Meta Model API (Muse Spark reasoning, Muse Wonder scene reading, Muse Voice Transcribe commands, SAM 3.1 grounding); built during the Meta
 Global AI Developer Hackathon 2026.
 
-**▶ Start here:** [2:16 owner-voice submission cut](docs/demo-owner.mp4) · [60-second short](docs/demo-60s.mp4) · [try the playground](https://sushant-me.github.io/only-you/playground.html) · [1-page brief](docs/brief.pdf) · [repo](https://github.com/sushant-me/only-you) · [live page](https://sushant-me.github.io/only-you/) · [2:59 film](docs/demo-3min.mp4)
+**▶ Start here:** [2:16 owner-voice submission cut](docs/demo-owner.mp4) · [60-second short](docs/demo-60s.mp4) · [try the playground](https://sushant-me.github.io/only-you/playground.html) · [1-page brief](docs/brief.pdf) · [repo](https://github.com/sushant-me/only-you) · [live page](https://sushant-me.github.io/only-you/)
 
 [![tests](https://github.com/sushant-me/only-you/actions/workflows/ci.yml/badge.svg)](https://github.com/sushant-me/only-you/actions/workflows/ci.yml)
 [![audit](https://img.shields.io/badge/self--audit-67%2F67-2fd18c)](AUDIT.md)
