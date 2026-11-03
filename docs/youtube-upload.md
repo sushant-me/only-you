@@ -1,7 +1,10 @@
-# YouTube upload — the 3-minute demo
+# YouTube upload — the submission cut
 
-File: [`demo-3min.mp4`](demo-3min.mp4) · 2:59 · 1600×900 · narrated (synthetic draft) + captioned · thumbnail: [`img/youtube-thumb.jpg`](img/youtube-thumb.jpg) · captions: [`demo-3min.srt`](demo-3min.srt)
-Thumbnail: [`img/thumb.png`](img/thumb.png) (1280×720)
+File: [`demo-owner.mp4`](demo-owner.mp4) · **2:16** · 1920×1080 · owner voice · **no burned captions**
+Thumbnail: [`img/youtube-thumb.jpg`](img/youtube-thumb.jpg) · beat sheet: [`demo-owner.md`](demo-owner.md)
+
+This is the file the submission form asks for. It is under the **3:00** limit.
+Do not upload the older synthetic `demo-3min.mp4` unless this file is unavailable.
 
 ## Settings
 
@@ -30,29 +33,29 @@ refusal leaves a verifiable receipt.
 Built during the Meta Global AI Developer Hackathon 2026. 172 tests, a four-arm benchmark,
 and a published failure list — including the 20% of adaptive attacks that still get through.
 
-Chapters (match the rebuilt 179 s captioned cut)
-0:04 Who does your agent answer to
-0:16 The gap
-0:32 Meta's own warning
-0:48 A mandate, then paid without a prompt
-1:06 The look-alike invoice is refused
-1:22 A poster is scene data
-1:36 A TV ad is not your voice
-1:50 Hidden page text
-2:04 The record
-2:20 Real-model numbers
-2:40 Close
+Chapters
+0:00 Hook
+0:09 Meta's own warning
+0:15 The ledger: a stranger voice is data
+0:26 Scene text is data
+0:33 A scoped mandate
+0:40 Merchant verifies the mandate offline — MERCHANT VERIFIED · PAID
+0:47 R6: the electrician is paid
+0:53 R1: the attacker payee is refused
+0:58 Poster, TV ad, hidden page text — R0
+1:05 Every action and refusal on the record
+1:14 The frontier run: 50% → 0%, 18/18
+1:32 The label layer, published
+1:44 Forged sensors: 6/6 → 0/6; adaptive 20%
+1:54 What ten engineers would build next
+2:13 Close
 
-60-second screen-recorded cut (judge/social, 16:9): https://github.com/sushant-me/only-you/blob/main/docs/demo-60s.mp4
-same cut, clean/no captions: https://github.com/sushant-me/only-you/blob/main/docs/demo-60s-clean.mp4
-20-second contrast clip (undefended vs gated): https://github.com/sushant-me/only-you/blob/main/docs/demo-contrast.mp4
-Play it yourself (no install): https://sushant-me.github.io/only-you/playground.html
 Repo: https://github.com/sushant-me/only-you
+Live page: https://sushant-me.github.io/only-you/
+Play it yourself (no install): https://sushant-me.github.io/only-you/playground.html
 Benchmark: https://github.com/sushant-me/only-you/blob/main/results/benchmark.md
 Report: https://github.com/sushant-me/only-you/blob/main/docs/report.pdf
 Run it: make judge  ·  docker run --rm -p 8000:8000 only-you-demo
-
-Narration is a neural-TTS draft over the captioned cut; captions included (SRT in the repo).
 ```
 
 ## Tags
@@ -60,23 +63,17 @@ Narration is a neural-TTS draft over the captioned cut; captions included (SRT i
 `AI agents, wearable AI, Meta, Muse, WebMCP, prompt injection, provenance, agent security,
 hackathon, trust, receipts, mandates`
 
-## Replacing the narration (optional)
+## Captions
 
-The uploaded cut already has an aligned neural-TTS narration draft. If you prefer your own voice:
-
-- Record over the same timeline (the chapters above match the captions), then `make voice VOICE=...`.
-- Re-export and upload as a new version; keep the same title.
-- Update the submission link only after the new version plays logged out.
-
-## Upload the SRT
-
-YouTube → Subtitles → Add → Upload file → `docs/demo-3min.srt` (it matches the burned-in captions and the
-chapters). Set the thumbnail to `docs/img/youtube-thumb.jpg` (1280×720).
+The video has **no burned captions** by request. If you want YouTube captions, upload a
+sidecar SRT (do not re-burn them into the picture). The transcript is in
+[`voice-script-3min.md`](voice-script-3min.md); the actual take is 2:16, so re-time any SRT
+to the uploaded file before using it.
 
 ## Checklist
 
-- [ ] File is ≤ 3:00 (this one is 2:59)
+- [ ] File is `docs/demo-owner.mp4` (2:16, ≤ 3:00)
 - [ ] Plays logged out
 - [ ] Thumbnail uploaded
-- [ ] Description links filled in after the repo is public
+- [ ] Description links open
 - [ ] Link pasted into the CV submission form
