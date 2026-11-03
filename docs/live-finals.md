@@ -12,7 +12,7 @@ the first recording.
       1. demo at `/?script=full&fakecam=1` (reset first)
       2. playground `…/playground.html` (static, works even if the server dies)
       3. verifier `…/verify.html` (load sample)
-      4. the 3-minute video and the 82-second fallback
+      4. the 2:16 owner-voice cut (`docs/demo-owner.mp4`) and the 82-second fallback
       5. the 1-page brief, report and deck
 - [ ] `/api/reset` called; header counters at 0
 - [ ] A mandate granted (electrician ≤ 5,000) and one receipt already in the ledger, so a QR/verify page
@@ -23,9 +23,9 @@ the first recording.
 
 | Time | Say | Do |
 |---|---|---|
-| 0:00 | "The film opens with the contrast: undefended DeepSeek pays 50% of the attacker's invoices. The same model behind the gate pays 0%, with 18 of 18 receipts verified." | Play the 4 s opening of the film, pause after card 2 |
-| 0:12 | "Your glasses can hear the world. The question is who they obey." | Title over the UI |
-| 0:25 | Meta's own quote: "not an enforced security boundary." | Quote card / report |
+| 0:00 | "Your glasses can hear the world. The question is who they obey." | Play the owner cut 0:00–0:15 (face, title, Meta quote), pause |
+| 0:15 | "I built the boundary: only the enrolled voice commands; everything else is data." | Live app, provenance chips |
+| 0:28 | "Meta's own quote: not an enforced security boundary." | Quote/report if asked |
 | 0:30 | "Only the enrolled voice commands; everything else is data." | Point at provenance chips |
 | 0:45 | "I delegate: electrician, up to 5,000, with a daily sub-limit." | **8 · grant a mandate**, then mention the card's sub-limit line |
 | 1:05 | "A merchant verifies that offline — signature, payee, cap, remaining." | Open `/merchant-page`, **Verify mandate & charge** → `MERCHANT VERIFIED · PAID` |
@@ -43,6 +43,9 @@ the first recording.
 **3-minute cut** if the slot is short: 0:00 hook → 0:30 quote → 0:45 mandate → 1:05 merchant PAID →
 1:30 pay + 1:40 refusal → 2:00 poster/TV → 2:20 verify page/QR → 2:40 evidence one-liner → 2:50 close.
 The look-alike invoice and the merchant verification are the two beats that must survive.
+
+**For first place, the room must remember two things:** a stranger's voice refused, and a merchant
+**VERIFIED · PAID**. Do those live; put the benchmark table on screen for three seconds, don't read it.
 
 Rehearse 20 times, timed. If running long, drop the task runner and the policy line before dropping the
 refusal or the verification.
