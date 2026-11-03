@@ -20,7 +20,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 PAGES = "https://sushant-me.github.io/only-you/"
 URLS = [
     ("live page", PAGES),
-    ("3-min video", PAGES + "demo-3min.mp4"),
+    ("submission video", PAGES + "demo-owner.mp4"),
+    ("3-min fallback", PAGES + "demo-3min.mp4"),
     ("vertical video", PAGES + "demo-x-vertical.mp4"),
     ("fallback video", PAGES + "demo-fallback.mp4"),
     ("report PDF", PAGES + "report.pdf"),
@@ -32,6 +33,9 @@ LOCAL = [
     "docs/submission-final.md",
     "docs/form-paste.txt",
     "docs/narration-script.md",
+    "docs/demo-owner.mp4",
+    "docs/demo-owner.md",
+    "docs/voice-script-3min.md",
     "docs/demo-3min.mp4",
     "docs/demo-3min.srt",
     "docs/demo-contrast.mp4",
