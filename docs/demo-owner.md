@@ -16,6 +16,8 @@ voice, cut to the voice rather than stretching the voice to an old timeline.
 - The real ledger is shown: six receipts, including one **R6-mandate allow** (electrician,
   $4,500), one **R1-payee-not-contact** block (attacker), and four **R0-instruction-from-data**
   blocks (stranger voice, poster, TV ad, hidden page text).
+- The builder's real photo/credit appears on the open and close, so it reads as a person, not an
+  anonymous screen recording.
 - The merchant terminal resolves to **MERCHANT VERIFIED · PAID** with the QR receipt, then the
   receipt verification page; the frontier report, label layer, forged sensor results and roadmap
   are all on screen.
