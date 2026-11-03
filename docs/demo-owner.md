@@ -16,8 +16,9 @@ voice, cut to the voice rather than stretching the voice to an old timeline.
 - The real ledger is shown: six receipts, including one **R6-mandate allow** (electrician,
   $4,500), one **R1-payee-not-contact** block (attacker), and four **R0-instruction-from-data**
   blocks (stranger voice, poster, TV ad, hidden page text).
-- The merchant terminal, receipt verification pages, frontier report, label layer, forged
-  sensor results and roadmap are all on screen.
+- The merchant terminal resolves to **MERCHANT VERIFIED · PAID** with the QR receipt, then the
+  receipt verification page; the frontier report, label layer, forged sensor results and roadmap
+  are all on screen.
 
 ## Beat sheet
 
@@ -28,7 +29,7 @@ voice, cut to the voice rather than stretching the voice to an old timeline.
 | 0:15 | The ledger: stranger voice treated as data, R0 |
 | 0:26 | Scene text is data, not command |
 | 0:33 | Scoped mandate: payee, cap, expiry |
-| 0:40 | Merchant terminal verifies the mandate offline |
+| 0:40 | Merchant terminal verifies the mandate offline, then **MERCHANT VERIFIED · PAID** |
 | 0:47 | R6 receipt — electrician paid, allowed |
 | 0:53 | R1 receipt — attacker payee blocked |
 | 0:58 | Poster, TV ad, hidden page text — R0 |
