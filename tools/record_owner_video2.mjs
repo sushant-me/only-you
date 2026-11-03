@@ -38,8 +38,7 @@ await at(52.8); mark('r1'); await nav('http://127.0.0.1:8022/verify/0c518fe72245
 await at(57.9); mark('app'); await nav('http://127.0.0.1:8022/?fakecam=1'); await sleep(500); await moveTo(1500,300,700);
 await at(61.5); await evaluate("document.querySelector('#receipt-list')?.scrollIntoView({block:'center'})"); await moveTo(1500,400,800);
 await at(65.0); await moveTo(1500,520,900);
-await at(74.4); await moveTo(1500,650,900);
-await at(82.5); mark('frontier'); await nav('http://127.0.0.1:8090/frontier-report.html'); await moveTo(1100,700,800);
+await at(74.4); mark('frontier'); await nav('http://127.0.0.1:8090/frontier-report.html'); await moveTo(1100,700,800);
 await at(92.0); mark('labels'); await nav('http://127.0.0.1:8090/evidence.html#labels'); await moveTo(900,500,700);
 await at(104.0); mark('sensors'); await nav('http://127.0.0.1:8090/evidence.html#sensors'); await moveTo(900,500,700);
 await at(114.0); mark('roadmap'); await nav('http://127.0.0.1:8090/evidence.html#roadmap'); await moveTo(900,500,700);
