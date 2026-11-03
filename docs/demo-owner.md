@@ -16,8 +16,8 @@ voice, cut to the voice rather than stretching the voice to an old timeline.
 - The real ledger is shown: six receipts, including one **R6-mandate allow** (electrician,
   $4,500), one **R1-payee-not-contact** block (attacker), and four **R0-instruction-from-data**
   blocks (stranger voice, poster, TV ad, hidden page text).
-- The builder's real photo/credit appears on the open and close, so it reads as a person, not an
-  anonymous screen recording.
+- The owner appears on camera for the hook (real clip), then the title card, then the demo;
+  the close still carries the builder photo/credit.
 - The merchant terminal resolves to **MERCHANT VERIFIED · PAID** with the QR receipt, then the
   receipt verification page; the frontier report, label layer, forged sensor results and roadmap
   are all on screen.
@@ -26,7 +26,7 @@ voice, cut to the voice rather than stretching the voice to an old timeline.
 
 | Time | Voice / picture |
 |---|---|
-| 0:00 | Hook — “Your glasses can hear the world. The question is who they obey.” |
+| 0:00 | Owner on camera — “Your glasses can hear the world. The question is who they obey.” |
 | 0:09 | Meta’s “not an enforced security boundary” quote |
 | 0:15 | The ledger: stranger voice treated as data, R0 |
 | 0:26 | Scene text is data, not command |
