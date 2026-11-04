@@ -9,7 +9,7 @@ YouTube URL into the one `<...>` below. Everything else is final.
 ## Project
 
 - **Name:** ONLY YOU
-- **One-line:** A wearable agent that knows who is allowed to command it — and can prove what it did.
+- **One-line:** Your glasses can hear the world. ONLY YOU decides who they obey — and proves what the agent did.
 - **Track:** Indie developer
 - **Theme:** Build for Your World
 - **Bonus categories:** Best Agentic Use-Case · Most Viral Project
@@ -18,17 +18,16 @@ YouTube URL into the one `<...>` below. Everything else is final.
 
 ## Short description (≈60 words)
 
-ONLY YOU is a provenance-gated authority layer for wearable agents. Before a token reaches the model,
-every input is labelled: only the enrolled owner's voice is a command; scene text, page text and
-documents are data. A user-written constitution and signed, expiring mandates gate irreversible actions,
-and every action and every refusal emits a signed receipt.
+Your glasses can hear the world — but a TV ad, a poster, or a look-alike invoice can reach the same
+agent. ONLY YOU fixes the channel: only the enrolled owner's voice is a command; everything else is data.
+Signed, expiring mandates gate payments, and every action and refusal leaves a verified receipt.
 
 ## Long description (≈230 words)
 
-Meta's WebMCP documentation for Ray-Ban Display tells developers that `untrustedContentHint` is "not an
-enforced security boundary," and the assistant still cannot tell the wearer's voice from a stranger's.
-Once an agent has a camera, a microphone and a wallet, a TV ad, a poster, a webpage or an invoice can
-issue commands.
+Your glasses can hear the world. Should they obey a TV ad? A poster? A look-alike invoice?
+Meta's WebMCP documentation says the untrusted-content flag is "not an enforced security boundary," and
+the assistant still cannot tell the wearer's voice from a stranger's. Once an agent has a camera, a
+microphone and a wallet, a TV ad, a poster, a webpage or an invoice can issue commands.
 
 ONLY YOU fixes the channel instead of asking the model to be robust. Before the model sees a token, every
 input is labelled by provenance: on-device speaker verification, scene reading with Muse Wonder, DOM
