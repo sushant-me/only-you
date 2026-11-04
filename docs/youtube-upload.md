@@ -20,9 +20,9 @@ Do not upload the older synthetic `demo-3min.mp4` unless this file is unavailabl
 ## Description
 
 ```
-The more capable the model, the more it needs an authority layer. Capability is solved. Authority isn't.
+Your glasses can hear the world. Should they obey a TV ad?
 
-Your glasses can hear the world. Who do they obey?
+A frontier model paid half the injected invoices. Behind this gate: zero. 18/18 receipts.
 
 Meta's own WebMCP docs say the untrusted-content flag is "not an enforced security
 boundary" — and the assistant cannot tell the wearer's voice from a stranger's.
