@@ -2,7 +2,7 @@
 
 Prize: **$20K Most Viral Project** — most engagement (likes, reposts, comments) **by 8 Nov, 11:59 PM ET**.
 The clip: [`demo-x-vertical.mp4`](demo-x-vertical.mp4) (32.5 s, 1080×1920, owner voice, face + merchant paid + R1 + 50→0).
-Engagement closes before judging, so post early — **Nov 6–8**, tag @AIatMeta, reply to the hackathon thread.
+Engagement closes **8 Nov, 11:59 PM ET**, so post as soon as you submit — tag @AIatMeta, reply to the hackathon thread.
 
 ## Variant A — short and sharp (recommended)
 
