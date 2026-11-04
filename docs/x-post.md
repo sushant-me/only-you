@@ -1,7 +1,7 @@
-# X post — the 45-second vertical clip
+# X post — the 32-second vertical clip
 
 Prize: **$20K Most Viral Project** — most engagement (likes, reposts, comments) **by 8 Nov, 11:59 PM ET**.
-The clip: [`demo-x-vertical.mp4`](demo-x-vertical.mp4) (45 s, 1080×1920, rebuilt with Muse Image assets).
+The clip: [`demo-x-vertical.mp4`](demo-x-vertical.mp4) (32.5 s, 1080×1920, owner voice, face + merchant paid + R1 + 50→0).
 Engagement closes before judging, so post early — **Nov 6–8**, tag @AIatMeta, reply to the hackathon thread.
 
 ## Variant A — short and sharp (recommended)
@@ -12,9 +12,9 @@ Engagement closes before judging, so post early — **Nov 6–8**, tag @AIatMeta
 > So during their hackathon I built the layer that decides who your agent obeys: only the enrolled voice
 > commands, everything else is data, and every refusal is receipted.
 >
-> Real Muse Spark run: 25% → 37.5% → 50% → 0% executed as the gate is added. 🧵
+> Frontier run: **50% → 0%**, 18/18 receipts verified. 🧵
 
-Attach the vertical clip and/or the 20s contrast clip (`docs/demo-contrast.mp4`) and/or `img/x-stat.png`. Reply with the repo, the 3-minute demo, the no-install
+Attach the vertical clip and/or the 20s contrast clip (`docs/demo-contrast.mp4`) and/or `img/x-stat.png`. Reply with the repo, the 2:16 owner-voice demo, the no-install
 playground (sushant-me.github.io/only-you/playground.html) and the browser verifier
 (sushant-me.github.io/only-you/verify.html).
 
@@ -25,7 +25,7 @@ playground (sushant-me.github.io/only-you/playground.html) and the browser verif
 > A TV ad, a poster, a look-alike invoice — all of them reach your agent's context. I built the
 > provenance layer that makes only *your* voice a command, and receipts every refusal.
 >
-> Built during the Meta hackathon on Muse Spark, Muse Wonder, Muse Voice Transcribe, SAM 3.1 and Muse Image. 45s demo 👇
+> Built during the Meta hackathon on Muse Spark, Muse Wonder, Muse Voice Transcribe, SAM 3.1 and Muse Image. 32s demo 👇
 
 (Playable now, no install: sushant-me.github.io/only-you/playground.html)
 
@@ -47,7 +47,7 @@ playground (sushant-me.github.io/only-you/playground.html) and the browser verif
 2. Reply 1: the look-alike invoice beat — "same spoken command, different payee, refused because the
    payee came from a document."
 3. Reply 2: the evidence — 0/40 conditional, 81.0/14.3 label layer, 6/6 → 0/6.
-4. Reply 3: repo + 3-minute video + report links.
+4. Reply 3: repo + 2:16 owner-voice video + report links.
 5. Reply 4: what breaks it (cloned voice, replay, consent) — this is the credibility beat.
 
 ## Posting checklist
