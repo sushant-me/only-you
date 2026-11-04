@@ -1,6 +1,3 @@
-> **HOLD — do not submit until Sushant explicitly says "finalize".** Everything below is staged and
-> verified; the form is only pasted after his go-ahead.
-
 # Submission — final copy-paste sheet
 
 Deadline **4 Nov 2026, 9:00 PM ET = 5 Nov 2026, 7:45 AM NPT**. Video: upload unlisted, then paste the
@@ -65,7 +62,7 @@ ship (`results-sam/`); text-region masks are roadmap in `for-meta.md`, not claim
 - Live page: https://sushant-me.github.io/only-you/
 - Try it (no install): https://sushant-me.github.io/only-you/playground.html
 - Verify evidence in the browser: https://sushant-me.github.io/only-you/verify.html (load cross-model bundle)
-- Submission video: **<YouTube unlisted URL>** (file: `docs/demo-owner.mp4`, 2:16, owner voice, no burned captions, under the 3:00 limit)
+- Submission video: **https://youtu.be/NkP6z25hFAI** (file: `docs/demo-owner.mp4`, 2:16, owner voice, no burned captions, unlisted, verified 136 s)
 - 60s screen-recorded cut (real app, R1/R6, frontier + browser verify): `docs/demo-60s.mp4`
 - same cut, no burned captions: `docs/demo-60s-clean.mp4`
 - 20s contrast clip (undefended vs gated): `docs/demo-contrast.mp4`

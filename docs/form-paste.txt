@@ -50,7 +50,7 @@ Best Agentic Use-Case; Most Viral Project. (Open Weights not claimed — no depl
 LINKS
 Repo: https://github.com/sushant-me/only-you
 Live page: https://sushant-me.github.io/only-you/
-Submission video (2:16, owner voice, no burned captions): <YOUTUBE UNLISTED URL>
+Submission video (2:16, owner voice, no burned captions): https://youtu.be/NkP6z25hFAI
 Report: https://github.com/sushant-me/only-you/blob/main/docs/report.pdf
 Real runs: results-real/ · results-real-doc/ · results-real-doc-contributor/
 Hiring memo: https://github.com/sushant-me/only-you/blob/main/docs/for-meta.md

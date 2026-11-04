@@ -14,7 +14,7 @@ Engagement closes **8 Nov, 11:59 PM ET**, so post as soon as you submit — tag 
 >
 > Frontier run: **50% → 0%**, 18/18 receipts verified. 🧵
 
-Attach the vertical clip and/or the 20s contrast clip (`docs/demo-contrast.mp4`) and/or `img/x-stat.png`. Reply with the repo, the 2:16 owner-voice demo, the no-install
+Attach the vertical clip and/or the 20s contrast clip (`docs/demo-contrast.mp4`) and/or `img/x-stat.png`. Reply with the repo, the 2:16 owner-voice demo (https://youtu.be/NkP6z25hFAI), the no-install
 playground (sushant-me.github.io/only-you/playground.html) and the browser verifier
 (sushant-me.github.io/only-you/verify.html).
 
